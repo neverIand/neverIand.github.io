@@ -1,10 +1,10 @@
 :root {
   --length: 240px;
-  --border-width: calc(var(--length) * 0.04);
-  --border-radius: calc(var(--length) * calc(2 / 75));
-  --left-square-width: calc(var(--length) * calc(2 / 3));
-  --right-square-width: calc(var(--length) / 2);
-  --core-width: calc(var(--length) / 3);
+  --logo-border-width: calc(var(--length) * 0.04);
+  --logo-border-radius: calc(var(--length) * calc(2 / 75));
+  --logo-left-square-width: calc(var(--length) * calc(2 / 3));
+  --logo-right-square-width: calc(var(--length) / 2);
+  --logo-core-width: calc(var(--length) / 3);
 }
 
 * {
@@ -23,9 +23,8 @@ body {
 
 .square {
   background-color: white;
-  border: var(--border-width) solid purple;
-  border-radius: var(--border-radius);
-  /* box-sizing: border-box; */
+  border: var(--logo-border-width) solid purple;
+  border-radius: var(--logo-border-radius);
 }
 
 .outline {
@@ -35,28 +34,27 @@ body {
   height: var(--length);
   z-index: 200;
   overflow: hidden;
-  /* cursor: wait; */
 }
 
-.leftSquare {
+.left-square {
   position: absolute;
   top: calc(var(--length) * 0.3);
   left: calc(0px - var(--length) / 3);
   /* transform: rotateZ(60deg); */
-  width: var(--left-square-width);
-  height: var(--left-square-width);
+  width: var(--logo-left-square-width);
+  height: var(--logo-left-square-width);
   z-index: 100;
   animation: transformLeft 4s infinite linear;
   /* 6.3 */
 }
 
-.rightSquare {
+.right-square {
   position: absolute;
   top: calc(var(--length) * calc(1 / 15));
   left: calc(var(--length) * calc(11 / 15));
   transform: rotateZ(60deg);
-  width: var(--right-square-width);
-  height: var(--right-square-width);
+  width: var(--logo-right-square-width);
+  height: var(--logo-right-square-width);
   z-index: 50;
   animation: transformLeft 4s infinite linear;
   /* 4.3 */
@@ -64,11 +62,11 @@ body {
 
 .core {
   position: relative;
-  top: calc(var(--core-width) - var(--border-width) / 2);
-  width: var(--core-width);
-  height: var(--core-width);
+  top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);
+  width: var(--logo-core-width);
+  height: var(--logo-core-width);
   margin: auto;
-  border: var(--border-width) solid black;
+  border: var(--logo-border-width) solid black;
   /* animation: rotateRight 9s infinite linear; */
   /* 8.53 */
 }
