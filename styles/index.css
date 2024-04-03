@@ -1,12 +1,3 @@
-:root {
-  --length: 240px;
-  --logo-border-width: calc(var(--length) * 0.04);
-  --logo-border-radius: calc(var(--length) * calc(2 / 75));
-  --logo-left-square-width: calc(var(--length) * calc(2 / 3));
-  --logo-right-square-width: calc(var(--length) / 2);
-  --logo-core-width: calc(var(--length) / 3);
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -16,84 +7,9 @@
 body {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
-}
-
-.square {
-  background-color: white;
-  border: var(--logo-border-width) solid purple;
-  border-radius: var(--logo-border-radius);
-}
-
-.outline {
-  position: relative;
-  /* margin-left: 200px; */
-  width: var(--length);
-  height: var(--length);
-  z-index: 200;
   overflow: hidden;
-}
-
-.left-square {
-  position: absolute;
-  top: calc(var(--length) * 0.3);
-  left: calc(0px - var(--length) / 3);
-  /* transform: rotateZ(60deg); */
-  width: var(--logo-left-square-width);
-  height: var(--logo-left-square-width);
-  z-index: 100;
-  animation: transformLeft 4s infinite linear;
-  /* 6.3 */
-}
-
-.right-square {
-  position: absolute;
-  top: calc(var(--length) * calc(1 / 15));
-  left: calc(var(--length) * calc(11 / 15));
-  transform: rotateZ(60deg);
-  width: var(--logo-right-square-width);
-  height: var(--logo-right-square-width);
-  z-index: 50;
-  animation: transformLeft 4s infinite linear;
-  /* 4.3 */
-}
-
-.core {
-  position: relative;
-  top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);
-  width: var(--logo-core-width);
-  height: var(--logo-core-width);
-  margin: auto;
-  border: var(--logo-border-width) solid black;
-  /* animation: rotateRight 9s infinite linear; */
-  /* 8.53 */
-}
-
-@keyframes transformLeft {
-  from {
-    transform: translateX(-440px) rotateZ(60deg);
-  }
-  to {
-    transform: translateX(520px) rotateZ(-300deg);
-  }
-}
-
-@keyframes rotateLeft {
-  from {
-    transform: rotateZ(60deg);
-  }
-  to {
-    transform: rotateZ(-300deg);
-  }
-}
-
-@keyframes rotateRight {
-  from {
-    transform: rotateZ(60deg);
-  }
-  to {
-    transform: rotateZ(420deg);
-  }
 }
