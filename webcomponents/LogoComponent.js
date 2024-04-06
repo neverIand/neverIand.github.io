@@ -33,6 +33,7 @@ class LogoComponent extends HTMLElement {
 
   updateStyles() {
     const size = this.getAttribute("size") || "240"; // Default size
+    const isAnimated = this.getAttribute("animate") || "true";
     const length = parseInt(size);
     const borderWidth = length * 0.04;
     const borderRadius = length * (2 / 75);
@@ -71,7 +72,12 @@ class LogoComponent extends HTMLElement {
           width: var(--logo-left-square-width);
           height: var(--logo-left-square-width);
           z-index: 100;
-          animation: transformLeft 4s infinite linear;
+          ${isAnimated === "true" ? "" : "transform: rotateZ(60deg);"}
+          animation: ${
+            isAnimated === "true"
+              ? "transformLeft 4s infinite linear"
+              : "inherit"
+          };
         }
   
         .right-square {
@@ -82,7 +88,9 @@ class LogoComponent extends HTMLElement {
           width: var(--logo-right-square-width);
           height: var(--logo-right-square-width);
           z-index: 50;
-          animation: transformLeft 4s infinite linear;
+          animation: ${
+            isAnimated === "true" ? "transformLeft 4s infinite linear" : "none"
+          };
         }
   
         .core {
