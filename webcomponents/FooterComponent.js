@@ -16,8 +16,6 @@ class CustomFooter extends HTMLElement {
         const styles = document.createElement("style");
         styles.textContent = `
 :host {
-position: absolute;
-bottom: 0;
 width: 100%;
 font-family: var(--font-main, sans-serif);
 border: 1px solid;

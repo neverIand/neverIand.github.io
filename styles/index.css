@@ -1,15 +1,22 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --main-font: "Lucida Bright";
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--main-font);
 }
 
 body {
-  position: relative;
-  display: flex;
   flex-wrap: wrap;
-  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+}
+
+/* TODO: replace with a custom header */
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
