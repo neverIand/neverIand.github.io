@@ -2,9 +2,8 @@ class LogoComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({
-            mode: "open"
+            mode: "open",
         });
-        this.render();
     }
 
     static get observedAttributes() {
@@ -17,22 +16,29 @@ class LogoComponent extends HTMLElement {
         }
     }
 
+    connectedCallback() {
+        this.render();
+    }
+
     render() {
         const style = document.createElement("style");
         this.shadowRoot.appendChild(style);
 
-        const wrapper = document.createElement("div");
-        wrapper.setAttribute("class", "square outline");
-        wrapper.innerHTML = /*html*/ `
-<div class="square left-square"></div>
-<div class="square right-square"></div>
-<div class="square core"></div>
+        const template = document.createElement("template");
+        // template.setAttribute("class", "square outline");
+        template.innerHTML = /*html*/ `
+<div class="square outline">
+    <div class="square left-square">
+    </div>
+    <div class="square right-square"></div>
+    <div class="square core"></div>
+</div>
 `;
-        this.shadowRoot.appendChild(wrapper);
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.updateStyles();
     }
 
-    updateStyles() {
+    updateStyles( /* TODO: move parms here*/ ) {
         const size = this.getAttribute("size") || "240"; // Default size
         const isAnimated = this.getAttribute("animate") || "true";
         const length = parseInt(size);
@@ -75,9 +81,7 @@ height: var(--logo-left-square-width);
 z-index: 100;
 ${isAnimated === "true" ? "" : "transform: rotateZ(60deg);"}
 animation: ${
-isAnimated === "true"
-? "transformLeft 4s infinite linear"
-: "inherit"
+isAnimated === "true" ? "transformLeft 4s infinite linear" : "inherit"
 };
 }
 

@@ -1,8 +1,9 @@
+// TODO: extend vanilla footer
 class CustomFooter extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({
-            mode: "open"
+            mode: "open",
         });
         this.loadStyles();
     }
@@ -13,31 +14,13 @@ class CustomFooter extends HTMLElement {
     }
 
     loadStyles() {
-        const styles = document.createElement("style");
-        styles.textContent = `
-:host {
-width: 100%;
-font-family: var(--font-main, sans-serif);
-border: 1px solid;
-}
-
-.footer {
-
-}
-
-ul {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 10px;
-margin: 0;
-padding: 10px;
-list-style: none;
-}
-`;
+        const styles = document.createElement("link");
+        styles.setAttribute("rel", "stylesheet");
+        styles.setAttribute("href", "../../webcomponents/FooterComponent/FooterComponent.css");
         this.shadowRoot.appendChild(styles);
     }
 
+    // TODO:add back slot
     render() {
         // Create and append the footer template
         const template = document.createElement("template");

@@ -1,0 +1,19 @@
+:host {
+  width: 100%;
+  font-family: var(--font-main, sans-serif);
+  border: 1px solid;
+}
+
+.footer {
+
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+}
