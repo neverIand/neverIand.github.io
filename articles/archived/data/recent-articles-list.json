@@ -8,34 +8,43 @@
         "article_id": 0,
         "article_name": "Hello World - 关于我和我的博客",
         "url": "../index.php",
+        "new_url": "./articles/archived/article-000-hello-world.html",
         "date": "2021-8-19"
       },
       {
         "article_id": 1,
         "article_name": "一个按钮",
         "url": "../serious-articles/article-001-a-button.php",
+        "new_url": "./articles/archived/article-001-a-button.html",
         "date": "2021-8-22"
       },
       {
         "article_id": 2,
         "article_name": "一些更新",
         "url": "../serious-articles/article-002-some-updates.php",
+        "new_url": "./articles/archived/article-002-some-updates.html",
         "date": "2021-9-3"
-      },{
+      },
+      {
         "article_id": 3,
         "article_name": "滚动时逐行高亮文字",
         "url": "../serious-articles/article-003-text-highlight-when-scrolling.php",
+        "new_url": "./articles/archived/article-003-text-highlight-when-scrolling.html",
         "date": "2021-9-26"
-      },{
+      },
+      {
         "article_id": 4,
         "article_name": "我的第一个node程序",
         "url": "../serious-articles/article-004-my-first-nodejs-program.php",
+        "new_url": "./articles/archived/article-004-my-first-nodejs-program.html",
         "date": "2021-12-13"
-      },{
+      },
+      {
         "article_id": 5,
         "article_name": "文件夹路径",
         "url": "../serious-articles/article-005-folder-name-and-path.php",
-        "date": "2021-2-5"
+        "new_url": "./articles/archived/article-005-folder-name-and-path.html",
+        "date": "2022-2-5"
       }
     ]
   }

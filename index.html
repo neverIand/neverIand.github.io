@@ -15,10 +15,30 @@
       <berry-logo animate="false"></berry-logo> <berry-logo></berry-logo>
     </header>
     <main>
-      <h1>WIP</h1>
-      <a href="./articles/archived/others-001-rewind-recursed-rephrased.html"
-        >test</a
-      >
+      <section style="text-align: center">
+        <h1>WIP</h1>
+        <!-- TODO: list new articles -->
+      </section>
+
+      <!-- list of archived articles, TODO: replace with component -->
+      <aside class="sidebar">
+        <h2>Archived Articles</h2>
+        <div id="archive-list">
+          <div class="archive-category">
+            <h3>Coding</h3>
+            <!-- List of archived articles -->
+            <ul id="archived-list-coding">
+              <!--  -->
+            </ul>
+          </div>
+          <div class="archive-category">
+            <h3>Others</h3>
+            <ul id="archived-list-others">
+              <!--  -->
+            </ul>
+          </div>
+        </div>
+      </aside>
     </main>
     <berry-footer>
       <!-- TODO: icons -->
@@ -32,5 +52,6 @@
       type="module"
       src="./webcomponents/FooterComponent/FooterComponent.js"
     ></script>
+    <script src="./scripts/index.js"></script>
   </body>
 </html>

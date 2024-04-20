@@ -17,7 +17,27 @@ body {
 /* TODO: replace with a custom header */
 header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
 
+/* Sidebar - WIP */
+.sidebar {
+  background-color: #f4f4f4;
+  padding: 20px;
+  line-height: 160%;
+}
+#archive-list {
+  margin-top: 20px;
+}
+.archive-category > ul {
+  list-style: none;
+  border: 1px solid;
+}
+
+@media (max-width: 992px) {
+  .article-list {
+    grid-template-columns: 1fr;
+  }
+}
