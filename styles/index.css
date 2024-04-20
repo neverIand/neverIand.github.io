@@ -33,7 +33,7 @@ header {
 }
 .archive-category > ul {
   list-style: none;
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 @media (max-width: 992px) {

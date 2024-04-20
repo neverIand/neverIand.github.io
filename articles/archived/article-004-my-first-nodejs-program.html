@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+  </head>
+<body>
+    <header>
+        <a href="/index.html">
+          <h1>Ricky's Blog</h1>
+        </a>
+        <div id="darkmode-indicator">
+          <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+          <label for="toggle">
+            <input type="checkbox" id="toggle" />
+            <span id="theme-toggle"></span>
+          </label>
+        </div>
+      </header>
+  
+      <div id="top-anchor" style="visibility: none"></div>
+      <span id="scrollToTop">
+        <!-- yes im too lazy to fix the icon -->
+        <div class="fas fa-chevron-up">^</div>
+      </span>
+
+      <main>
+      
+        <div class="main-container">
+          <article>
+            <h1>我的第一个node.js程序</h1>
+            <h2>这个Hello World比我想得要复杂一点</h2>
+      
+            <section>
+              <p>
+                这段时间一直在思考这个博客以后的技术栈应该是什么样的，然后同时也还在学很多东西，node.js算是其中之一。这玩意我只能算勉强入了个门，现在还处于四处找教程的阶段。只是正好前段时间计算机网络的第二个作业是写一个简单的四则运算api，我以我极其有限的知识发现尽管我对于node的了解极其有限，但写这个好像一点都不难，所以就用了node。
+              </p>
+              <p>下面是它的简单文档，以及它的<a href="https://github.com/neverIand/http-arithmetic" target="_blank"
+                  title="虽然我知道没人会看的">Github页面在这里</a>。</p>
+            </section>
+            <section>
+      
+              <!-- inner section styles -->
+      
+      
+              <!-- copied from index.html -->
+              <div id="readme">
+      
+                <style>
+                  pre code {
+                    background-color: rgba(0, 0, 0, 0);
+                  }
+      
+                  table {
+                    display:block;
+                    position: relative;
+                    width: 100%;
+                    margin: 20px 0;
+                    border-collapse: collapse;
+                  }
+      
+                  th,
+                  td {
+                    padding: 3px;
+                    line-height: 1.5em;
+                    border-bottom: 1px solid black;
+                  }
+      
+                  #readme {
+                    position: relative;
+                    margin-top: 20px;
+                  }
+                </style>
+      
+                <h1>How to get started</h1>
+      
+                <ol>
+                  <li>
+                    If you want to run this project locally, please ensure that <a target="_blank"
+                      href="https://nodejs.org/">Node.js</a> is installed in your computer and follow the instruction below.
+                    Otherwise you can just skip to <a href="#request-format"> Request Format</a>.
+      
+                  </li>
+                  <li>
+                    Clone the repository:
+                    <code>git clone https://github.com/neverIand/http-arithmetic.git</code>
+                    and then <code>cd http-arithmetic</code>
+                  </li>
+                  <li>run <code>npm install</code> under the project directory</li>
+                  <li>run <code>npm start</code></li>
+                  <li>The application is now running on port 3000.</li>
+                </ol>
+      
+                <h1 id="request-format">Request format</h1>
+      
+                <h2>Base URL</h2>
+      
+                <h3>Local: </h3>
+                <p>
+                <ul>
+                  <li><code>http://localhost:3000</code></li>
+                </ul>
+                </p>
+                <h3>Remote:</h3>
+                <p>
+                <ul>
+                  <li><code>http://tangyizhe.com:3000</code></li>
+                  <!--  (doesn't work with browser) -->
+                </ul>
+                </p>
+      
+                <h2>Endpoints for GET request</h2>
+      
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Endpoints <br>(not case sensitive)</th>
+                      <th>Description</th>
+                      <th>Compulsory parameters</th>
+                      <th>URL examples</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>/add</td>
+                      <td>Returns the sum of two numbers</td>
+                      <td rowspan="4"><code>number1</code>, <code>number2</code></td>
+                      <td>http://localhost:3000/add/1/2</td>
+                    </tr>
+                    <tr>
+                      <td>/subtract</td>
+                      <td>Returns the difference between two numbers</td>
+                      <td>http://localhost:3000/subtract/5/3</td>
+                    </tr>
+                    <tr>
+                      <td>/multiply</td>
+                      <td>Returns the product of two numbers</td>
+                      <td>http://localhost:3000/multiply/6/7</td>
+                    </tr>
+                    <tr>
+                      <td>/divide</td>
+                      <td>
+                        Returns the quotient of two numbers <br />(number1 / number2)
+                      </td>
+                      <td>http://localhost:3000/divide/16/4</td>
+                    </tr>
+                  </tbody>
+                </table>
+      
+                <h2>Parameters for POST request</h2>
+      
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Parameters<br>(not case sensitive)</th>
+                      <th>Values (not case sensitive)</th>
+                      <th>Examples</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>operation</td>
+                      <td>add, subtract, multiply, divide</td>
+                      <td rowspan="2">{'operation': 'add', 'arguments': [1, 2]}</td>
+                    </tr>
+                    <tr>
+                      <td>arguments</td>
+                      <td><code>[number1, number2]</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+      
+                <p><strong>Please note that only the first two numerical values in arguments array will be involved in the
+                    calculation. Arguments like <code>"1.14"</code> and <code>true</code> (boolean value) will not be counted
+                    as number (This statement sounds redundant but in javascript boolean values could also be treated as
+                    number). If there is less than two numerical values in the array, it will raise an error.</strong>
+                </p>
+      
+                <p style="color: red;"><strong>
+                    Also, if there is any duplicate parameters in request body, the latter param will overwrite the previous
+                    ones. E.g. if the request body looks like:
+                  </strong>
+                </p>
+      
+                <div class="code-section">
+                  {
+                  "arguments": [1,2],
+                  "operation": "add",
+                  "operation": "divide"
+                  }
+                </div>
+      
+                <p>
+                  <strong>Then the effective parameter for operation would be "divide".</strong>
+                </p>
+      
+                <h2>Errors</h2>
+      
+                <p>
+                  By deault, HTTP status code won't be displayed, which means status code
+                  for all normal response is 200. Otherwise, for any error, you will get
+                  the response with status code and error message in json format. Example:
+                </p>
+      
+                <p>
+                  <!-- <pre> -->
+                <div class="code-section">
+                  {
+                  "status": 500
+                  "message": "Internal Server Error: Zero division"
+                  }
+                </div>
+                <!-- </pre> -->
+                </p>
+      
+                <p>
+                  <!-- <pre> -->
+                <div class="code-section">
+                  {
+                  "status": 400,
+                  "message": "Bad Request: Invalid arguments, arguments should be a numerical value"
+                  }
+                </div>
+                <!-- </pre> -->
+                </p>
+              </div>
+            </section>
+      
+            <section>
+              <p>
+                因为时间比较紧张外加我对node基本上一无所知，所以部署的时候我没弄https。说实话，写这个的时候最麻烦的地方其实是思考各种各样的错误情况，代码里一大半都是异常处理（毕竟只有四则运算的话写起来多快啊）。最后的结果就是上面这样，大小写都可，然后对于POST请求只要有必需的参数即可，多出来的东西都会忽略掉。
+              </p>
+              <p>总体来说还是蛮粗糙的，但除了部署那块比较仓促以外应该都符合作业要求了，希望分数没事。</p>
+            </section>
+      
+            <section id="article-date">
+      
+            </section>
+          </article>
+        </div>
+      </main>
+</body>
+</html>

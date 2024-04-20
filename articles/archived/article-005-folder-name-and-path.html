@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a href="/index.html">
+        <h1>Ricky's Blog</h1>
+      </a>
+      <div id="darkmode-indicator">
+        <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+        <label for="toggle">
+          <input type="checkbox" id="toggle" />
+          <span id="theme-toggle"></span>
+        </label>
+      </div>
+    </header>
+
+    <div id="top-anchor" style="visibility: none"></div>
+    <span id="scrollToTop">
+      <!-- yes im too lazy to fix the icon -->
+      <div class="fas fa-chevron-up">^</div>
+    </span>
+
+    <main>
+      <div class="main-container">
+        <article>
+          <h1>文件夹路径</h1>
+          <h2>低级错误，但我居然没有搜到</h2>
+          <section>
+            <p>在不同的情况下遇到了两次这个问题，所以记录下来。</p>
+          </section>
+          <hr />
+          <br />
+          <section>
+            <p>
+              Vue3使用脚手架初始化项目后运行<code>npm run serve</code>报错<code
+                >Cannot find module
+                '...\node_modules\@vue\cli-service\bin\vue-cli-service.js'</code
+              >。试了各种方法都没有用。最后再次检查控制台输出发现vue
+              cli输出中的项目文件夹名少了一个"^"符号，实际的文件夹名里面是有这个符号的。<em
+                >教训：不要在项目文件夹名里使用"^"这个符号。</em
+              >
+            </p>
+          </section>
+          <br />
+          <hr />
+          <br />
+          <section>
+            <p>
+              前两天装完flutter后使用Android
+              Studio初始化flutter项目失败，但是运行<code>flutter doctor</code
+              >指令后却没有发现任何问题。与此同时，在另一个目录使用<code
+                >flutter create</code
+              >创建的项目却一切正常。同样是在检查控制台输出后，发现项目的路径中包含的"&"被替换成了它的HTML转义字符，于是猜测可能是这个路径名的问题。在另一个位置创建项目后这个猜想被证实，原因就是它。（这门课叫做Mobile
+              & Ubiquitous Computing，我文件夹名是直接复制的）<em
+                >教训：不要在项目文件夹名里使用"&"这个符号。
+              </em>
+            </p>
+          </section>
+
+          <section id="article-date"></section>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a href="/index.html">
+        <h1>Ricky's Blog</h1>
+      </a>
+      <div id="darkmode-indicator">
+        <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+        <label for="toggle">
+          <input type="checkbox" id="toggle" />
+          <span id="theme-toggle"></span>
+        </label>
+      </div>
+    </header>
+
+    <div id="top-anchor" style="visibility: none"></div>
+    <span id="scrollToTop">
+      <!-- yes im too lazy to fix the icon -->
+      <div class="fas fa-chevron-up">^</div>
+    </span>
+
+    <main>
+      <div class="main-container">
+        <article>
+          <h1>滚动时逐行高亮文字</h1>
+          <h2>以及我让我的网站图标动了起来</h2>
+
+          <section>
+            <h3 class="chapter-header">
+              一、仿iPhone&nbsp;13&nbsp;Pro官网页面文字滚动高亮特效
+            </h3>
+            <p>
+              苹果硬件新品发布之后照例去看了看产品页面今年有没有什么没见过的特效，看到<a
+                class="inline-links"
+                href="https://www.apple.com.cn/iphone-13-pro/"
+                >iPhone&nbsp;13&nbsp;Pro</a
+              >介绍页面的时候觉得那个页面滚动时文字逐行高亮的效果原理貌似不是太复杂，自己花点时间应该也能整一个，所以就整了一个。
+            </p>
+          </section>
+
+          <section>
+            <p>
+              首先是弄清大致的原理。看到效果的时候我觉得他高亮的部分应该是个行内元素，每当页面滚动到一个范围时对应范围内的行内元素样式就会改变。当滚动出这个范围后样式又变回默认样式。因此，第一步是要知道用户当前浏览（滚动）了这个区域的百分之多少。自然的，这里肯定需要用到<code>scrollTop</code>这个属性来获取文档目前滚动的距离。此外，需要这个特效的这段文字显然不位于页面的顶部，所以还需要用这段文字所属元素的<code>offsetTop</code>属性来得到这段文字所在元素距离页面顶部的距离。最后，文字所在元素的高度用<code>clientHeight</code>来得到，这样就能计算出当前浏览器窗口顶部位于这段文字的具体位置（百分比）。式子为：已浏览的百分比=(已滚动的距离-元素距文档顶部的距离)/元素自身高度。如下图所示：
+            </p>
+
+            <div
+              id="demo-page"
+              style="
+                position: relative;
+                width: 100%;
+                height: 600px;
+                margin: 20px auto;
+                background-color: red;
+                text-align: center;
+              "
+            >
+              文档
+              <br />距下方元素的距离为offsetTop
+              <div
+                id="demo-element"
+                style="
+                  width: 80%;
+                  height: 400px;
+                  margin: 30px auto;
+                  background-color: pink;
+                  text-align: center;
+                  color: black;
+                "
+              >
+                文字所处的元素
+                <br />高度为clientHeight
+              </div>
+
+              <div
+                style="
+                  position: absolute;
+                  width: 100%;
+                  border-top: 1px solid black;
+                  top: 250px;
+                  color: black;
+                "
+              >
+                用户当前浏览器窗口可视区域的顶端
+                <br />离文档顶端的距离为scrollTop
+              </div>
+            </div>
+
+            <p>
+              当然了，用户眼睛实际在看的位置不可能是浏览器窗口顶端。理想的情况是上图的黑线大致位于浏览器窗口的中间。这一点在之后具体写代码时可以在是否高亮的判断条件那里做点手脚，稍后会提到。
+            </p>
+          </section>
+
+          <section>
+            <p>
+              接下来就是具体实现了，基本上就按照上面说的思路写出来就行。下面是核心逻辑：
+            </p>
+            <!-- <pre> -->
+            <div class="code-section">
+              // 文字所在的元素（容器） 
+              const container = document.querySelector('#main-content') // 需要高亮的（多个）文字
+
+              const rows = document.querySelectorAll('.target-line') //
+              每段文字占全部文字的比例 
+              // 如果高亮文字的篇幅很不均匀就不太能这么写 
+              // 这是比较理想的情况，在这个例子中 
+              // 需要高亮的一段文字在篇幅上占所有文字（五段）的五分之
+              const paragraphNum = 1 / rows.length 
+              const html = document.documentElement 
+
+              // 用于调整高亮范围 
+              const offset = 0.05
+              // 初始文字透明度，需要和css中的一致 
+              const opacity = '0.3'
+              document.addEventListener('scroll', (e) => { 
+              // 已经滚动的百分比
+              let scrolled = (html.scrollTop - container.offsetTop) /
+              container.clientHeight 
+              
+              for (let [index, item] of rows.entries()) {
+              // if scrolled percentage is larger than index and smaller than index+1 
+              // it is in that range and should be hightlighted 
+              // e.g. if there are 5 targets // scrolled || highlightged element 
+              // 0-0.2: rows[0] 
+              // 0.2-0.4: rows[1] 
+              // 0.4-0.6: rows[2] 
+              // 0.6-0.8: rows[3] // 0.8-1: rows[4] 
+              // 通过微调if后的offset来微调效果出现的时机 
+              // 实际需要高亮的部分要更靠下 //
+              所以if判断里面的两个边界可以都调的大一点(该情况两个offset前的符号都是+)
+              // 如果觉得高亮的范围太小，可以通过更改offset的符号和大小(包括正负)来调整范围
+              // 下面这里高亮的范围就被我调得更大了 
+              if ( // 注意这里offset前符号
+              scrolled > (index - 1) * paragraphNum - offset && scrolled < index * paragraphNum + offset ) { 
+                item.style.opacity = '1' 
+                } else { 
+                // 实际上对于文字来说改color也行 
+                // 但是opacity能让人透过文字看见后面的背景图片 
+                // 以及在CSS中调整高亮区域的transition属性还能加上动画效果
+              item.style.opacity = opacity 
+                } 
+              }
+            </div>
+            <!-- </pre> -->
+
+            <p>实际效果如下：</p>
+
+            <style>
+              #main-content {
+                position: relative;
+                width: 100%;
+                margin: auto;
+                padding: 10px;
+              }
+
+              .target-line {
+                font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+                font-size: 20px !important;
+                color: var(--article-paragraph) !important;
+                opacity: 0.3;
+                line-height: 2em;
+                font-weight: bold;
+              }
+            </style>
+
+            <div id="main-content">
+              <span class="target-line"
+                >Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam
+                amet, sit aut in ad magni consequuntur repudiandae, animi
+                eveniet aliquid voluptatum officiis, totam ex cupiditate quod
+                soluta quibusdam illum. Dolor!
+              </span>
+              <span class="target-line"
+                >Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Incidunt dolorum pariatur velit reprehenderit. Dolore quasi
+                tempore doloribus perferendis possimus alias, explicabo ad
+                praesentium error amet beatae similique quis molestias
+                consequuntur.
+              </span>
+              <span class="target-line">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Tempora hic accusamus voluptatibus ea soluta ipsam, officiis
+                delectus minima nulla autem, expedita id eligendi sed adipisci!
+                Maxime accusamus quasi iusto cum?
+              </span>
+              <span class="target-line">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum
+                odit necessitatibus autem animi, quae ut repellat dolorum
+                doloribus impedit, quidem officiis perferendis. Culpa quas
+                quidem autem quos dolor, iste odit!
+              </span>
+              <span class="target-line">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Veritatis labore earum quo suscipit at id similique eum
+                cupiditate dolores placeat et nostrum incidunt, deleniti amet
+                sunt repudiandae, aliquam pariatur. Natus.
+              </span>
+            </div>
+
+            <p>
+              苹果官网的高亮部分只有一行文字，这里的示例文字要长很多（而且我为了可读性调大了高亮范围），所以效果可能稍有差别，不过基本上就是这样。这个效果还可以套用到表格里，使表格在滚动时一行行或者几行几行的亮起来，还蛮有意思的，让我联想到了游戏里面的LOD
+              (Level of Detail)
+            </p>
+
+            <p>
+              这个效果的原理其实和我不久前实装的图片懒加载比较类似，不过那个我偷了懒，参考了一部分网上的的代码。这一次通过自己写这个高亮效果感觉补了下课。
+            </p>
+          </section>
+
+          <section>
+            <h3 class="chapter-header">二、让网站的图标动起来</h3>
+
+            <p>
+              如果一切正常的话各位应该能看到我博客标签页上的图标，这个图标的来历是这样的：我的朋友229要我给他的游戏作业里的某个东西设计一个有高科技感的图标，这是我给他的两个设计中的废案。没有采用的理由是游戏是像素风的（他之前提要求的时候根本没有和我说），没法很好地实现这个图案。虽然这个设计没被采用，但是我（以及229）都还蛮喜欢它的，所以我就一直想着什么时候能在哪里把它用上。
+            </p>
+
+            <p>
+              该说是终于忍不住“创作的冲动”了吗，这两天我终于用html加css的方式让他动了起来，算是把我在画它的时候脑子里的画面还原出来了。我原来的想法就是这个图标是一个循环动画中间的某一帧。
+            </p>
+
+            <div class="responsive-img" description="原图">
+              <img data-src="./icons/square.jpg" alt="Logo" title="Logo" />
+              <div class="zoomed-img" style="display: none">
+                <img data-src="./icons/square.jpg" />
+              </div>
+            </div>
+
+            <style>
+              :root {
+                --length: 300px;
+                --border-width: calc(var(--length) * 0.04);
+                --border-radius: calc(var(--length) * calc(2 / 75));
+                --left-square-width: calc(var(--length) * calc(2 / 3));
+                --right-square-width: calc(var(--length) / 2);
+                --core-width: calc(var(--length) / 3);
+              }
+
+              #square-container {
+                width: 100%;
+                height: 500px;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background-color: white;
+              }
+
+              .square {
+                background-color: white;
+                border: var(--border-width) solid purple;
+                border-radius: var(--border-radius);
+              }
+
+              #outline {
+                position: relative;
+                width: var(--length);
+                height: var(--length);
+                /* behind the scroll to top button */
+                z-index: 50;
+                overflow: hidden;
+              }
+
+              #left-square {
+                position: absolute;
+                top: calc(var(--length) * 0.3);
+                left: calc(0px - var(--length) / 3);
+                /* transform: rotateZ(60deg); */
+                width: var(--left-square-width);
+                height: var(--left-square-width);
+                z-index: 20;
+                animation: transformLeft 6.4s infinite linear;
+              }
+
+              #right-square {
+                position: absolute;
+                top: calc(var(--length) * calc(1 / 15));
+                left: calc(var(--length) * calc(11 / 15));
+                transform: rotateZ(60deg);
+                width: var(--right-square-width);
+                height: var(--right-square-width);
+                z-index: 10;
+                animation: transformLeft 4.3s infinite linear;
+              }
+
+              #core {
+                position: relative;
+                top: var(--core-width);
+                width: var(--core-width);
+                height: var(--core-width);
+                margin: auto;
+                border: var(--border-width) solid black;
+                animation: rotateRight 8.53s infinite linear;
+              }
+
+              @keyframes transformLeft {
+                from {
+                  transform: translateX(-450px) rotateZ(60deg);
+                }
+
+                to {
+                  transform: translateX(600px) rotateZ(-300deg);
+                }
+              }
+
+              @keyframes rotateLeft {
+                from {
+                  transform: rotateZ(60deg);
+                }
+
+                to {
+                  transform: rotateZ(-300deg);
+                }
+              }
+
+              @keyframes rotateRight {
+                from {
+                  transform: rotateZ(60deg);
+                }
+
+                to {
+                  transform: rotateZ(420deg);
+                }
+              }
+            </style>
+
+            <div id="square-container">
+              <div id="outline" class="square">
+                <div id="left-square" class="square"></div>
+                <div id="right-square" class="square"></div>
+                <div id="core" class="square"></div>
+              </div>
+            </div>
+
+            <p>总算舒服了。</p>
+          </section>
+
+          <section id="article-date"></section>
+        </article>
+      </div>
+    </main>
+
+    <script>
+      const container = document.querySelector("#main-content");
+      const rows = document.querySelectorAll(".target-line");
+
+      const paragraphNum = 1 / rows.length;
+      const HTML = document.documentElement;
+      const offset = -0.1;
+      const opacity = "0.3";
+
+      document.addEventListener("scroll", (e) => {
+        let scrolled =
+          (HTML.scrollTop - container.offsetTop) / container.clientHeight;
+
+        for (let [index, item] of rows.entries()) {
+          if (
+            scrolled > (index - 1) * paragraphNum + offset &&
+            scrolled < index * paragraphNum + offset
+          ) {
+            item.style.opacity = "1";
+          } else {
+            item.style.opacity = opacity;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

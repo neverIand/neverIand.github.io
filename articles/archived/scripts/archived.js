@@ -77,7 +77,7 @@
             return res.json();
           })
           .then(function (data) {
-            //console.log(data)
+            // console.log(data)
             data.response.articles.forEach(function (article) {
               if (article.article_name.trim() == document.querySelector("article h1").textContent.trim()) {
                 document.querySelector(
@@ -276,7 +276,6 @@
       return false;
     } else {
       //main folder
-      console.log("main");
       return false;
     }
   }

@@ -34,7 +34,7 @@
       },
       {
         "article_id": 4,
-        "article_name": "我的第一个node程序",
+        "article_name": "我的第一个node.js程序",
         "url": "../serious-articles/article-004-my-first-nodejs-program.php",
         "new_url": "./articles/archived/article-004-my-first-nodejs-program.html",
         "date": "2021-12-13"

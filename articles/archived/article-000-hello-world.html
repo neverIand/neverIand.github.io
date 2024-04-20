@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <a href="/index.html">
+        <h1>Ricky's Blog</h1>
+      </a>
+      <div id="darkmode-indicator">
+        <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+        <label for="toggle">
+          <input type="checkbox" id="toggle" />
+          <span id="theme-toggle"></span>
+        </label>
+      </div>
+    </header>
+
+    <div id="top-anchor" style="visibility: none"></div>
+    <span id="scrollToTop">
+      <!-- yes im too lazy to fix the icon -->
+      <div class="fas fa-chevron-up">^</div>
+    </span>
+
+    <main>
+      <div class="main-container">
+        <article>
+          <h1>Hello World - 关于我和我的博客</h1>
+          <h2>第一篇文章</h2>
+
+          <section>
+            <p>
+              虽然这个博客还没有做完且应该会一直保持没有做完的状态，但是在经过一番波折之后总算是勉强到了能在上面放文章的地步了。最开始的时候需要选择用什么来做这个博客，起初考虑过用vue，后来稍微学了点php觉得可以先弄的简单点，php感觉也可以。可是最后我却选择了现在这个办法：纯html，css和js，几乎不采用任何其他技术。
+            </p>
+
+            <p>
+              这个决定的主要原因在于对自己的不自信，虽说我会一些vue（毕竟毕设就是拿他做的），但是我总是觉得自己缺乏很多最基础的知识。这种不自信的由来倒是很确定，因为大三有门课叫人机交互，课程内容包括了一些及其<em>基础</em>的网页编写知识。现在回想起来，与其说是基础不如说是简陋，因为那个老师讲的东西差不多百度一下立马就有了，深度根本不够。在这种情况下，我几乎是全程靠着搜索引擎写完的那门课第一个作业（一个网页，之后我会考虑放上来，现在看他的代码简直惨不忍睹）。不过这个作业确实算是激发了我对这方面的兴趣，可以算是这个博客的原点了。
+            </p>
+          </section>
+
+          <section>
+            <p>
+              扯得有点远了，我选择这种笨办法做博客除了上面的理由和懒惰之外其实还和我的一些个人感悟有点关系。我没记错的话，html发明之初的目的是共享文档。换句话说，类似于LATEX，<strong>html的初衷是用来表现文档而不是用来实现用户界面的。</strong>个人认为，这就是现在满大街都是别人重复造出来的轮子的根本原因。所以，我决定回归原点，把我的博客看作是文章的归档而不是一种在线应用。当然，这也是有代价的。比如就目前来说所有的页面都要我自己手写（这是我当初考虑php的原因，但实际上现在想来就这个方面而言php，Web
+              Components等在思路上还有些相似之处？这可能得单独再写篇文章了。）一般的思路是，我可以实现一个发布文章的功能，将文章存储在数据库中，这样的话显示的文章直接从数据库中回去就可以，不需要每个页面都自己复制粘贴重复代码和手写了。但是这就产生了更多的问题：是不是只有我发布文章？这样的话是否需要登录功能？文章里有错别字的话是不是还得增加文章的增删改查？如果我希望别人评论，那是不是还要用户的增删改查和评论的增删改查？当然，假设我最后实现了所有这些功能，这个网站依然能算作是一个博客，但我个人认为这个博客已经论坛化了。就目前而言，我只准备把这个博客当作自己发文章（吐槽）和学习基础前端知识的地方。
+            </p>
+            <p>
+              最后是博客的一些介绍和之后会考虑实现的功能。Recent
+              Articles里面会放一些正经的文章（比如这篇），讨论一些技术相关的东西。Others里面放的就是些不那么正经的文章，包括但不限于打游戏的心得吐槽，晒猫，听歌（？）等等。文章多了之后应该会有个单独的目录页面来列出所有文章之类的，然后其他功能的话我还没完全想好，可能会弄个英文版页面（因为我在外面读研）。总之一如既往地边写边想吧。如果真的有其他人看这个博客，欢迎你！你可以通过页面下方的方式联系到我。
+            </p>
+            <p>先这样吧。</p>
+          </section>
+
+          <section id="article-date"></section>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
