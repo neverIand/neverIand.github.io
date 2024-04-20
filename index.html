@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
   <body>
-    <!-- TODO: replace with a custom header -->
+    <!-- TODO: replace with a custom header that uses a small animated logo -->
     <header>
       <berry-logo animate="false"></berry-logo> <berry-logo></berry-logo>
     </header>
@@ -20,9 +20,17 @@
         >test</a
       > -->
     </main>
-    <berry-footer></berry-footer>
+    <berry-footer>
+      <!-- TODO: icons -->
+      <a slot="github" href="https://github.com/neverIand">Github</a>
+      <a slot="email" href="mailto:rickytang2019@gmail.com">Email</a>
+      <a slot="youtube" href="https://www.youtube.com/@ratch3t673">Youtube</a>
+    </berry-footer>
     <!-- <footer is="berry-footer"></footer> -->
     <script type="module" src="./webcomponents/LogoComponent.js"></script>
-    <script type="module" src="./webcomponents/FooterComponent/FooterComponent.js"></script>
+    <script
+      type="module"
+      src="./webcomponents/FooterComponent/FooterComponent.js"
+    ></script>
   </body>
 </html>
