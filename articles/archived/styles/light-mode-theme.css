@@ -1,0 +1,42 @@
+/* color.adobe.com */
+
+/* Define light mode colors */
+:root {
+  --body: white;
+  --theme-inverse:black;
+  --links: rgb(61, 61, 61);
+  --links-hover: rgb(61, 61, 61);
+  --links-no-hover: rgb(148, 230, 255);
+  --color-grey: #E9E9EA;
+  --main: white;
+  --header: rgba(255, 255, 255, .7);
+  --header-title: rgb(29, 29, 29);
+  --header-border: rgb(119, 119, 119);
+  --header-shadow: rgb(170, 170, 170);
+  --darkmode-indicator-text:black;
+  --container-shadow: rgb(200, 200, 200);
+  --aside: white;
+  --sidebar-title: black;
+  --sidebar-title-background: rgb(221, 221, 221);
+  --sidebar-button: black;
+  --sidebar-button-hover: rgb(100, 100, 100);
+  --article-list-item-border:rgb(224, 224, 224);
+  --article-main-title: black;
+  --article-sub-title: rgb(116, 116, 116);
+  --article-background: bisque;
+  --article-paragraph: black;
+  --code-background:rgb(212, 212, 212);
+  --footer: black;
+  --contact: rgb(119, 119, 119);
+  --copyright: grey;
+  --certificate: rgb(151, 151, 151);
+  --common-button: rgb(184, 184, 184);
+  --common-button-hover: rgb(201, 201, 201);
+}
+
+footer {
+  border-top: 1px solid rgb(190, 190, 190);
+
+}
+
+/* @media (prefers-color-scheme: light) {} */

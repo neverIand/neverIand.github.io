@@ -1,128 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <!-- <link rel="stylesheet" href="../../styles/common.css"> -->
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>neverIand</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="apple-touch-icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="../../styles/common.css">
-</head>
+  <body>
+    <header>
+      <a href="/index.html">
+        <h1>Ricky's Blog</h1>
+      </a>
+      <div id="darkmode-indicator">
+        <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+        <label for="toggle">
+          <input type="checkbox" id="toggle" />
+          <span id="theme-toggle"></span>
+        </label>
+      </div>
+    </header>
 
-<body>
+    <div id="top-anchor" style="visibility: none"></div>
+    <span id="scrollToTop">
+      <div class="fas fa-chevron-up">^</div>
+    </span>
+    <!-- TODO: add custom header -->
 
+    <!-- TODO: add custom disclaimer component that explains why these pages are archived -->
 
+    <main>
+      <div class="main-container">
+        <article>
+          <h1>Rewind, Recursed, Rephrased</h1>
+          <h2>Who has seen the wind?</h2>
 
-  <main>
-
-    <div class="main-container">
-      <article>
-        <h1>Rewind, Rucursed, Rephrased</h1>
-        <h2>Who has seen the wind?</h2>
-  
-        <div class="netease-player">
-          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
-            src="//music.163.com/outchain/player?type=2&id=5042133&auto=0&height=66"></iframe>
-        </div>
-  
-        <section>
-          <p>
-            三款我非常喜欢的游戏，排名不分先后。之所以把这三个游戏放在一起，是因为我觉得他们在游戏设计，实现甚至是审美上都有一定的共通之处。我自己还给他们三个（其实是两个）起了个别称来概括他们的核心机制。
-          </p>
-  
-          <p>
-            请注意，本文可能包含剧透。
-          </p>
-        </section>
-  
-        <section>
-          <h3 class="chapter-header">Rewind - Braid</h3>
-  
-          <iframe src="https://store.steampowered.com/widget/26800/45624/" frameborder="0"
-            style="width: 100%; min-height: 190px">
-          </iframe>
-  
-          <p>
-            Braid一定要拿出来讲一讲，无论是它对于独立游戏分类的意义还是我自己的意义都是非同寻常的。当然这里只是随便写写自己的感想，不谈什么游戏发展史了。虽说Braid的游戏机制十分出彩，但其实最震撼我的是他的剧情。一开始我只是觉得游戏本身的概念很有意思，谜题设计的也很巧妙。每次卡关实在想不出解法，偷偷去看攻略的时候都会被解法惊讶到。而且有一些谜题的解法不仅巧妙，还十分具有观赏性。这种感觉一直持续到游戏的最后一关。一开始我并没有完全理解游戏的结局，所以去网上稍微搜索了一下。看到解读之后，我的心情久久不能平复：一来是因为剧情的深刻程度超出了我的预期，二来是因为将剧情和游戏机制结合的如此完美实在是令人震撼。这个游戏可以说是影响了我的审美和看待事物的方式。（这个游戏作者的另一个作品《见证者》也是如此，但我认为《见证者》的门槛有些高了。）
-          </p>
-  
-          <p>
-            顺便一提，这个游戏的音乐实在是太棒了。一开始我最喜欢的曲子是原声集里的《Lullaby
-            Set》，但是几年后我渐渐喜欢上了文章上面的这首《Maenam》，游戏的标题界面曲。大三和大四的时候我经常听着这首曲子写作业，复习考试。我觉得这首曲子给人一种“前方有谜题”的感觉，能让我静下来思考。（所以重制版什么时候才出？2021年差不多过去四分之三了...）
-          </p>
-  
-        </section>
-  
-        <section>
-          <h3 class="chapter-header">Recursed</h3>
-  
-          <iframe src="https://store.steampowered.com/widget/497780/" frameborder="0"
-            style="width: 100%; min-height: 190px;">
-          </iframe>
-          <p>
-            从某种意义上说，Recursed的游戏难度要低那么一些，因为我可以不看攻略完成游戏中大半的关卡。最初我是在机核的一篇文章里看到的这个游戏。当时我才没进大学多久，看到这游戏和计算机中的递归有关，想着自己好歹算是个计算机系的学生应该去玩一玩，所以就买了。一开始玩还是有那么点吃力的，不过一两年后再打开游戏回头看，发现自己对这个游戏有了一些不同的理解，而且也开始意识到这个游戏具体是如何和计算机相关的内容扯上联系的了。我觉得如果再过段时间打开游戏，我或许还会有新的感悟。这种体验让我觉得买下它很值。
-          </p>
-  
-          <p>
-            顺带一提，Recursed的音乐也非常棒。Recursed的美术风格也很有特点，但并不能说上出彩（我个人还是挺喜欢的），而原声集极大地弥补上了画面的（相对）简陋。我最喜欢的是《Woodlands》的两个版本和《Ascent》。BandCamp上面可以搜到原声集。
-          </p>
-  
-        </section>
-  
-        <section>
-          <h3 class="chapter-header">Rephrased - Baba is You</h3>
-  
-          <iframe src="https://store.steampowered.com/widget/736260/" frameborder="0"
-            style="width: 100%; min-height: 190px;">
-          </iframe>
-  
-          <p>
-            这个游戏的机制也是十分出彩，用我朋友229的话来说就是“太元（meta）了”。刚上手的时候我觉得这个游戏很简单，可能是三个游戏里最简单的，结果玩了一段时间后发现自己的脑子还是一如既往地不灵光。大概寒假的时候（？）看到了GDQ里有这个项目，被速通选手的操作和游戏的真结局震撼到了，只能引用一下某个steam用户的评论：Baba
-            is You, Baka is me。
-          </p>
-  
-          <p>
-            感觉这像是一种规律，那就是好的解谜游戏一定有优秀的配乐。Baba is
-            You也是如此，虽然他的原声集可能没有上面两个游戏那么出彩，但是里面有几首还是很洗脑的，尤其是主题曲。至于美术风格，我也很喜欢，Baba（还有Keke和It）十分可爱，所以这个游戏也可以拿去骗不怎么玩解密游戏的人（
-          </p>
-  
-        </section>
-  
-        <section>
-          <h3 class="chapter-header">总结</h3>
-  
-          <p>Braid的制作人员名单在他的暂停菜单里。当你进入那个菜单以后，名单并不会立马出现，而是先会出现这么一首小诗：</p>
-          <div class="responsive-img" description="Screenshot of the credit menu">
-            <img data-src="../images/who-has-seen-the-wind.png" alt="Screenshot of the credit menu"
-              title="Who has seen the wind? Neither you nor I: But when the trees bow down their heads, The wind is passing by. -Christina Rossetti">
-            <div class="zoomed-img" style="display:none;">
-              <img data-src="../images/who-has-seen-the-wind.png">
-            </div>
+          <div class="netease-player">
+            <iframe
+              frameborder="no"
+              border="0"
+              marginwidth="0"
+              marginheight="0"
+              width="330"
+              height="86"
+              src="//music.163.com/outchain/player?type=2&id=5042133&auto=0&height=66"
+            ></iframe>
           </div>
-  
-  
-          <p>
-            我个人觉得从游戏设计的角度来说这首小诗很好地概括了这三个游戏在设计思路上的相似性，那就是他们的对核心机制的深入探讨是潜移默化的。这么说也许并不是很准确，但我想表达的意思是他们在让玩家熟悉游戏的机制时，将游戏的教程放在了一个个关卡里面，让玩家自己体验这个学习和探索的过程。游戏的机制像是诗里提到的风，也许没人能直接看到，但是你能通过其他的手段（与游戏的互动，也就是学习的过程）感受到它。这种方法不仅加深了我对机制的理解，还让保证了游戏的沉浸感（或者说因为没有创作者的直接介入而导致的神秘感）。我觉得这也是这三个游戏能给我留下如此深刻印象的原因之一。
-          </p>
-  
-          <p>
-            另一个把它们放在一起的原因是他们是自洽的。对于我来说，是否自洽是判断一个作品（例如游戏，故事）是否足够优秀的标准之一。而这三款游戏在美术风格（审美），叙事，机制和音乐上至少有三项符合这个标准。也许他们的一部分特点（比如说画面）并不是所有人都能接受，但是我觉得这些特点放在游戏中一点都不显得突兀。GameSpot认为Baba
-            is You的一点是soundtrack is not inspiring，但我完全不这么觉得（而且说实话那整篇review感觉像是个没怎么玩过解密游戏的人写的，也就图一乐）。
-          </p>
-  
-          <p>总而言之，这就是Rewind, Recursed, Rephrased。</p>
-        </section>
-  
-        <section id="article-date">
-  
-        </section>
-      </article>
-    </div>
-  </main>
-  </main>
 
-  <berry-footer></berry-footer>
-  <script type="module" src="../../webcomponents/FooterComponent.js"></script>
-</body>
+          <section>
+            <p>
+              三款我非常喜欢的游戏，排名不分先后。之所以把这三个游戏放在一起，是因为我觉得他们在游戏设计，实现甚至是审美上都有一定的共通之处。我自己还给他们三个（其实是两个）起了个别称来概括他们的核心机制。
+            </p>
+
+            <p>请注意，本文可能包含剧透。</p>
+          </section>
+
+          <section>
+            <h3 class="chapter-header">Rewind - Braid</h3>
+
+            <iframe
+              src="https://store.steampowered.com/widget/26800/45624/"
+              frameborder="0"
+              style="width: 100%; min-height: 190px"
+            >
+            </iframe>
+
+            <p>
+              Braid一定要拿出来讲一讲，无论是它对于独立游戏分类的意义还是我自己的意义都是非同寻常的。当然这里只是随便写写自己的感想，不谈什么游戏发展史了。虽说Braid的游戏机制十分出彩，但其实最震撼我的是他的剧情。一开始我只是觉得游戏本身的概念很有意思，谜题设计的也很巧妙。每次卡关实在想不出解法，偷偷去看攻略的时候都会被解法惊讶到。而且有一些谜题的解法不仅巧妙，还十分具有观赏性。这种感觉一直持续到游戏的最后一关。一开始我并没有完全理解游戏的结局，所以去网上稍微搜索了一下。看到解读之后，我的心情久久不能平复：一来是因为剧情的深刻程度超出了我的预期，二来是因为将剧情和游戏机制结合的如此完美实在是令人震撼。这个游戏可以说是影响了我的审美和看待事物的方式。（这个游戏作者的另一个作品《见证者》也是如此，但我认为《见证者》的门槛有些高了。）
+            </p>
+
+            <p>
+              顺便一提，这个游戏的音乐实在是太棒了。一开始我最喜欢的曲子是原声集里的《Lullaby
+              Set》，但是几年后我渐渐喜欢上了文章上面的这首《Maenam》，游戏的标题界面曲。大三和大四的时候我经常听着这首曲子写作业，复习考试。我觉得这首曲子给人一种“前方有谜题”的感觉，能让我静下来思考。（所以重制版什么时候才出？2021年差不多过去四分之三了...）
+            </p>
+          </section>
+
+          <section>
+            <h3 class="chapter-header">Recursed</h3>
+
+            <iframe
+              src="https://store.steampowered.com/widget/497780/"
+              frameborder="0"
+              style="width: 100%; min-height: 190px"
+            >
+            </iframe>
+            <p>
+              从某种意义上说，Recursed的游戏难度要低那么一些，因为我可以不看攻略完成游戏中大半的关卡。最初我是在机核的一篇文章里看到的这个游戏。当时我才没进大学多久，看到这游戏和计算机中的递归有关，想着自己好歹算是个计算机系的学生应该去玩一玩，所以就买了。一开始玩还是有那么点吃力的，不过一两年后再打开游戏回头看，发现自己对这个游戏有了一些不同的理解，而且也开始意识到这个游戏具体是如何和计算机相关的内容扯上联系的了。我觉得如果再过段时间打开游戏，我或许还会有新的感悟。这种体验让我觉得买下它很值。
+            </p>
+
+            <p>
+              顺带一提，Recursed的音乐也非常棒。Recursed的美术风格也很有特点，但并不能说上出彩（我个人还是挺喜欢的），而原声集极大地弥补上了画面的（相对）简陋。我最喜欢的是《Woodlands》的两个版本和《Ascent》。BandCamp上面可以搜到原声集。
+            </p>
+          </section>
+
+          <section>
+            <h3 class="chapter-header">Rephrased - Baba is You</h3>
+
+            <iframe
+              src="https://store.steampowered.com/widget/736260/"
+              frameborder="0"
+              style="width: 100%; min-height: 190px"
+            >
+            </iframe>
+
+            <p>
+              这个游戏的机制也是十分出彩，用我朋友229的话来说就是“太元（meta）了”。刚上手的时候我觉得这个游戏很简单，可能是三个游戏里最简单的，结果玩了一段时间后发现自己的脑子还是一如既往地不灵光。大概寒假的时候（？）看到了GDQ里有这个项目，被速通选手的操作和游戏的真结局震撼到了，只能引用一下某个steam用户的评论：Baba
+              is You, Baka is me。
+            </p>
+
+            <p>
+              感觉这像是一种规律，那就是好的解谜游戏一定有优秀的配乐。Baba is
+              You也是如此，虽然他的原声集可能没有上面两个游戏那么出彩，但是里面有几首还是很洗脑的，尤其是主题曲。至于美术风格，我也很喜欢，Baba（还有Keke和It）十分可爱，所以这个游戏也可以拿去骗不怎么玩解密游戏的人（
+            </p>
+          </section>
+
+          <section>
+            <h3 class="chapter-header">总结</h3>
+
+            <p>
+              Braid的制作人员名单在他的暂停菜单里。当你进入那个菜单以后，名单并不会立马出现，而是先会出现这么一首小诗：
+            </p>
+            <div
+              class="responsive-img"
+              description="Screenshot of the credit menu"
+            >
+              <img
+                data-src="../images/who-has-seen-the-wind.png"
+                alt="Screenshot of the credits menu"
+                title="Who has seen the wind? Neither you nor I: But when the trees bow down their heads, The wind is passing by. -Christina Rossetti"
+              />
+              <div class="zoomed-img" style="display: none">
+                <img data-src="../images/who-has-seen-the-wind.png" />
+              </div>
+            </div>
+
+            <p>
+              我个人觉得从游戏设计的角度来说这首小诗很好地概括了这三个游戏在设计思路上的相似性，那就是他们的对核心机制的深入探讨是潜移默化的。这么说也许并不是很准确，但我想表达的意思是他们在让玩家熟悉游戏的机制时，将游戏的教程放在了一个个关卡里面，让玩家自己体验这个学习和探索的过程。游戏的机制像是诗里提到的风，也许没人能直接看到，但是你能通过其他的手段（与游戏的互动，也就是学习的过程）感受到它。这种方法不仅加深了我对机制的理解，还让保证了游戏的沉浸感（或者说因为没有创作者的直接介入而导致的神秘感）。我觉得这也是这三个游戏能给我留下如此深刻印象的原因之一。
+            </p>
+
+            <p>
+              另一个把它们放在一起的原因是他们是自洽的。对于我来说，是否自洽是判断一个作品（例如游戏，故事）是否足够优秀的标准之一。而这三款游戏在美术风格（审美），叙事，机制和音乐上至少有三项符合这个标准。也许他们的一部分特点（比如说画面）并不是所有人都能接受，但是我觉得这些特点放在游戏中一点都不显得突兀。GameSpot认为Baba
+              is You的一点是soundtrack is not
+              inspiring，但我完全不这么觉得（而且说实话那整篇review感觉像是个没怎么玩过解密游戏的人写的，也就图一乐）。
+            </p>
+
+            <p>总而言之，这就是Rewind, Recursed, Rephrased。</p>
+          </section>
+
+          <section id="article-date"></section>
+        </article>
+      </div>
+    </main>
+
+    <!-- <berry-footer></berry-footer> -->
+    <!-- <script type="module" src="../../webcomponents/FooterComponent.js"></script> -->
+  </body>
 </html>
