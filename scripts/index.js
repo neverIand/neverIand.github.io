@@ -1,6 +1,5 @@
 function initHomePage() {
   console.log("Hello World");
-
   initArchiveList();
 }
 
