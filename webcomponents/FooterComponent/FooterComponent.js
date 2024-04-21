@@ -12,6 +12,7 @@ class CustomFooter extends HTMLElement {
     // this.attachInfo();
   }
 
+  // TODO: add data-theme
   loadStyles() {
     const styles = document.createElement("link");
     styles.setAttribute("rel", "stylesheet");
@@ -22,6 +23,7 @@ class CustomFooter extends HTMLElement {
     this.shadowRoot.appendChild(styles);
   }
 
+  // TODO: add data-theme
   render() {
     // Create and append the footer template
     const template = document.createElement("template");

@@ -1,0 +1,41 @@
+:host {
+  width: 100%;
+  overflow: hidden;
+  --border-radius: 8px;
+  --padding: calc(var(--border-radius) / 1); /*  */
+}
+
+#disclaimer {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 10px;
+  padding-bottom: 1em;
+  background-color: rgb(252, 204, 212);
+  border-radius: var(--border-radius, 10px);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: var(--padding, 10px);
+  border-bottom: 1px solid;
+}
+
+.header h2 {
+  margin: 0;
+  padding: 0;
+}
+
+/* ::slotted(p) {
+  margin-top: 1em;
+} */
+
+.content p {
+  margin: 0;
+  padding: var(--padding, 10px);
+  color: rgb(118, 9, 9);
+  text-align: start;
+}

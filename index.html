@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./styles/common.css" />
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
   <body>
     <!-- TODO: replace with a custom header that uses a small animated logo -->
     <header>
@@ -16,8 +17,15 @@
     </header>
     <main>
       <section style="text-align: center">
-        <h1>WIP</h1>
         <!-- TODO: list new articles -->
+        <berry-disclaimer>
+          <p slot="disclaimer-text">
+            This site is still a work in progress. More content will be added soon.
+          </p>
+          <p slot="disclaimer-text">
+            You can still read the archived articles ported from the old version of the project, though they are in mandarin and you'll probably need machine translation. 
+          </p>
+        </berry-disclaimer>
       </section>
 
       <!-- list of archived articles, TODO: replace with component -->
@@ -51,6 +59,10 @@
     <script
       type="module"
       src="./webcomponents/FooterComponent/FooterComponent.js"
+    ></script>
+    <script
+      type="module"
+      src="./webcomponents//DisclaimerComponent/DisclaimerComponent.js"
     ></script>
     <script src="./scripts/index.js"></script>
   </body>

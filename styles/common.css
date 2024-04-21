@@ -16,6 +16,10 @@ main {
   position: relative;
 }
 
+berry-disclaimer>p{
+  margin-top: 1em;
+}
+
 a {
   color: #3366cc;
   background-color: #f2f2f2;
