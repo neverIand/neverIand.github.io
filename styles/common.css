@@ -16,7 +16,7 @@ main {
   position: relative;
 }
 
-berry-disclaimer>p{
+berry-disclaimer > p {
   margin-top: 1em;
 }
 
@@ -38,4 +38,8 @@ a:focus {
 
 a:visited {
   color: #7744aa;
+}
+
+code{
+  font-family: consolas;
 }

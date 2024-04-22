@@ -1,4 +1,5 @@
 :host {
+  position: relative;
   width: 100%;
   overflow: hidden;
   --border-radius: 8px;
@@ -9,7 +10,7 @@
   display: flex;
   flex-direction: column;
   max-width: 400px;
-  margin: 10px;
+  margin: 10px auto;
   padding-bottom: 1em;
   background-color: rgb(252, 204, 212);
   border-radius: var(--border-radius, 10px);

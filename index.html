@@ -12,18 +12,27 @@
   <noscript>This website requires Javascript to function properly.</noscript>
   <body>
     <!-- TODO: replace with a custom header that uses a small animated logo -->
-    <header>
-      <berry-logo animate="false"></berry-logo> <berry-logo></berry-logo>
-    </header>
+    <berry-header>
+      <berry-logo size="50" animate="false" slot="logo"></berry-logo>
+    </berry-header>
     <main>
-      <section style="text-align: center">
+      <section style="display: flex; flex-wrap: wrap; justify-content: center;">
+        <berry-logo></berry-logo>
+      </section>
+
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
         <!-- TODO: list new articles -->
         <berry-disclaimer>
           <p slot="disclaimer-text">
-            This site is still a work in progress. More content will be added soon.
+            This site is still a work in progress. More content will be added
+            soon.
           </p>
           <p slot="disclaimer-text">
-            You can still read the archived articles ported from the old version of the project, though they are in mandarin and you'll probably need machine translation. 
+            You can still read the archived articles ported from the old version
+            of the project, though they are in mandarin and you'll probably need
+            machine translation.
           </p>
         </berry-disclaimer>
       </section>
@@ -58,11 +67,15 @@
     <script type="module" src="./webcomponents/LogoComponent.js"></script>
     <script
       type="module"
+      src="./webcomponents/HeaderComponent/HeaderComponent.js"
+    ></script>
+    <script
+      type="module"
       src="./webcomponents/FooterComponent/FooterComponent.js"
     ></script>
     <script
       type="module"
-      src="./webcomponents//DisclaimerComponent/DisclaimerComponent.js"
+      src="./webcomponents/DisclaimerComponent/DisclaimerComponent.js"
     ></script>
     <script src="./scripts/index.js"></script>
   </body>

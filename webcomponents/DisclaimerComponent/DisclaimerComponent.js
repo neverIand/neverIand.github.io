@@ -11,6 +11,7 @@ class CustomDisclaimer extends HTMLElement {
     this.render();
   }
 
+  // TODO? a shared css for components that conatins all variables
   loadStyles() {
     const styles = document.createElement("link");
     styles.setAttribute("rel", "stylesheet");

@@ -106,7 +106,7 @@ height: var(--logo-core-width);
 margin: auto;
 border: var(--logo-border-width) solid black;
 }
-
+/* TODO: replace with variables */
 @keyframes transformLeft {
 from {
 transform: translateX(-440px) rotateZ(60deg);
