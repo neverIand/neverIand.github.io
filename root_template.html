@@ -4,38 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>neverIand</title>
+    <!-- TODO: double check the urls for pages in other dir -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="./styles/common.css" />
+    <!-- This may not be necessary anymore after sidebar becomes a component -->
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
   <noscript>This website requires Javascript to function properly.</noscript>
   <body>
-    <berry-header>
-      <!-- TODO: move logo back to component so it's easier to reuse -->
-      <berry-logo size="50" animate="false" slot="logo"></berry-logo>
-    </berry-header>
+    <berry-header></berry-header>
     <main>
-      <section style="display: flex; flex-wrap: wrap; justify-content: center;">
-        <berry-logo></berry-logo>
-      </section>
-
-      <section
-        style="display: flex; justify-content: center; align-items: center"
-      >
-        <!-- TODO: list new articles -->
-        <berry-disclaimer>
-          <p slot="disclaimer-text">
-            This site is still a work in progress. More content will be added
-            soon.
-          </p>
-          <p slot="disclaimer-text">
-            You can still read the archived articles ported from the old version
-            of the project, though they are in mandarin and you'll probably need
-            machine translation.
-          </p>
-        </berry-disclaimer>
-      </section>
+      <section></section>
 
       <!-- list of archived articles, TODO: replace with component -->
       <aside class="sidebar">
@@ -57,13 +37,8 @@
         </div>
       </aside>
     </main>
-    <berry-footer>
-      <!-- TODO: move slotted items back to component so it's easier to reuse -->
-      <!-- TODO: icons -->
-      <a slot="github" href="https://github.com/neverIand">Github</a>
-      <a slot="email" href="mailto:rickytang2019@gmail.com">Email</a>
-      <a slot="youtube" href="https://www.youtube.com/@ratch3t673">Youtube</a>
-    </berry-footer>
+
+    <berry-footer></berry-footer>
 
     <script type="module" src="./webcomponents/LogoComponent.js"></script>
     <script
@@ -78,6 +53,6 @@
       type="module"
       src="./webcomponents/DisclaimerComponent/DisclaimerComponent.js"
     ></script>
-    <script src="./scripts/index.js"></script>
+    <!-- <script src="./scripts/index.js"></script> -->
   </body>
 </html>
