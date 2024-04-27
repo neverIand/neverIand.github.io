@@ -1,3 +1,10 @@
+/* TODO: components can access variables */
+:root {
+  --main-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  --code-font: consolas, "Courier New", Courier, monospace;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -20,26 +27,6 @@ berry-disclaimer > p {
   margin-top: 1em;
 }
 
-a {
-  color: #3366cc;
-  background-color: #f2f2f2;
-  text-decoration: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: color 0.3s, background-color 0.3s;
-}
-
-a:hover,
-a:focus {
-  color: #ff6600;
-  text-decoration: underline;
-  background-color: #ffffff;
-}
-
-a:visited {
-  color: #7744aa;
-}
-
 code {
-  font-family: consolas;
+  font-family: var(--code-font);
 }

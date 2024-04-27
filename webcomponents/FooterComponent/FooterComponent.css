@@ -13,3 +13,23 @@ ul {
   padding: 10px;
   list-style: none;
 }
+
+a {
+  padding: 4px 8px;
+  color: black;
+  font-family: consolas, "Courier New", Courier, monospace;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+a:hover,
+a:focus {
+  color: #ff6600;
+  text-decoration: underline;
+  background-color: #f2f2f2;
+}
+
+a:visited {
+  color: #7744aa;
+}
