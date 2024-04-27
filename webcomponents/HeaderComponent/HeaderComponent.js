@@ -17,7 +17,7 @@ class CustomHeader extends HTMLElement {
     styles.setAttribute("rel", "stylesheet");
     styles.setAttribute(
       "href",
-      "../../webcomponents/HeaderComponent/HeaderComponent.css"
+      "/webcomponents/HeaderComponent/HeaderComponent.css"
     );
     this.shadowRoot.appendChild(styles);
   }
@@ -31,7 +31,7 @@ class CustomHeader extends HTMLElement {
         <div id="logo">
             <slot name="logo">neverIand.github.io</slot>
         </div>
-        <a href="."><h1>neveriand.github.io</h1></a>
+        <a href="/"><h1>neveriand.github.io</h1></a>
       </header>
   `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));

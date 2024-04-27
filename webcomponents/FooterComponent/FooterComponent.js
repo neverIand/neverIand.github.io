@@ -18,7 +18,7 @@ class CustomFooter extends HTMLElement {
     styles.setAttribute("rel", "stylesheet");
     styles.setAttribute(
       "href",
-      "../../webcomponents/FooterComponent/FooterComponent.css"
+      "/webcomponents/FooterComponent/FooterComponent.css"
     );
     this.shadowRoot.appendChild(styles);
   }

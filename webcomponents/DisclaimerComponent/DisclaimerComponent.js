@@ -17,7 +17,7 @@ class CustomDisclaimer extends HTMLElement {
     styles.setAttribute("rel", "stylesheet");
     styles.setAttribute(
       "href",
-      "../../webcomponents/DisclaimerComponent/DisclaimerComponent.css"
+      "/webcomponents/DisclaimerComponent/DisclaimerComponent.css"
     );
     this.shadowRoot.appendChild(styles);
   }
