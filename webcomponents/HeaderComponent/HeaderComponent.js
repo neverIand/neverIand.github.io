@@ -1,3 +1,5 @@
+import '../LogoComponent.js'
+
 class CustomHeader extends HTMLElement {
   constructor() {
     super();
@@ -29,7 +31,7 @@ class CustomHeader extends HTMLElement {
     template.innerHTML = /*html*/ `
       <header>
         <div id="logo">
-            <slot name="logo">neverIand.github.io</slot>
+            <berry-logo size="50" animate="false"></berry-logo>
         </div>
         <a href="/"><h1>neveriand.github.io</h1></a>
       </header>
