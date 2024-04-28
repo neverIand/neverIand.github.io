@@ -18,6 +18,11 @@ body {
   min-height: 100vh;
 }
 
+section {
+  margin: 10px auto;
+  /* border: 1px solid red; */
+}
+
 main {
   flex: 1;
   position: relative;
@@ -28,5 +33,19 @@ berry-disclaimer > p {
 }
 
 code {
+  padding: 2px 0;
   font-family: var(--code-font);
+}
+
+hr {
+  margin: 20px 0;
+}
+
+/* Simple, tailwind-free util classes */
+
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
