@@ -5,6 +5,13 @@
   --code-font: consolas, "Courier New", Courier, monospace;
 }
 
+/* web components non rendered */
+:not(:defined) {
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
 * {
   margin: 0;
   padding: 0;

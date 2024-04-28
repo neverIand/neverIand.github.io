@@ -1,0 +1,14 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid red; */
+}
+
+article {
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  min-width: 320px;
+  border: 1px solid red;
+}

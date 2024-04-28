@@ -129,3 +129,5 @@ class LogoComponent extends HTMLElement {
 if (!customElements.get("berry-logo")) {
   customElements.define("berry-logo", LogoComponent);
 }
+
+export default LogoComponent

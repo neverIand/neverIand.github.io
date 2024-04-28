@@ -4,11 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>neverIand</title>
-    <!-- TODO: double check the urls for pages in other dir -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/common.css" />
-    <!-- This may not be necessary anymore after sidebar becomes a component -->
     <link rel="stylesheet" href="/styles/index.css" />
   </head>
   <noscript>This website requires Javascript to function properly.</noscript>
@@ -55,21 +53,21 @@
       </section>
     </main>
 
+    <hr />
+
+      <section>
+        <code>&lt;berry-date&gt;</code><br>
+        <berry-date datetime="1998-11-01"></berry-date>
+      </section>
+    </main>
+
     <berry-footer></berry-footer>
 
-    <script type="module" src="/webcomponents/LogoComponent.js"></script>
+    <script type="module" src="/scripts/essentials.js"></script>
     <script
       type="module"
-      src="/webcomponents/HeaderComponent/HeaderComponent.js"
+      src="/webcomponents/ArchivedListComponent/ArchivedListComponent.js"
     ></script>
-    <script
-      type="module"
-      src="/webcomponents/FooterComponent/FooterComponent.js"
-    ></script>
-    <script
-      type="module"
-      src="/webcomponents/DisclaimerComponent/DisclaimerComponent.js"
-    ></script>
-    <script type="module" src="/webcomponents/ArchivedListComponent/ArchivedListComponent.js"></script>
+    <script type="module" src="/webcomponents/DateComponent/DateComponent.js"></script>
   </body>
 </html>
