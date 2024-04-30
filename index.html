@@ -15,7 +15,9 @@
     <main>
       <!-- banner -->
       <section class="flex-col-center">
-        <!-- TODO: replace disclaimer with a brief intro and a link to blog#0 when most things are finished -->
+        <berry-logo></berry-logo>
+
+        <!-- TODO: remove disclaimer when most things are finished -->
         <berry-disclaimer>
           <p slot="disclaimer-text">
             This site is still a work in progress. More content will be added
@@ -27,23 +29,44 @@
             machine translation.
           </p>
         </berry-disclaimer>
+      </section>
 
-        <berry-logo></berry-logo>
+      <!-- intro -->
+      <section id="intro">
+        <p>
+          This is the 3rd iteration of my blog. I may post something relevant to
+          tech and other random stuff here.
+        </p>
+        <p>
+          In case you wonder, the first iteration is written in php and you can
+          have a glimpse <a href="#archive">here</a>. The second iteration works
+          fine but I just decided to throw it away, and now I
+          <a href="/articles/new/new-00-preface.html">end up here.</a>
+        </p>
+        <p>
+          Note: Use <code>Ctrl + f</code> to search for content. Where's tagging
+          and SEO and all those stuff? The answer is no because this is my
+          website and I can do whatever I want. If someone really wants to find
+          something and is willing to jump into the rabbit hole, he will find it
+          eventually.
+        </p>
       </section>
 
       <!-- article list -->
-      <section class="flex-col-center"></section>
+      <section id="article-list" class="flex-col-center">
+        <h2>Newest Articles</h2>
+      </section>
+
+      <hr>
 
       <!-- archived -->
-      <berry-archive></berry-archive>
+      <section class="flex-col-center">
+        <berry-archive id="archive"></berry-archive>
+      </section>
     </main>
     <berry-footer></berry-footer>
 
     <script type="module" src="/scripts/essentials.js"></script>
-    <script
-      type="module"
-      src="/webcomponents/ArchivedListComponent/ArchivedListComponent.js"
-    ></script>
-    <script src="/scripts/index.js"></script>
+    <script type="module" src="/scripts/index.js"></script>
   </body>
 </html>

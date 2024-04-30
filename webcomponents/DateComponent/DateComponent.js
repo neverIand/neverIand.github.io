@@ -23,10 +23,12 @@ class CustomDate extends HTMLElement {
 
   render() {
     const date = this.getAttribute("datetime");
+    const lastUpdated = this.getAttribute("last-update");
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
       <time datetime="${date}">
-        ${date}
+        <span>${date}</span>
+        ${lastUpdated ? `<span>Last updated: ${lastUpdated}</span>` : ""}
       </time>
   `;
 

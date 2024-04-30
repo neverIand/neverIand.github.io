@@ -1,6 +1,11 @@
+:host{
+  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular","Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
 .sidebar {
-  background-color: #f4f4f4;
+  max-width: 400px;
   padding: 20px;
+  background-color: #f4f4f4;
   line-height: 160%;
   border-radius: 10px;
 }
@@ -21,6 +26,7 @@ h2 {
 h2,
 h3 {
   margin: 0;
+  font-family: var(--title-font);
 }
 
 a {
@@ -39,4 +45,10 @@ a:focus {
 
 a:visited {
   color: #7744aa;
+}
+
+@media (max-width: 992px) {
+  .article-list {
+    grid-template-columns: 1fr;
+  }
 }

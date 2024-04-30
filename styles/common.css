@@ -1,49 +1,93 @@
+@font-face {
+  font-family: Libre Baskerville;
+  src: url("/fonts/LibreBaskerville-Regular.ttf");
+}
+@font-face {
+  font-family: Libre Baskerville Bold;
+  src: url("/fonts/LibreBaskerville-Bold.ttf");
+}
+@font-face {
+  font-family: Libre Baskerville Italic;
+  src: url("/fonts/LibreBaskerville-Italic.ttf");
+}
+
 /* TODO: components can access variables */
 :root {
-  --main-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
+  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
     "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
   --code-font: consolas, "Courier New", Courier, monospace;
 }
 
-/* web components non rendered */
+/* TODO: web components non rendered */
 :not(:defined) {
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: var(--body-font);
 }
-
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--title-font);
+}
+h1 {
+  font-size: 2.5em;
+}
+h2 {
+  font-size: 2em;
+}
+h3 {
+  font-size: 1.75em;
+}
+h4 {
+  font-size: 1.5em;
+}
+h5 {
+  font-size: 1.25em;
+}
+h6 {
+  font-size: 1em;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 section {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
   margin: 10px auto;
   /* border: 1px solid red; */
 }
-
 main {
   flex: 1;
   position: relative;
 }
-
 berry-disclaimer > p {
   margin-top: 1em;
 }
-
 code {
   padding: 2px 0;
   font-family: var(--code-font);
+  background-color: #f4f4f4;
 }
-
 hr {
   margin: 20px 0;
 }
@@ -55,4 +99,34 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+/* Special cases */
+
+/* The default styling pasted from bandcamp should be removed */
+.bandcamp-player {
+  margin: 10px auto;
+  height: 42px;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.75em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  h4 {
+    font-size: 1.25em;
+  }
+  h5 {
+    font-size: 1em;
+  }
+  h6 {
+    font-size: 0.875em;
+  }
 }

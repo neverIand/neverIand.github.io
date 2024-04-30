@@ -8,7 +8,19 @@ main {
 article {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin: 20px auto;
+  padding: 20px;
   min-width: 320px;
-  border: 1px solid red;
+  max-width: 840px;
+  border: 1px solid;
+}
+
+section p {
+  line-height: 150%;
+}
+
+section ul {
+  padding: 0 1em;
 }

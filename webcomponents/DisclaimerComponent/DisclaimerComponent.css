@@ -1,6 +1,7 @@
 :host {
   position: relative;
   width: 100%;
+  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular","Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   overflow: hidden;
   --border-radius: 8px;
   --padding: calc(var(--border-radius) / 1); /*  */
@@ -28,6 +29,7 @@
 .header h2 {
   margin: 0;
   padding: 0;
+  font-family: var(--title-font);
 }
 
 /* ::slotted(p) {
