@@ -84,9 +84,12 @@ berry-disclaimer > p {
   margin-top: 1em;
 }
 code {
-  padding: 2px 0;
+  display: inline;
+  padding: 2px 4px;
+  align-self: flex-start;
   font-family: var(--code-font);
   background-color: #f4f4f4;
+  border-radius: 2px;
 }
 hr {
   margin: 20px 0;

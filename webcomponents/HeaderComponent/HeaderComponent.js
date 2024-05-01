@@ -33,7 +33,7 @@ class CustomHeader extends HTMLElement {
         <div id="logo">
             <berry-logo size="50" animate="false"></berry-logo>
         </div>
-        <a href="/"><h1>neveriand.github.io</h1></a>
+        <a href="/"><h1>neverIand.github.io</h1></a>
       </header>
   `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
