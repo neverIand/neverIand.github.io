@@ -1,5 +1,6 @@
 import { fetchData } from "/scripts/fetchData.js";
-import '/webcomponents/ArchivedListComponent/ArchivedListComponent.js'
+import "/webcomponents/ArchivedListComponent/ArchivedListComponent.js";
+import "/webcomponents/ArticleComponent/ArticleComponent.js";
 
 function initHomePage() {
   console.info("Hello World");
@@ -22,9 +23,13 @@ function renderArticleList(elementId, data) {
   // TODO: replace with an ordinary for loop
   data.reverse().forEach((article) => {
     // TODO: <berry-article>
-    const articleEl = document.createElement("div");
-    articleEl.innerHTML = `
-      <a href=${article.filename}><h4>${article.title}</h4></a>`;
+    // const articleEl = document.createElement("div");
+    // articleEl.innerHTML = `
+    //   <a href=${article.filename}><h4>${article.title}</h4></a>`;
+    const articleEl = document.createElement("berry-article");
+    articleEl.setAttribute("data-title", article.title);
+    articleEl.setAttribute("data-url", article.filename);
+    articleEl.setAttribute("data-subheading", article.subheading);
     listEl.appendChild(articleEl);
   });
 }

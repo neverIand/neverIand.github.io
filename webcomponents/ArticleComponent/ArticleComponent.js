@@ -1,0 +1,44 @@
+class ArticleList extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    this.loadStyles();
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  // TODO? a shared css for components that conatins all variables
+  loadStyles() {
+    const styles = document.createElement("link");
+    styles.setAttribute("rel", "stylesheet");
+    styles.setAttribute(
+      "href",
+      "/webcomponents/ArticleComponent/ArticleComponent.css"
+    );
+    this.shadowRoot.appendChild(styles);
+  }
+
+  render() {
+    const title = this.getAttribute("data-title");
+    const subheading = this.getAttribute("data-subheading")||'(No subheading for this article)';
+    const url = this.getAttribute("data-url") || "/404.html";
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+        <div id="article">
+            <a href="${url}" title="${title}"><h4>${title}</h4></a>
+            <h6>${subheading}</h6>
+        </div>
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+}
+
+if (!customElements.get("berry-article")) {
+  customElements.define("berry-article", ArticleList);
+}
+
+export default ArticleList;

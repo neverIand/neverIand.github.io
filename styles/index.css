@@ -8,6 +8,8 @@ section#intro {
   max-width: 800px;
 }
 
-section#article-list {
-  border: 1px solid;
+section#article-list h2 {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid;
 }
