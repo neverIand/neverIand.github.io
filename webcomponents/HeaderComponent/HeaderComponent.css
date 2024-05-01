@@ -5,22 +5,37 @@
 
 header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 1em;
   padding: 5px;
   border-bottom: 1px solid;
 }
-
 header h1 {
   margin: 0;
   font-family: consolas;
 }
-
+#logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#links ul {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#links ul li {
+  padding: 2px 4px;
+  /* border: 1px solid; */
+  border-left: 1px solid;
+}
 a {
   color: #000;
   text-decoration: none;
 }
-
 a:hover {
   text-decoration: underline;
 }
@@ -30,4 +45,3 @@ a:hover {
     font-size: 1.5em;
   }
 }
-

@@ -1,4 +1,4 @@
-import '../LogoComponent.js'
+import "../LogoComponent.js";
 
 class CustomHeader extends HTMLElement {
   constructor() {
@@ -25,15 +25,21 @@ class CustomHeader extends HTMLElement {
   }
 
   // TODO: add data-theme
+  // TODO: replace ul with a hamburger menu
   render() {
-    // Create and append the footer template
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
       <header>
         <div id="logo">
-            <berry-logo size="50" animate="false"></berry-logo>
+          <berry-logo size="50" animate="false"></berry-logo>
+          <a href="/"><h1>neverIand</h1></a>
         </div>
-        <a href="/"><h1>neverIand.github.io</h1></a>
+        <div id="links">
+          <ul>
+            <li><a href='/articles/misc/profile.html'>profile</a></li>
+            <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
+          </ul>
+        </div>
       </header>
   `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
