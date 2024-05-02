@@ -8,6 +8,11 @@
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/common.css" />
     <link rel="stylesheet" href="/styles/index.css" />
+    <style>
+      section {
+        max-width: 600px;
+      }
+    </style>
   </head>
   <noscript>This website requires Javascript to function properly.</noscript>
   <body>
@@ -70,7 +75,22 @@
 
       <section>
         <code>&lt;berry-article&gt;</code>
-        <berry-article data-title="Article Title" data-subheading="Article Subheading"></berry-article>
+        <berry-article
+          data-title="Article Title"
+          data-subheading="Article Subheading"
+        ></berry-article>
+      </section>
+
+      <hr />
+
+      <section>
+        <code>&lt;berry-image&gt;</code>
+        <berry-img
+          data-src="/articles/images/who-has-seen-the-wind.png"
+          data-title="image title"
+          data-alt="Who has seen the wind?"
+          data-width="400px"
+        ></berry-img>
       </section>
     </main>
 
@@ -82,6 +102,9 @@
       type="module"
       src="/webcomponents/ArchivedListComponent/ArchivedListComponent.js"
     ></script>
-    <script type="module" src="/webcomponents/ArticleComponent/ArticleComponent.js"></script>
+    <script
+      type="module"
+      src="/webcomponents/ArticleComponent/ArticleComponent.js"
+    ></script>
   </body>
 </html>
