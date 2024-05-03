@@ -2,8 +2,15 @@
   {
     "id": 0,
     "title": "Hello World (again)",
-    "subheading":"They say third time's the charm",
+    "subheading": "They say third time's the charm",
     "filename": "/articles/new/new-00-preface.html",
+    "date": "2024-04-30"
+  },
+  {
+    "id": 1,
+    "title": "Check If All Items in a Javascript Array are Identical",
+    "subheading": "Spot the imposter",
+    "filename": "/articles/new/new-01-array-with-all-identical-items.html",
     "date": "2024-04-30"
   }
 ]

@@ -8,6 +8,7 @@
   border: 1px solid;
 }
 .snippet-header {
+  padding: 5px;
   border-bottom: 1px solid;
   user-select: none;
 }
@@ -26,6 +27,7 @@
 }
 pre {
   margin: 0;
+  padding-left: 5px;
 }
 ::slotted(pre) {
   font-family: var(--code-font);

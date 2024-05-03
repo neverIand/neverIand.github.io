@@ -1,6 +1,6 @@
 :host {
-  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
-    "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Times New Roman", Times, Georgia, serif;
 }
 
 .sidebar {

@@ -18,18 +18,220 @@
 
         <berry-subheading></berry-subheading>
 
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=1345566819&auto=0&height=66"></iframe>
+        <!-- <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=1345566819&auto=0&height=66"></iframe> -->
 
         <section>
+          <p>A while ago someone in a group chat asked:</p>
+          <blockquote>
+            <p>
+              I have an array of numbers, and I want to check whether all
+              elements in it are the same. Is there a better way to just iterate
+              through it?
+              <span class="text-muted"
+                >[function that iterates through the array that compares each
+                item with the previous one]</span
+              >
+            </p>
+          </blockquote>
+
+          <p>Soon people in the chat suggested 4 solutions:</p>
+          <ol>
+            <li>
+              Essencially the same solution but use
+              <code>array.every</code> (later due some reason it got changed to
+              comparing with <code>array[0]</code> only, I'll explain)
+            </li>
+            <li>
+              Convert the array to a <code>Set</code> and check its size (I came
+              up with this one btw)
+            </li>
+            <li>Check<code>Math.max(array)===Math.min(array)</code></li>
+            <li>Use array.join and compare two strings (wat)</li>
+          </ol>
+
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis
-            nesciunt, expedita fugit asperiores repellendus dolores recusandae
-            nihil soluta dolorem vitae, quibusdam similique placeat consequatur
-            deleniti modi, optio nobis architecto doloribus!
+            We made some <i>interesting</i> discovery later but before we get
+            ahead of ourselves let's briefly discuss the differences between
+            these solutions.
           </p>
         </section>
 
-        <berry-date datetime="2023-05-05"></berry-date>
+        <section>
+          <h6>Method 1</h6>
+          <p>
+            The idea behind it is very straightforward: iterating through the
+            whole array is good enough because it's O(n) in the worst case. To
+            make the code simpler and faster with early termination, initially
+            the suggestion was to use <code>array.every()</code>:
+          </p>
+
+          <berry-code data-title="Using array.every()">
+            <pre slot="code">
+let result = arr.every((val) => val === arr[0]);
+console.log(result);
+            </pre>
+          </berry-code>
+
+          <p>
+            Skip ahead a little we discovered that this is actually slower than
+            an ordinary for loop (more on that later), so it became:
+          </p>
+
+          <berry-code data-title="Using normal for loop">
+            <pre slot="code">
+let same = true;
+for (let index = 0; index &lt; arr.length; index++) {
+  if (arr[0] != arr[index]) {
+    same = false;
+    break;
+  }
+}
+console.log(same);
+            </pre>
+          </berry-code>
+          <p>
+            This means the loop will terminate early if it detects the
+            non-equivalent value. Pros: simple, good readability, fast (or is
+            it?). Cons: only works for numerical arrays (but that's just what we
+            need so this doesn't count)
+          </p>
+        </section>
+
+        <section>
+          <h6>Method 2</h6>
+          <p>
+            It's very simple to convert an array into a <code>Set</code> in
+            javascript and by definition of a set, we'll only have unique
+            elements in it, so:
+          </p>
+
+          <berry-code data-title="Using Set">
+            <pre slot="code">
+let result = new Set(arr).size === 1;
+console.log(result);
+            </pre>
+          </berry-code>
+
+          <p>
+            Pros: simple, good readability, works for array of any types. Cons:
+            could cause OOM (Out of Memory, I hate buzzwords) if the array is
+            huge, and is slightly less efficient for large arrays due to the
+            overhead of creating a new <code>Set</code>(or is it?).
+          </p>
+        </section>
+
+        <section>
+          <h6>Method 3</h6>
+          <p>
+            Yet another straightforward method: a numerical array with all
+            identical items will have the same maximum value and minimum value:
+          </p>
+
+          <berry-code data-title="Checking MinMax">
+            <pre slot="code">
+let result = Math.max(...arr) === Math.min(...arr);
+console.log(result);
+            </pre>
+          </berry-code>
+
+          <p>
+            Pros: simple, good readability, fast. Cons: only works for numerical
+            arrays (...)
+          </p>
+        </section>
+
+        <section>
+          <h6>Method 4 <span class="text-error">(Don't use it)</span></h6>
+          <p>
+            I'm not sure why that person decide to come up with this method but
+            aside from being indirect and ineffecient, this just returns wrong
+            results in some cases - an array like <code>[11, 111]</code> will
+            produce the same string as <code>[111, 11]</code>. I'm not even
+            going to show the sample code.
+          </p>
+        </section>
+
+        <section>
+          <h6>Why I decide to write an article about it</h6>
+          <p>
+            After first person replied with method 1, I asked him if there'll be
+            any issue using <code>Set</code> (Now we already know). However, to
+            prove his point, he decide to write a demo, and then it turns out
+            that using <code>Set</code> is actually faster - by a lot (in the
+            worst case scenario at least.). It's very likely that
+            <code>array.every()</code> has some additional logic under the hood,
+            so he tried to use a normal for loop instead. However, constucting a
+            <code>Set</code> is still faster in this case, and the difference
+            becomes more significant once the array size increases:
+          </p>
+          <berry-code data-title="Demo (Worst Case)">
+            <pre slot="code">
+let arr = Array(100000).fill(1);
+arr.push(2);
+
+// Set
+const st1 = performance.now();
+let r1 = new Set(arr).size === 1;
+const et1 = performance.now();
+
+console.log("Set:", r1);
+console.log(`Elapsed time: ${et1 - st1} milliseconds`);
+
+// Math.max
+const st2 = performance.now();
+let r2 = Math.max(...arr) === Math.min(...arr);
+const et2 = performance.now();
+
+console.log("MinMax:", r2);
+console.log(`Elapsed time: ${et2 - st2} milliseconds`);
+
+// for loop
+const st3 = performance.now();
+let r3 = true;
+for (let index = 0; index < arr.length; index++) {
+  if (arr[0] != arr[index]) {
+    same = false;
+    break;
+  }
+}
+const et3 = performance.now();
+
+console.log("OG for:", r3);
+console.log(`Elapsed time: ${et3 - st3} milliseconds`);
+
+// arr.every
+const st4 = performance.now();
+let r4 = arr.every((val) => val === arr[0]);
+const et4 = performance.now();
+
+console.log("array.every:", r4);
+console.log(`Elapsed time: ${et4 - st4} milliseconds`);
+              
+            </pre>
+          </berry-code>
+
+          <p>
+            On my machine, using <code>Set</code> or <code>Math.min()</code> can
+            either be the fastest one, then the old-school for loop followed by
+            <code>array.every()</code>. Of course, you can try it out yourself
+            and see if the result is any different.
+          </p>
+
+          <p>
+            It's hard to draw a real conclusion from it because at this scale,
+            such kind of optimization can be easily overshadowed by the
+            underlying implementation of javascript engine. For this particular
+            problem, using <code>Math.min()</code> seems to be the most
+            efficient way, but depending on the real-world use case, if early
+            termination is likely to happen, for-loop is also a decent choice. I
+            guess it does prove that in order to fully optimize a function,
+            you'll need to target the specifics of that problem eventually,
+            though that will probably means the solution will be less
+            general-purpose.
+          </p>
+        </section>
+
+        <berry-date datetime="2023-05-03"></berry-date>
       </article>
     </main>
 

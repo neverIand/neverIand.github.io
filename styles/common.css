@@ -13,10 +13,12 @@
 
 /* TODO: components can access variables */
 :root {
-  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
-    "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Times New Roman", Times, Georgia, serif;
   --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
-  --code-font: consolas, 'Menlo', 'Monaco', 'Courier New', monospace;
+  --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
+  --text-muted-color: rgb(100, 100, 100);
+  --text-error-color: red;
 }
 
 /* TODO: web components non rendered */
@@ -86,7 +88,8 @@ berry-disclaimer > p {
 }
 code {
   display: inline;
-  padding: 2px 4px;
+  margin: 0 4px;
+  padding: 0 4px;
   align-self: flex-start;
   font-family: var(--code-font);
   background-color: #f4f4f4;
@@ -103,6 +106,12 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.text-muted {
+  color: var(--text-muted-color);
+}
+.text-error {
+  color: var(--text-error-color);
 }
 
 /* Special cases */

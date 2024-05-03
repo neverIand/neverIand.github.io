@@ -1,6 +1,7 @@
 :host {
   width: 100%;
-  --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular";
+  --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Times New Roman", Times, Georgia, serif;
 }
 #article {
   padding: 10px 20px;
