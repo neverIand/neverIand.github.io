@@ -16,7 +16,7 @@
   --title-font: "Lucida Bright", "Lucida Sans", "Lucida Sans Regular",
     "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
-  --code-font: consolas, "Courier New", Courier, monospace;
+  --code-font: consolas, 'Menlo', 'Monaco', 'Courier New', monospace;
 }
 
 /* TODO: web components non rendered */

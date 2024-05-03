@@ -1,0 +1,35 @@
+:host {
+  --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
+  --code-font-size: 1em;
+  --code-line-height: 125%;
+}
+.snippet-container {
+  position: relative;
+  border: 1px solid;
+}
+.snippet-header {
+  border-bottom: 1px solid;
+  user-select: none;
+}
+.snippet-content {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+.line-numbers {
+  padding: 0 5px;
+  font-family: var(--code-font);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  user-select: none; /* Prevents selection to improve copy-paste of code */
+  border-right: 1px solid;
+}
+pre {
+  margin: 0;
+}
+::slotted(pre) {
+  font-family: var(--code-font);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  /* border: 1px solid blue; */
+}

@@ -4,7 +4,6 @@ main {
   align-items: center;
   /* border: 1px solid red; */
 }
-
 article {
   display: flex;
   flex-direction: column;
@@ -16,11 +15,12 @@ article {
   max-width: 840px;
   border: 1px solid;
 }
-
+article h2{
+  text-align: center;
+}
 section p {
   line-height: 150%;
 }
-
 section ul {
   padding: 0 1em;
 }
