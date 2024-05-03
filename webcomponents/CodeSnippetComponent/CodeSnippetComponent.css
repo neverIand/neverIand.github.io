@@ -8,6 +8,11 @@
   border: 1px solid;
 }
 .snippet-header {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   padding: 5px;
   border-bottom: 1px solid;
   user-select: none;

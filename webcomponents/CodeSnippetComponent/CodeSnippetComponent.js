@@ -10,6 +10,7 @@ class CodeSnippet extends HTMLElement {
   connectedCallback() {
     this.render();
     this.updateLineNumbers();
+    this.addCopyButtonEventListener();
   }
 
   loadStyles() {
@@ -28,7 +29,10 @@ class CodeSnippet extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
-        <div class="snippet-header">${title}</div>
+        <div class="snippet-header">
+          ${title}
+          <button id="copy-btn">Copy</button>
+        </div>
         <div class="snippet-content">
             <div class="line-numbers"></div>
             <pre><slot name="code"></slot></pre>
@@ -40,12 +44,13 @@ class CodeSnippet extends HTMLElement {
   }
 
   updateLineNumbers() {
-    const codeContent = this.shadowRoot
-      .querySelector("slot") // 'slot[name="code"]'
+    const node = this.shadowRoot
+      .querySelector("slot[name='code']")
       .assignedNodes({ flatten: true })
-      .filter(
+      .find(
         (node) => node.nodeType === Node.TEXT_NODE || node.tagName === "PRE"
-      )[0].textContent;
+      );
+    const codeContent = node ? node.textContent : "";
     const lines = codeContent.split("\n");
     const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
 
@@ -63,6 +68,28 @@ class CodeSnippet extends HTMLElement {
     // Clear existing content if any
     lineNumberContainer.innerHTML = "";
     lineNumberContainer.appendChild(fragment); // Append all at once
+  }
+
+  addCopyButtonEventListener() {
+    const button = this.shadowRoot.getElementById("copy-btn");
+    button.addEventListener("click", () => {
+      this.copyCodeToClipboard();
+    });
+  }
+
+  copyCodeToClipboard() {
+    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    const codeContent = slot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent)
+      .join("\n");
+    navigator.clipboard
+      .writeText(codeContent)
+      .then(() => {
+        // TODO: feedback
+        console.log("Code copied to clipboard!");
+      })
+      .catch((err) => console.error("Failed to copy code: ", err));
   }
 }
 
