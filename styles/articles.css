@@ -11,12 +11,15 @@ article {
   align-items: center;
   margin: 20px auto;
   padding: 20px;
-  min-width: 320px;
+  width: 100%;
   max-width: 840px;
   border: 1px solid;
 }
 article h2 {
   text-align: center;
+}
+section{
+  width: 100%;
 }
 section p {
   line-height: 175%;

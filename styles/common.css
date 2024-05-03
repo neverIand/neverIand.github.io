@@ -92,6 +92,8 @@ code {
   padding: 0 4px;
   align-self: flex-start;
   font-family: var(--code-font);
+  white-space: pre-wrap;
+  word-wrap: break-word;
   background-color: #f4f4f4;
   border-radius: 2px;
 }

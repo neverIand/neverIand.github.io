@@ -2,6 +2,9 @@
   --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
   --code-font-size: 1em;
   --code-line-height: 125%;
+  display: block;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .snippet-container {
   position: relative;
@@ -20,23 +23,23 @@
 .snippet-content {
   display: flex;
   align-items: flex-start;
-  overflow-x: auto;
+  overflow: hidden;
 }
 .line-numbers {
   padding: 0 5px;
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
-  user-select: none; /* Prevents selection to improve copy-paste of code */
+  user-select: none;
   border-right: 1px solid;
 }
 pre {
   margin: 0;
   padding-left: 5px;
+  overflow-x: auto; 
 }
 ::slotted(pre) {
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
-  /* border: 1px solid blue; */
 }
