@@ -27,6 +27,7 @@ class ImageComponent extends HTMLElement {
           display: block;
         }
         img {
+          width: 100%;
           max-width: ${width};
           height: auto;
         }

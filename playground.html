@@ -7,98 +7,94 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/common.css" />
-    <link rel="stylesheet" href="/styles/index.css" />
-    <style>
-      section {
-        max-width: 600px;
-      }
-    </style>
+    <link rel="stylesheet" href="/styles/articles.css" />
   </head>
   <noscript>This website requires Javascript to function properly.</noscript>
   <body>
     <berry-header></berry-header>
     <main>
-      <h1>Playground</h1>
+      <article>
+        <h1>Playground</h1>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-logo&gt;</code>
-        <berry-logo></berry-logo>
-      </section>
+        <section>
+          <code>&lt;berry-logo&gt;</code>
+          <berry-logo></berry-logo>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-disclaimer&gt;</code>
-        <berry-disclaimer>
-          <p slot="disclaimer-text">Disclaimer content</p>
-        </berry-disclaimer>
-      </section>
+        <section>
+          <code>&lt;berry-disclaimer&gt;</code>
+          <berry-disclaimer>
+            <p slot="disclaimer-text">Disclaimer content</p>
+          </berry-disclaimer>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-header&gt;</code>
-        <berry-header> </berry-header>
-      </section>
+        <section>
+          <code>&lt;berry-header&gt;</code>
+          <berry-header> </berry-header>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-footer&gt;</code>
-        <berry-footer></berry-footer>
-      </section>
+        <section>
+          <code>&lt;berry-footer&gt;</code>
+          <berry-footer></berry-footer>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-archive&gt;</code>
-        <berry-archive></berry-archive>
-      </section>
+        <section>
+          <code>&lt;berry-archive&gt;</code>
+          <berry-archive></berry-archive>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-date&gt;</code>
-        <berry-date datetime="1998-11-01"></berry-date>
-      </section>
+        <section>
+          <code>&lt;berry-date&gt;</code>
+          <berry-date datetime="1998-11-01"></berry-date>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-subheading&gt;</code>
-        <berry-subheading></berry-subheading>
-      </section>
+        <section>
+          <code>&lt;berry-subheading&gt;</code>
+          <berry-subheading></berry-subheading>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-article&gt;</code>
-        <berry-article
-          data-title="Article Title"
-          data-subheading="Article Subheading"
-        ></berry-article>
-      </section>
+        <section>
+          <code>&lt;berry-article&gt;</code>
+          <berry-article
+            data-title="Article Title"
+            data-subheading="Article Subheading"
+          ></berry-article>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-image&gt;</code>
-        <berry-img
-          data-src="/articles/images/who-has-seen-the-wind.png"
-          data-title="image title"
-          data-alt="Who has seen the wind?"
-          data-width="360px"
-        ></berry-img>
-      </section>
+        <section>
+          <code>&lt;berry-image&gt;</code>
+          <berry-img
+            data-src="/articles/images/who-has-seen-the-wind.png"
+            data-title="image title"
+            data-alt="Who has seen the wind?"
+            data-width="640px"
+          ></berry-img>
+        </section>
 
-      <hr />
+        <hr />
 
-      <section>
-        <code>&lt;berry-code&gt;</code>
-        <berry-code data-title="Code Snippet Demo" runnable>
-          <pre slot="code">
+        <section>
+          <code>&lt;berry-code&gt;</code>
+          <berry-code data-title="Code Snippet Demo" runnable>
+            <pre slot="code">
 let arr = Array(100000).fill(1);
 arr.push(2);
 
@@ -139,9 +135,11 @@ const et4 = performance.now();
 
 console.log("array.every:", r4);
 console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
-          </pre>
-        </berry-code>
-      </section>
+          </pre
+            >
+          </berry-code>
+        </section>
+      </article>
     </main>
 
     <berry-footer></berry-footer>
