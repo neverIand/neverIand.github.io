@@ -11,7 +11,7 @@ class CodeSnippet extends HTMLElement {
     this.render();
     this.updateLineNumbers();
     this.addCopyButtonEventListener();
-    this.highlightComments();
+    this.highlightCode();
   }
 
   loadStyles() {
@@ -95,8 +95,7 @@ class CodeSnippet extends HTMLElement {
 
   // !codeContent has <pre> inside as a string, either we remove it from codeContent or replace this node (NOT setting innerHTML!)
   // in theory this can be put inside render() 
-  highlightComments() {
-    // TODO? a better way to get inner text?
+  highlightCode() {
     const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
     let codeContent = codeSlot
       .assignedNodes({ flatten: true })
@@ -111,7 +110,6 @@ class CodeSnippet extends HTMLElement {
       })
       .join("");
 
-    // Highlight comments using regular expressions
     codeContent = codeContent.replace(
       /(\/\/.*$)/gm,
       '<span class="comment">$1</span>'
