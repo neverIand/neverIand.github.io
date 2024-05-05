@@ -41,7 +41,11 @@ pre {
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
 }
-.comment {
+.comment,
+.comment .keyword {
   color: #008000;
   font-style: italic;
+}
+.keyword {
+  color: #0000ff;
 }

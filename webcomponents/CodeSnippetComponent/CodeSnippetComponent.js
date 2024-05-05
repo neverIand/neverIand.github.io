@@ -94,7 +94,7 @@ class CodeSnippet extends HTMLElement {
   }
 
   // !codeContent has <pre> inside as a string, either we remove it from codeContent or replace this node (NOT setting innerHTML!)
-  // in theory this can be put inside render() 
+  // in theory this can be put inside render()
   highlightCode() {
     const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
     let codeContent = codeSlot
@@ -110,15 +110,20 @@ class CodeSnippet extends HTMLElement {
       })
       .join("");
 
+    // highlight keywords
+    const keywords = '\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b';
+    codeContent = codeContent.replace(new RegExp(keywords, 'g'), '<span class="keyword">$1</span>');
+
+    // highlight comments
     codeContent = codeContent.replace(
       /(\/\/.*$)/gm,
       '<span class="comment">$1</span>'
-    ); // Single-line comments
+    );
     codeContent = codeContent.replace(
       /(\/\*[\s\S]*?\*\/)/gm,
       '<span class="comment">$1</span>'
-    ); // Multi-line comments
-
+    );
+    
     // Ensure we are updating the existing <pre> element's innerHTML
     const preElement = this.shadowRoot.querySelector("pre");
     if (preElement) {
