@@ -9,8 +9,8 @@ class CodeSnippet extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    this.updateLineNumbers();
     this.addCopyButtonEventListener();
+    this.updateLineNumbers();
     this.highlightCode();
   }
 
@@ -37,7 +37,7 @@ class CodeSnippet extends HTMLElement {
         </div>
         <div class="snippet-content">
             <div class="line-numbers"></div>
-            <pre><slot name="code"></slot></pre>
+            <slot name="code"></slot>
         </div>
     </div>
     `;
@@ -80,7 +80,7 @@ class CodeSnippet extends HTMLElement {
   }
 
   copyCodeToClipboard() {
-    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    const slot = this.shadowRoot.querySelector(`slot[name="code"]`);
     const codeContent = slot
       .assignedNodes({ flatten: true })
       .map((node) => node.textContent)
@@ -97,22 +97,21 @@ class CodeSnippet extends HTMLElement {
   // in theory this can be put inside render()
   highlightCode() {
     const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
+
     let codeContent = codeSlot
       .assignedNodes({ flatten: true })
-      .map((node) => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          return node.textContent;
-        } else if (node.tagName === "PRE") {
-          return node.innerText; // Extracts only the text content, ignoring the <pre> tags
-        } else {
-          return node.outerHTML;
-        }
-      })
+      .map((node) =>
+        node.nodeType === Node.TEXT_NODE ? node.textContent : node.outerHTML
+      )
       .join("");
 
     // highlight keywords
-    const keywords = '\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b';
-    codeContent = codeContent.replace(new RegExp(keywords, 'g'), '<span class="keyword">$1</span>');
+    const keywords =
+      "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
+    codeContent = codeContent.replace(
+      new RegExp(keywords, "g"),
+      '<span class="keyword">$1</span>'
+    );
 
     // highlight comments
     codeContent = codeContent.replace(
@@ -123,12 +122,10 @@ class CodeSnippet extends HTMLElement {
       /(\/\*[\s\S]*?\*\/)/gm,
       '<span class="comment">$1</span>'
     );
-    
-    // Ensure we are updating the existing <pre> element's innerHTML
-    const preElement = this.shadowRoot.querySelector("pre");
-    if (preElement) {
-      preElement.innerHTML = codeContent;
-    }
+
+    // insert the highlighted elements to display
+    // slotted content for copy only
+    codeSlot.insertAdjacentHTML("beforebegin", codeContent);
   }
 }
 
