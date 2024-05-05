@@ -32,8 +32,8 @@
           <blockquote>
             <p>
               I have an array of numbers, and I want to check whether all
-              elements in it are the same. Is there a better way to just iterate
-              through it?
+              elements in it are the same. Is there a better way than just
+              iterate through it?
               <span class="text-muted"
                 >[function that iterates through the array that compares each
                 item with the previous one]</span
@@ -45,8 +45,8 @@
           <ol>
             <li>
               Essencially the same solution but use
-              <code>array.every()</code> (later due some reason it got changed to
-              using the ordinary for loop, I'll explain)
+              <code>array.every()</code> (later due some reason it got changed
+              to using the ordinary for loop, I'll explain)
             </li>
             <li>
               Convert the array to a <code>Set</code> and check its size (I came
@@ -213,7 +213,6 @@ const et4 = performance.now();
 
 console.log("array.every:", r4);
 console.log(`Elapsed time: ${et4 - st4} milliseconds`);
-              
             </pre>
           </berry-code>
 

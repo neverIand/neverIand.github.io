@@ -99,9 +99,46 @@
         <code>&lt;berry-code&gt;</code>
         <berry-code data-title="Code Snippet Demo" runnable>
           <pre slot="code">
-line 1
-line 2
-line 3
+let arr = Array(100000).fill(1);
+arr.push(2);
+
+// Set
+const st1 = performance.now();
+let r1 = new Set(arr).size === 1;
+const et1 = performance.now();
+
+console.log("Set:", r1);
+console.log(`Elapsed time: ${et1 - st1} milliseconds`);
+
+// Math.max
+const st2 = performance.now();
+let r2 = Math.max(...arr) === Math.min(...arr);
+const et2 = performance.now();
+
+console.log("MinMax:", r2);
+console.log(`Elapsed time: ${et2 - st2} milliseconds`);
+
+// for loop
+const st3 = performance.now();
+let r3 = true;
+for (let index = 0; index < arr.length; index++) {
+  if (arr[0] != arr[index]) {
+    same = false;
+    break;
+  }
+}
+const et3 = performance.now();
+
+console.log("OG for:", r3);
+console.log(`Elapsed time: ${et3 - st3} milliseconds`);
+
+// arr.every
+/* const st4 = performance.now();
+let r4 = arr.every((val) => val === arr[0]);
+const et4 = performance.now();
+
+console.log("array.every:", r4);
+console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
           </pre>
         </berry-code>
       </section>

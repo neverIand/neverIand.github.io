@@ -36,10 +36,12 @@
 pre {
   margin: 0;
   padding-left: 5px;
-  overflow-x: auto; 
-}
-::slotted(pre) {
+  overflow-x: auto;
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
+}
+.comment {
+  color: #008000;
+  font-style: italic;
 }

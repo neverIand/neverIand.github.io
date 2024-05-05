@@ -11,6 +11,7 @@ class CodeSnippet extends HTMLElement {
     this.render();
     this.updateLineNumbers();
     this.addCopyButtonEventListener();
+    this.highlightComments();
   }
 
   loadStyles() {
@@ -27,6 +28,7 @@ class CodeSnippet extends HTMLElement {
     //   const shouldShowDemo = this.getAttribute("runnable");
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
+
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
         <div class="snippet-header">
@@ -86,10 +88,44 @@ class CodeSnippet extends HTMLElement {
     navigator.clipboard
       .writeText(codeContent)
       .then(() => {
-        // TODO: feedback
         console.log("Code copied to clipboard!");
       })
       .catch((err) => console.error("Failed to copy code: ", err));
+  }
+
+  // !codeContent has <pre> inside as a string, either we remove it from codeContent or replace this node (NOT setting innerHTML!)
+  // in theory this can be put inside render() 
+  highlightComments() {
+    // TODO? a better way to get inner text?
+    const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
+    let codeContent = codeSlot
+      .assignedNodes({ flatten: true })
+      .map((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          return node.textContent;
+        } else if (node.tagName === "PRE") {
+          return node.innerText; // Extracts only the text content, ignoring the <pre> tags
+        } else {
+          return node.outerHTML;
+        }
+      })
+      .join("");
+
+    // Highlight comments using regular expressions
+    codeContent = codeContent.replace(
+      /(\/\/.*$)/gm,
+      '<span class="comment">$1</span>'
+    ); // Single-line comments
+    codeContent = codeContent.replace(
+      /(\/\*[\s\S]*?\*\/)/gm,
+      '<span class="comment">$1</span>'
+    ); // Multi-line comments
+
+    // Ensure we are updating the existing <pre> element's innerHTML
+    const preElement = this.shadowRoot.querySelector("pre");
+    if (preElement) {
+      preElement.innerHTML = codeContent;
+    }
   }
 }
 
