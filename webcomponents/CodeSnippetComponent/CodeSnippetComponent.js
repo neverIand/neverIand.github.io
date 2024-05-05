@@ -93,27 +93,26 @@ class CodeSnippet extends HTMLElement {
       .catch((err) => console.error("Failed to copy code: ", err));
   }
 
-  // !codeContent has <pre> inside as a string, either we remove it from codeContent or replace this node (NOT setting innerHTML!)
   // in theory this can be put inside render()
   highlightCode() {
     const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
+    if (!codeSlot) {
+      console.error("Code slot not found");
+      return;
+    }
 
-    let codeContent = codeSlot
-      .assignedNodes({ flatten: true })
+    let codeContent = Array.from(codeSlot.assignedNodes({ flatten: true }))
       .map((node) =>
         node.nodeType === Node.TEXT_NODE ? node.textContent : node.outerHTML
       )
       .join("");
 
-    // highlight keywords
     const keywords =
       "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
     codeContent = codeContent.replace(
       new RegExp(keywords, "g"),
       '<span class="keyword">$1</span>'
     );
-
-    // highlight comments
     codeContent = codeContent.replace(
       /(\/\/.*$)/gm,
       '<span class="comment">$1</span>'
@@ -123,8 +122,6 @@ class CodeSnippet extends HTMLElement {
       '<span class="comment">$1</span>'
     );
 
-    // insert the highlighted elements to display
-    // slotted content for copy only
     codeSlot.insertAdjacentHTML("beforebegin", codeContent);
   }
 }
