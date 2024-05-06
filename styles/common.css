@@ -92,7 +92,6 @@ code {
   padding: 0 4px;
   align-self: flex-start;
   font-family: var(--code-font);
-  white-space: pre-wrap;
   word-wrap: break-word;
   background-color: #f4f4f4;
   border-radius: 2px;
@@ -118,7 +117,7 @@ hr {
 
 /* Special cases */
 
-/* The default styling pasted from bandcamp should be removed */
+/* The default styling pasted from bandcamp/spotify should be removed */
 .bandcamp-player {
   margin: 10px auto;
   height: 42px;
@@ -130,7 +129,12 @@ hr {
   margin: 10px;
   border-radius: 12px;
 }
-
+/* soundcloud iframe&div should be inside this div */
+.soundcloud-player{
+  width: 100%;
+  margin: 10px;
+  text-align: center;
+}
 @media (max-width: 768px) {
   h1 {
     font-size: 2em;

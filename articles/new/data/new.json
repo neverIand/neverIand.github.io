@@ -11,6 +11,13 @@
     "title": "Check If All Items in a Javascript Array are Identical",
     "subheading": "Spot the imposter",
     "filename": "/articles/new/new-01-array-with-all-identical-items.html",
-    "date": "2024-04-30"
+    "date": "2024-05-03"
+  },
+  {
+    "id": 2,
+    "title": "Install Docker on a Steam Deck",
+    "subheading": "(for no reason)",
+    "filename": "/articles/new/new-02-install-docker-on-a-steam-deck.html",
+    "date": "2024-05-06"
   }
 ]

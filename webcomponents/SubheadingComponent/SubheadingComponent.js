@@ -51,9 +51,13 @@ class ArticleSubheading extends HTMLElement {
 }
 
 async function initSubheading(component) {
-  const response = await fetchData("/articles/new/data/new.json");
+  const path = window.location.pathname.split("-");
+  let url = path[0].endsWith("misc")
+    ? `/articles/misc/data/misc.json`
+    : `/articles/new/data/new.json`;
+  const response = await fetchData(url);
   if (response) {
-    const id = parseInt(window.location.pathname.split("-")[1]);
+    const id = parseInt(path[1]);
     const articleInfo = response.find((article) => article.id === id) || {
       subheading: "(No subheading for this article)",
     };

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <h2>Install Docker on a Steam Deck</h2>
+
+        <berry-subheading></berry-subheading>
+
+        <div class="soundcloud-player">
+          <iframe
+            width="100%"
+            height="166"
+            scrolling="no"
+            frameborder="no"
+            allow="autoplay"
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/290716922&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
+          ></iframe>
+          <div
+            style="
+              font-size: 10px;
+              color: #cccccc;
+              line-break: anywhere;
+              word-break: normal;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              font-family: Interstate, Lucida Grande, Lucida Sans Unicode,
+                Lucida Sans, Garuda, Verdana, Tahoma, sans-serif;
+              font-weight: 100;
+            "
+          >
+            <a
+              href="https://soundcloud.com/state-azure"
+              title="State Azure"
+              target="_blank"
+              style="color: #cccccc; text-decoration: none"
+              >State Azure</a
+            >
+            ·
+            <a
+              href="https://soundcloud.com/state-azure/tangerine-deam-love-on-a-real-train-live-cover"
+              title="Tangerine Dream - Love On A Real Train (Live Cover)"
+              target="_blank"
+              style="color: #cccccc; text-decoration: none"
+              >Tangerine Dream - Love On A Real Train (Live Cover)</a
+            >
+          </div>
+        </div>
+
+        <section>
+          <p>
+            Let's just ignore the reason for doing so and only focus on the
+            steps to take in this article. Also,
+          </p>
+
+          <berry-disclaimer>
+            <p slot="disclaimer-text">
+              Everything documented in this article works for me at the time of
+              writing. You may have different experience depending on the
+              version of software you use.
+            </p>
+          </berry-disclaimer>
+
+          <p>
+            Btw, my steam deck is running SteamOS <code>3.5.17</code> (and an
+            update is available right after I managed to set up everything,
+            bruh).
+          </p>
+        </section>
+
+        <section>
+          <p>
+            In general, I followed the steps in
+            <a
+              href="https://gist.github.com/khvn26/9de497852c9934ded840d53a95434942"
+              target="_blank"
+              >this script</a
+            >, but I still think a guide is necessary because there's very
+            little info online
+            <s
+              >and my memory is so bad that I'll likely forget everything 2
+              weeks later.</s
+            >
+            I'll basically refer to this guide step by step with additional
+            commentary on what issue I came across when executing it.
+          </p>
+        </section>
+
+        <section>
+          <h5>Step 1</h5>
+          <p>Install Docker:</p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo pacman -S docker
+            </pre>
+          </berry-code>
+          <p>
+            If the command failed to execute with an error message like
+            <code
+              >error: bridge-utils: signature from "GitLab CI Package Builder
+              ci-package-builder-1@steamos.cloud" is unknown trust :: File
+              /var/cache/pacman/pkg/bridge-utils-1.7.1-1-x86_64.pkg.tar.zst is
+              corrupted (invalid or corrupted package (PGP signature)).</code
+            >, you need to change <code>sigLevel</code> in
+            <code>/etc/pacman.conf</code> to <code>TrustAll</code>(<a
+              href="https://gist.github.com/khvn26/9de497852c9934ded840d53a95434942?permalink_comment_id=4817485#gistcomment-4817485"
+              >see this comment</a
+            >). If you can't find this file you can look for
+            <code>rootfs</code> on the left hand side of the file manager
+            (Dolphin) window. You'll find the <code>etc</code> folder there, and
+            then you can find <code>pacman.conf</code> The configuration should
+            look like this after the edit:
+          </p>
+
+          <berry-code data-title="pacman.conf (Excerpt)" nohighlight>
+            <pre slot="code">
+# ... other configs
+
+# Use # to comment out the default value
+# SigLevel = Required DatabaseOptional
+SigLevel = TrustAll # Add this line
+
+# ... other configs
+            </pre>
+          </berry-code>
+
+          <p>Then, try to run the command again and it should work.</p>
+        </section>
+
+        <section>
+          <h5>Step 2</h5>
+          <p>Enable Docker systemctl unit:</p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
+            </pre>
+          </berry-code>
+
+          <p>
+            You may need to start the docker manually after this step by running
+            <br />
+            <code>sudo systemctl start docker</code>
+          </p>
+        </section>
+
+        <section>
+          <h5>Step 3</h5>
+          <p>Allow X access to containers:</p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+xhost +si:localuser:$USER
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <p>
+            At this stage you can try running the <code>docker -v</code> command
+            and see whether docker's version info shows up. If so, congrats! You
+            are now set.
+          </p>
+          <p class="text-error">
+            Steps below will install
+            <a href="https://wiki.archlinux.org/title/Distrobox" target="_blank"
+              >distrobox</a
+            >
+            and configure a Ubuntu image with VSCode exposed. These steps are
+            optional. You can also see the original post:
+          </p>
+          <blockquote class="reddit-embed-bq" data-embed-height="260">
+            <a
+              href="https://www.reddit.com/r/SteamDeck/comments/11vlvya/comment/jcvl0l2/"
+              >Comment</a
+            ><br />
+            by<a href="https://www.reddit.com/user/Street-Mycologist-51/"
+              >u/Street-Mycologist-51</a
+            >
+            from discussion<a
+              href="https://www.reddit.com/r/SteamDeck/comments/11vlvya/guide_to_docker_on_steam_deck/"
+              ><no value=""></no></a
+            ><br />
+            in<a href="https://www.reddit.com/r/SteamDeck/">SteamDeck</a>
+          </blockquote>
+          <script
+            async=""
+            src="https://embed.reddit.com/widgets.js"
+            charset="UTF-8"
+          ></script>
+          <p>
+            I continued with the original guide anyway since I'll likely to play
+            around with Ubuntu with some of my other projects (but you don't
+            have to).
+          </p>
+        </section>
+
+        <section>
+          <h5>Step 4</h5>
+          <p>Install distrobox:</p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <h5>Step 5</h5>
+          <p>Create an Ubuntu distrobox image with mounted docker.sock:</p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+distrobox create --name ubuntu-22-04 --image ubuntu:22.04 --volume /var/run/docker.sock:/var/run/docker.sock
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <h5>Step 6</h5>
+          <p>
+            In the original guide this is where you enter the Ubuntu container,
+            but I came across this error when running the first command in step
+            7 after entering the container:
+            <code
+              >chmod: changing permission of /var/run/docker.sock: operation not
+              permitted </code
+            >. Therefore, I ended up running the command in the host machine
+            before entering the container:
+          </p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo chmod 666 /var/run/docker.sock
+distrobox enter ubuntu-22-04
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <h5>Step 7</h5>
+          <p>Install Docker CLI and common plugins:</p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg lsb-release
+sudo mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce-cli docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker $USER
+docker info
+            </pre>
+          </berry-code>
+          <!-- There might be something here but I forgor -->
+        </section>
+
+        <section>
+          <h5>Step 8</h5>
+          <p>
+            Install VSCode (download x64 .deb package
+            <a href="https://code.visualstudio.com/docs/?dv=linux64_deb">here</a
+            >):
+          </p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo dpkg -i ~/Downloads/code_1.76.2-1678817801_amd64.deb
+sudo apt-get -f install
+            </pre>
+          </berry-code>
+
+          <p class="text-error">
+            Make sure to use the correct path with the actual version of the
+            VSCode you downloaded in the command. Also, these two commands need
+            to run together since the -f (fix-broken) option with apt-get
+            install is used to correct a system with broken dependencies in
+            place. It will attempt to correct a system with broken dependencies
+            by downloading and installing the missing dependencies.
+          </p>
+        </section>
+
+        <section>
+          <h5>Step 9</h5>
+          <p>
+            Allow host xdg-open to process requests from inside the distrobox
+            container:
+          </p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo ln -s /usr/bin/distrobox-host-exec /usr/local/bin/xdg-open
+            </pre>
+          </berry-code>
+
+          <p>
+            If you get an error saying
+            <code
+              >failed to create symbolic link /usr/local/bin/xdg-open: file
+              exists</code
+            >, you can remove the existing one and then create the new symbolic
+            link as intended:
+          </p>
+
+          <ol>
+            <li>
+              Check what currently exists at /usr/local/bin/xdg-open:
+              <berry-code data-title="Command" nohighlight>
+                <pre slot="code">
+ls -l /usr/local/bin/xdg-open
+                </pre>
+              </berry-code>
+            </li>
+            <li>
+              Back up the existing file or link (optional):
+              <berry-code data-title="Command" nohighlight>
+                <pre slot="code">
+sudo mv /usr/local/bin/xdg-open /usr/local/bin/xdg-open.backup
+                </pre>
+              </berry-code>
+            </li>
+            <li>
+              Create the new symbolic link as specified in the setup guide:
+              <berry-code data-title="Command" nohighlight>
+                <pre slot="code">
+sudo ln -s /usr/bin/distrobox-host-exec /usr/local/bin/xdg-open
+                </pre>
+              </berry-code>
+            </li>
+            <li>
+              Verify the new link:
+              <berry-code data-title="Command" nohighlight>
+                <pre slot="code">
+ls -l /usr/local/bin/xdg-open
+                </pre>
+              </berry-code>
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h5>Step 10</h5>
+          <p>Export VSCode shortcut:</p>
+
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+distrobox-export --app code
+            </pre>
+          </berry-code>
+
+          <p>
+            You don't need to worried about mixing up the existing VSCode (if
+            any) on the host (steam deck) and the one in the container. If you
+            go to the start menu, you can easily tell them apart.
+          </p>
+        </section>
+
+        <section>
+          <p>
+            And that's it. I'll update this article if I come across any other
+            issues.
+          </p>
+
+          <berry-img data-title="Ubuntu container" data-src="/articles/images/new/02/IMG_1200.JPG"></berry-img>
+
+          <berry-img data-title="Docker running" data-src="/articles/images/new/02/IMG_1201.JPG"></berry-img>
+
+          <berry-img data-title="Hello world demo" data-src="/articles/images/new/02/IMG_1202.JPG"></berry-img>
+
+          <berry-img data-title="VSCode" data-src="/articles/images/new/02/IMG_1204.JPG"></berry-img>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+    </main>
+
+    <berry-footer></berry-footer>
+
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

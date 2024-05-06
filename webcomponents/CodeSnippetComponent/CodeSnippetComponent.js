@@ -25,6 +25,7 @@ class CodeSnippet extends HTMLElement {
   }
 
   render() {
+    //   const lang = this.getAttribute("code-lang")
     //   const shouldShowDemo = this.getAttribute("runnable");
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
@@ -57,18 +58,16 @@ class CodeSnippet extends HTMLElement {
     const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
 
     const fragment = document.createDocumentFragment();
-
-    lines.forEach((line, index) => {
+    for (let index = 0; index < lines.length; index++) {
       const brEl = document.createElement("br");
       const spanEl = document.createElement("span");
       spanEl.className = "line-number";
       spanEl.textContent = `${index + 1}`;
       fragment.appendChild(spanEl);
       fragment.appendChild(brEl);
-    });
-
+    }
     // Clear existing content if any
-    lineNumberContainer.innerHTML = "";
+    // lineNumberContainer.innerHTML = "";
     lineNumberContainer.appendChild(fragment); // Append all at once
   }
 
@@ -95,6 +94,7 @@ class CodeSnippet extends HTMLElement {
 
   // in theory this can be put inside render()
   highlightCode() {
+    const skipHighight = this.getAttribute("nohighlight");
     const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
     if (!codeSlot) {
       console.error("Code slot not found");
@@ -107,20 +107,22 @@ class CodeSnippet extends HTMLElement {
       )
       .join("");
 
-    const keywords =
-      "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
-    codeContent = codeContent.replace(
-      new RegExp(keywords, "g"),
-      '<span class="keyword">$1</span>'
-    );
-    codeContent = codeContent.replace(
-      /(\/\/.*$)/gm,
-      '<span class="comment">$1</span>'
-    );
-    codeContent = codeContent.replace(
-      /(\/\*[\s\S]*?\*\/)/gm,
-      '<span class="comment">$1</span>'
-    );
+    if (!skipHighight && skipHighight !== "") {
+      const keywords =
+        "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
+      codeContent = codeContent.replace(
+        new RegExp(keywords, "g"),
+        '<span class="keyword">$1</span>'
+      );
+      codeContent = codeContent.replace(
+        /(\/\/.*$)/gm,
+        '<span class="comment">$1</span>'
+      );
+      codeContent = codeContent.replace(
+        /(\/\*[\s\S]*?\*\/)/gm,
+        '<span class="comment">$1</span>'
+      );
+    }
 
     codeSlot.insertAdjacentHTML("beforebegin", codeContent);
   }

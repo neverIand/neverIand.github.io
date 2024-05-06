@@ -2,23 +2,23 @@ class ImageComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.img = document.createElement("img");
-    this.img.addEventListener("click", () => this.toggleFullscreen());
+    // this.img = document.createElement("img");
+    // this.img.addEventListener("click", () => this.toggleFullscreen());
   }
 
   connectedCallback() {
     this.render();
   }
 
+  addFullScreenEventListener() {
+    const img = this.shadowRoot.getElementById("image");
+    img.addEventListener("click", this.toggleFullscreen());
+  }
+
   render() {
     const title = this.getAttribute("data-title") || "";
-    const placeholder = this.getAttribute("data-alt") || "";
-    const width = this.getAttribute("data-width") || "600px";
-
-    this.img.title = title;
-    this.img.alt = placeholder;
-    this.img.style.transition = "opacity 0.5s";
-    this.img.style.opacity = "0";
+    const placeholder = this.getAttribute("data-alt") || title;
+    const width = this.getAttribute("data-width") || "auto";
 
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
@@ -26,10 +26,20 @@ class ImageComponent extends HTMLElement {
         :host {
           display: block;
         }
+        #container {
+          position: relative;
+          width: 100%;
+        }
+        p {
+          margin: 0;
+          text-align: center;
+        }
         img {
+          opacity: 0;
           width: 100%;
           max-width: ${width};
           height: auto;
+          transition: opacity 0.5s;
         }
         #modal {
           display: none;
@@ -49,25 +59,29 @@ class ImageComponent extends HTMLElement {
           aspect-ratio: auto;
         }
       </style>
+      <div id="container">
+        <img id="image" title="${title}" alt="${placeholder}"></img>
+        <p>${title}<p>
+      </div>
       <div id="modal">
         <img></img>
       </div>
       `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    this.shadowRoot.appendChild(this.img);
 
     this.observeImage();
   }
 
   observeImage() {
+    const img = this.shadowRoot.getElementById("image");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            this.img.src =
+            img.src =
               this.getAttribute("data-src") ||
               "/articles/images/NoMediaAvailable.png";
-            this.img.onload = () => (this.img.style.opacity = "1"); // Fade in the image once loaded
+            img.onload = () => (img.style.opacity = "1"); // Fade in the image once loaded
             observer.disconnect();
           }
         });
@@ -77,7 +91,7 @@ class ImageComponent extends HTMLElement {
       }
     );
 
-    observer.observe(this.img);
+    observer.observe(img);
   }
 
   toggleFullscreen() {

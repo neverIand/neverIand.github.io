@@ -21,25 +21,30 @@
   user-select: none;
 }
 .snippet-content {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  overflow: hidden;
+  overflow-x: auto;
 }
 .line-numbers {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  left: 0;
   padding: 0 5px;
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
   user-select: none;
   border-right: 1px solid;
+  background-color: #fff;
 }
 ::slotted(pre) {
   display: none;
 }
 pre {
   margin: 0;
-  padding-left: 5px;
-  overflow-x: auto;
+  padding: 0 5px;
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
