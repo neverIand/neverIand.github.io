@@ -79,6 +79,15 @@ section {
   padding: 0 10px;
   /* border: 1px solid red; */
 }
+section ul,
+section ol {
+  padding: 0 1em;
+}
+section ul > li,
+section ol > li {
+  line-height: 150%;
+  margin-top: 10px;
+}
 main {
   flex: 1;
   position: relative;

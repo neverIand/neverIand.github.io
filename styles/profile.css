@@ -2,3 +2,23 @@ section {
   max-width: 840px;
   border: 1px solid;
 }
+section {
+  padding: 10px;
+}
+section h2 {
+  text-align: center;
+}
+section p {
+  line-height: 175%;
+}
+a.project-link {
+  font-weight: bold;
+}
+.external-link {
+  padding: 10px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+.external-link a {
+  line-height: 200%;
+}

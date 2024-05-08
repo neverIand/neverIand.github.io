@@ -24,15 +24,6 @@ section {
 section p {
   line-height: 175%;
 }
-section ul,
-section ol {
-  padding: 0 1em;
-}
-section ul > li,
-section ol > li {
-  line-height: 150%;
-  margin-top: 10px;
-}
 blockquote {
   margin: 0;
 }
