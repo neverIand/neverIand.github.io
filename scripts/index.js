@@ -34,13 +34,19 @@ function renderArticleList(elementId, data) {
     console.error("Element not found:", elementId);
     return;
   }
-  data.reverse().forEach((article) => {
-    const articleEl = document.createElement("berry-article");
-    articleEl.setAttribute("data-title", article.title);
-    articleEl.setAttribute("data-url", article.filename);
-    articleEl.setAttribute("data-subheading", article.subheading);
-    listEl.appendChild(articleEl);
-  });
+  data
+    .sort((a, b) => compareDate(a.lastUpdate || a.date, b.lastUpdate || b.date))
+    .forEach((article) => {
+      const articleEl = document.createElement("berry-article");
+      articleEl.setAttribute("data-title", article.title);
+      articleEl.setAttribute("data-url", article.filename);
+      articleEl.setAttribute("data-subheading", article.subheading);
+      listEl.appendChild(articleEl);
+    });
+}
+
+function compareDate(date1, date2) {
+  return new Date(date2) - new Date(date1);
 }
 
 document.addEventListener("DOMContentLoaded", initHomePage);
