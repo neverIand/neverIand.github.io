@@ -2,17 +2,21 @@ class ImageComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    // this.img = document.createElement("img");
-    // this.img.addEventListener("click", () => this.toggleFullscreen());
   }
 
   connectedCallback() {
     this.render();
   }
 
-  addFullScreenEventListener() {
+  // or just use arrow function
+  addFullScreenEventListener(src) {
     const img = this.shadowRoot.getElementById("image");
-    img.addEventListener("click", this.toggleFullscreen());
+    img.addEventListener(
+      "click",
+      function () {
+        this.toggleFullscreen(img, src);
+      }.bind(this)
+    );
   }
 
   render() {
@@ -29,6 +33,7 @@ class ImageComponent extends HTMLElement {
         #container {
           position: relative;
           width: 100%;
+          max-width: ${width};
         }
         p {
           margin: 0;
@@ -37,7 +42,6 @@ class ImageComponent extends HTMLElement {
         img {
           opacity: 0;
           width: 100%;
-          max-width: ${width};
           height: auto;
           transition: opacity 0.5s;
         }
@@ -55,6 +59,7 @@ class ImageComponent extends HTMLElement {
           z-index: 9999;
         }
         #modal img{
+          opacity: 1;
           max-width: 100%;
           aspect-ratio: auto;
         }
@@ -69,18 +74,18 @@ class ImageComponent extends HTMLElement {
       `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-    this.observeImage();
+    const src = this.getAttribute("data-src");
+    this.addFullScreenEventListener(src);
+    this.observeImage(src);
   }
 
-  observeImage() {
+  observeImage(src) {
     const img = this.shadowRoot.getElementById("image");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            img.src =
-              this.getAttribute("data-src") ||
-              "/articles/images/NoMediaAvailable.png";
+            img.src = src || "/articles/images/NoMediaAvailable.png";
             img.onload = () => (img.style.opacity = "1"); // Fade in the image once loaded
             observer.disconnect();
           }
@@ -94,15 +99,16 @@ class ImageComponent extends HTMLElement {
     observer.observe(img);
   }
 
-  toggleFullscreen() {
+  toggleFullscreen(img, src) {
     // this.showModal();
     if (document.fullscreenEnabled) {
       if (!document.fullscreenElement) {
-        this.img.requestFullscreen().catch((err) => {
+        console.log("try fullscreen");
+        img.requestFullscreen().catch((err) => {
           console.error(
             `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
           );
-          this.showModal(); // Show modal on fullscreen error
+          this.showModal(src); // Show modal on fullscreen error
         });
       } else {
         if (document.exitFullscreen) {
@@ -110,15 +116,16 @@ class ImageComponent extends HTMLElement {
         }
       }
     } else {
-      this.showModal(); // Show modal if fullscreen is not supported
+      this.showModal(src); // Show modal if fullscreen is not supported
     }
   }
 
-  showModal() {
+  showModal(src) {
+    console.log("showModal");
     const modal = this.shadowRoot.getElementById("modal");
     modal.style.display = "flex";
     const img = modal.querySelector("img");
-    img.src = this.img.src;
+    img.src = src;
     img.addEventListener("click", function () {
       modal.style.display = "none";
     });

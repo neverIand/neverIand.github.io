@@ -7,8 +7,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/common.css" />
-    <!-- This may not be necessary anymore after sidebar becomes a component -->
-    <link rel="stylesheet" href="/styles/index.css" />
+    <link rel="stylesheet" href="/styles/profile.css" />
   </head>
   <noscript>This website requires Javascript to function properly.</noscript>
   <body>
@@ -16,26 +15,23 @@
       ><berry-logo size="50" animate="false" slot="logo"></berry-logo
     ></berry-header>
     <main>
+      <section class="flex-col-center">
+        <berry-img
+          data-width="320px"
+          data-title="On Calton Hill (proof that I actually touch grass)"
+          data-src="/articles/images/profile/me.jpg"
+        ></berry-img>
+      </section>
+
       <section>
-        <h1>WIP</h1>
+        <h2>About Me</h2>
+        <p></p>
       </section>
     </main>
 
     <berry-footer></berry-footer>
 
-    <script type="module" src="/webcomponents/LogoComponent.js"></script>
-    <script
-      type="module"
-      src="/webcomponents/HeaderComponent/HeaderComponent.js"
-    ></script>
-    <script
-      type="module"
-      src="/webcomponents/FooterComponent/FooterComponent.js"
-    ></script>
-    <script
-      type="module"
-      src="/webcomponents/DisclaimerComponent/DisclaimerComponent.js"
-    ></script>
+    <script type="module" src="/scripts/essentials.js"></script>
     <!-- <script src="./scripts/index.js"></script> -->
   </body>
 </html>
