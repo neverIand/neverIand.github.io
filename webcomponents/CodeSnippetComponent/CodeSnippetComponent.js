@@ -87,9 +87,21 @@ class CodeSnippet extends HTMLElement {
     navigator.clipboard
       .writeText(codeContent)
       .then(() => {
-        console.log("Code copied to clipboard!");
+        const msg = "Code copied to clipboard!";
+        console.log(msg);
+        const copyEvent = new CustomEvent("berry-copy", {
+          detail: { type: "success", message: msg },
+        });
+        document.dispatchEvent(copyEvent);
       })
-      .catch((err) => console.error("Failed to copy code: ", err));
+      .catch((err) => {
+        const msg = `Failed to copy code: ${err}`;
+        console.error(msg);
+        const copyEvent = new CustomEvent("berry-copy", {
+          detail: { type: "error", message: msg },
+        });
+        document.dispatchEvent(copyEvent);
+      });
   }
 
   // in theory this can be put inside render()
