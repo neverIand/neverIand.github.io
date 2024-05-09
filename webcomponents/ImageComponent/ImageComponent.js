@@ -48,7 +48,7 @@ class ImageComponent extends HTMLElement {
         #modal {
           display: none;
           justify-content: center;
-          align-items: flex-start;
+          align-items: center;
           position: fixed;
           top: 0;
           left: 0;
@@ -100,7 +100,7 @@ class ImageComponent extends HTMLElement {
   }
 
   toggleFullscreen(img, src) {
-    // this.showModal();
+    // this.showModal(src);
     if (document.fullscreenEnabled) {
       if (!document.fullscreenElement) {
         console.log("try fullscreen");
@@ -121,14 +121,21 @@ class ImageComponent extends HTMLElement {
   }
 
   showModal(src) {
-    console.log("showModal");
     const modal = this.shadowRoot.getElementById("modal");
     modal.style.display = "flex";
     const img = modal.querySelector("img");
     img.src = src;
     img.addEventListener("click", function () {
       modal.style.display = "none";
+      const blockScrollEvent = new CustomEvent("blockScroll", {
+        detail: { block: false },
+      });
+      document.dispatchEvent(blockScrollEvent);
     });
+    const blockScrollEvent = new CustomEvent("blockScroll", {
+      detail: { block: true },
+    });
+    document.dispatchEvent(blockScrollEvent);
   }
 }
 

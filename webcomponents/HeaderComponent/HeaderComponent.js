@@ -36,7 +36,7 @@ class CustomHeader extends HTMLElement {
         </div>
         <div id="links">
           <ul>
-            <li><a href='/articles/misc/profile.html'>profile</a></li>
+            <li><a href='/articles/misc/profile.html'>about</a></li>
             <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
           </ul>
         </div>
