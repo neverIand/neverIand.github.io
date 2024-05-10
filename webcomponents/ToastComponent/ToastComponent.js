@@ -16,16 +16,16 @@ class ToastComponent extends HTMLElement {
             position: fixed;
             top: 0;
             left: 10px;
-            transform: translateY(-100%);
+            transform: translateY(-200%);
           }
           #toast {
             padding: 10px 20px;
             color: white;
             background-color: black;
-            transition: transform 0.5s;
+            transition: all 0.5s;
           }
           .show {
-            transform: translateY(100%);
+            transform: translateY(200%);
           }
         </style>
         <div id="toast">
