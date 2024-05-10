@@ -147,6 +147,7 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
 
         <section>
           <code>&lt;berry-toast&gt;</code>
+          <!-- This willbe overidden if there's toast below -->
           <berry-toast timeout="1000"></berry-toast>
           <button style="width: 80px" onclick="dispatchToast('success')">
             success
@@ -170,7 +171,6 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
     </main>
 
     <berry-footer></berry-footer>
-
     <script type="module" src="/scripts/essentials.js"></script>
     <script type="module" src="/scripts/articles.js"></script>
     <script
