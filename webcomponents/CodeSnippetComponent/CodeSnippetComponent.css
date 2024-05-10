@@ -40,7 +40,10 @@
   background-color: #fff;
 }
 ::slotted(pre) {
-  display: none;
+  /* display: none; */
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
 }
 pre {
   margin: 0;
