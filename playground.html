@@ -148,6 +148,15 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
         <section>
           <code>&lt;berry-toast&gt;</code>
           <berry-toast></berry-toast>
+          <button style="width: 80px" onclick="dispatchToast()">test</button>
+          <script>
+            function dispatchToast() {
+              const copyEvent = new CustomEvent("berry-copy", {
+                detail: { type: "success", message: "Hello world" },
+              });
+              document.dispatchEvent(copyEvent);
+            }
+          </script>
         </section>
       </article>
     </main>

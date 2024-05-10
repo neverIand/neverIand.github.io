@@ -21,18 +21,27 @@ class ArticleSubheading extends HTMLElement {
       this.shadowRoot.appendChild(styleElement);
     }
     const styles = `
-    h4 {
+    :host {
+      --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Times New Roman", Times, Georgia, serif;
+    }
+    .heading {
       margin: 0;
+      text-align: center;
       font-family: var(--title-font);
+    }
+    h2 {
+      font-size: 2em;
+    }
+    h4 {
       font-size: 1.5em;
       color: grey;
-      /* border: 1px solid; */
     }
     `;
     styleElement.textContent = styles;
   }
 
-  renderSubheading(elementId, data) {
+  renderHeading(elementId, data) {
     const headingEl = this.shadowRoot.getElementById(elementId);
     if (!headingEl) {
       console.error("Element not found:", elementId);
@@ -44,7 +53,8 @@ class ArticleSubheading extends HTMLElement {
   render() {
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
-      <h4 id="subheading"></h4>
+      <h2 id="heading" class="heading"></h2>
+      <h4 id="subheading" class="heading"></h4>
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
@@ -61,12 +71,13 @@ async function initSubheading(component) {
     const articleInfo = response.find((article) => article.id === id) || {
       subheading: "(No subheading for this article)",
     };
-    component.renderSubheading("subheading", articleInfo.subheading);
+    component.renderHeading("heading", articleInfo.title);
+    component.renderHeading("subheading", articleInfo.subheading);
   }
 }
 
-if (!customElements.get("berry-subheading")) {
-  customElements.define("berry-subheading", ArticleSubheading);
+if (!customElements.get("berry-heading")) {
+  customElements.define("berry-heading", ArticleSubheading);
 }
 
 export default ArticleSubheading;
