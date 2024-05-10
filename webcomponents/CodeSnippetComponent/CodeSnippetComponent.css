@@ -2,7 +2,9 @@
   --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
   --code-font-size: 1em;
   --code-line-height: 125%;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -24,6 +26,7 @@
   position: relative;
   display: flex;
   align-items: flex-start;
+  min-height: 1em;
   overflow-x: auto;
 }
 .line-numbers {
@@ -49,6 +52,12 @@ pre {
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
 }
+#result {
+  padding: 5px;
+  font-family: var(--code-font);
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+}
 .comment,
 .comment .keyword {
   color: #008000;
@@ -56,4 +65,7 @@ pre {
 }
 .keyword {
   color: #0000ff;
+}
+button {
+  cursor: pointer;
 }

@@ -12,6 +12,7 @@ class CodeSnippet extends HTMLElement {
     this.addCopyButtonEventListener();
     this.updateLineNumbers();
     this.highlightCode();
+    this.addRunButtonEventListener();
   }
 
   loadStyles() {
@@ -26,7 +27,7 @@ class CodeSnippet extends HTMLElement {
 
   render() {
     //   const lang = this.getAttribute("code-lang")
-    //   const shouldShowDemo = this.getAttribute("runnable");
+    const shouldDemo = this.getAttribute("runnable");
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
 
@@ -41,6 +42,19 @@ class CodeSnippet extends HTMLElement {
             <slot name="code"></slot>
         </div>
     </div>
+    ${
+      shouldDemo === ""
+        ? `
+      <div class="snippet-container">
+        <div class="snippet-header">
+          Result
+          <button id="run-btn">Run</button>
+        </div>
+        <div id="result" class="snippet-content">
+        </div>
+      </div>`
+        : ""
+    }
     `;
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -107,13 +121,13 @@ class CodeSnippet extends HTMLElement {
   // in theory this can be put inside render()
   highlightCode() {
     const skipHighight = this.getAttribute("nohighlight");
-    const codeSlot = this.shadowRoot.querySelector('slot[name="code"]');
-    if (!codeSlot) {
+    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    if (!slot) {
       console.error("Code slot not found");
       return;
     }
 
-    let codeContent = Array.from(codeSlot.assignedNodes({ flatten: true }))
+    let codeContent = Array.from(slot.assignedNodes({ flatten: true }))
       .map((node) =>
         node.nodeType === Node.TEXT_NODE ? node.textContent : node.outerHTML
       )
@@ -136,7 +150,40 @@ class CodeSnippet extends HTMLElement {
       );
     }
 
-    codeSlot.insertAdjacentHTML("beforebegin", codeContent);
+    slot.insertAdjacentHTML("beforebegin", codeContent);
+  }
+
+  addRunButtonEventListener() {
+    const runButton = this.shadowRoot.getElementById("run-btn");
+    if (runButton) {
+      runButton.addEventListener("click", () => this.runCode());
+    }
+  }
+
+  runCode() {
+    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    const codeContent = slot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent)
+      .join("\n");
+
+    const resultContainer = this.shadowRoot.getElementById("result");
+    resultContainer.innerHTML = ""; // Clear previous results
+
+    // Override console.log
+    const originalConsoleLog = console.log;
+    console.log = (...args) => {
+      resultContainer.innerHTML += args.join(" ") + "<br>"; // Display logged items
+    };
+
+    try {
+      new Function(codeContent)(); // Execute the code
+    } catch (error) {
+      resultContainer.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`; // Display errors
+    }
+
+    // Restore original console.log
+    console.log = originalConsoleLog;
   }
 }
 
