@@ -22,10 +22,16 @@ class ToastComponent extends HTMLElement {
             padding: 10px 20px;
             color: white;
             background-color: black;
-            transition: all 0.5s;
+            transition: all 0.3s;
           }
-          .show {
+          #toast.show {
             transform: translateY(200%);
+          }
+          #toast.error {
+            background-color: red;
+          }
+          #toast.warning {
+            background-color: orange;
           }
         </style>
         <div id="toast">
@@ -47,13 +53,15 @@ class ToastComponent extends HTMLElement {
   }
 
   showToast(e) {
+    const timeout = this.getAttribute("timeout") || 2000;
     const t = this.shadowRoot.getElementById("toast");
     t.textContent = e.detail.message;
     t.classList.add("show");
-    // TODO: toast type
+    t.classList.add(e.detail.type);
     setTimeout(function () {
       t.classList.remove("show");
-    }, 2000);
+      t.classList.remove(e.detail.type);
+    }, timeout);
   }
 }
 

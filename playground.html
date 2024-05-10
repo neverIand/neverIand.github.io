@@ -147,12 +147,20 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
 
         <section>
           <code>&lt;berry-toast&gt;</code>
-          <berry-toast></berry-toast>
-          <button style="width: 80px" onclick="dispatchToast()">test</button>
+          <berry-toast timeout="1000"></berry-toast>
+          <button style="width: 80px" onclick="dispatchToast('success')">
+            success
+          </button>
+          <button style="width: 80px" onclick="dispatchToast('warning')">
+            warning
+          </button>
+          <button style="width: 80px" onclick="dispatchToast('error')">
+            error
+          </button>
           <script>
-            function dispatchToast() {
+            function dispatchToast(type) {
               const copyEvent = new CustomEvent("berry-copy", {
-                detail: { type: "success", message: "Hello world" },
+                detail: { type, message: type },
               });
               document.dispatchEvent(copyEvent);
             }
