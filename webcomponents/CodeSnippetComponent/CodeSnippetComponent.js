@@ -13,7 +13,7 @@ class CodeSnippet extends HTMLElement {
     this.updateLineNumbers();
     this.highlightCode();
     this.addRunButtonEventListener();
-    this.checkReader();
+    // this.checkReader();
   }
 
   loadStyles() {
@@ -185,14 +185,14 @@ class CodeSnippet extends HTMLElement {
     console.log = originalConsoleLog;
   }
 
-  checkReader() {
-    const snippet = this.shadowRoot.querySelector("pre");
-    console.log(snippet);
-    if (snippet.childElementCount === 0) {
-      const slot = this.querySelector("pre");
-      slot.style.display = "block";
-    }
-  }
+  // checkReader() {
+  //   const snippet = this.shadowRoot.querySelector("pre");
+  //   console.log(snippet);
+  //   if (snippet.childElementCount === 0) {
+  //     const slot = this.querySelector("pre");
+  //     slot.style.display = "block";
+  //   }
+  // }
 }
 
 if (!customElements.get("berry-code")) {
