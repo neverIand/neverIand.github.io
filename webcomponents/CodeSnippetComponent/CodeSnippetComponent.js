@@ -13,6 +13,7 @@ class CodeSnippet extends HTMLElement {
     this.updateLineNumbers();
     this.highlightCode();
     this.addRunButtonEventListener();
+    this.checkReader();
   }
 
   loadStyles() {
@@ -38,7 +39,7 @@ class CodeSnippet extends HTMLElement {
           <button id="copy-btn">Copy</button>
         </div>
         <div class="snippet-content">
-            <div class="line-numbers"></div>
+            <div class="line-numbers text"></div>
             <slot name="code"></slot>
         </div>
     </div>
@@ -50,7 +51,7 @@ class CodeSnippet extends HTMLElement {
           Result
           <button id="run-btn">Run</button>
         </div>
-        <div id="result" class="snippet-content">
+        <div id="result" class="snippet-content text">
         </div>
       </div>`
         : ""
@@ -75,7 +76,6 @@ class CodeSnippet extends HTMLElement {
     for (let index = 0; index < lines.length; index++) {
       const brEl = document.createElement("br");
       const spanEl = document.createElement("span");
-      spanEl.className = "line-number";
       spanEl.textContent = `${index + 1}`;
       fragment.appendChild(spanEl);
       fragment.appendChild(brEl);
@@ -168,22 +168,30 @@ class CodeSnippet extends HTMLElement {
       .join("\n");
 
     const resultContainer = this.shadowRoot.getElementById("result");
-    resultContainer.innerHTML = ""; // Clear previous results
+    resultContainer.innerHTML = "";
 
-    // Override console.log
     const originalConsoleLog = console.log;
     console.log = (...args) => {
-      resultContainer.innerHTML += args.join(" ") + "<br>"; // Display logged items
+      resultContainer.innerHTML += args.join(" ") + "<br>";
     };
 
     try {
       new Function(codeContent)(); // Execute the code
     } catch (error) {
-      resultContainer.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`; // Display errors
+      resultContainer.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
     }
 
     // Restore original console.log
     console.log = originalConsoleLog;
+  }
+
+  checkReader() {
+    const snippet = this.shadowRoot.querySelector("pre");
+    console.log(snippet);
+    if (snippet.childElementCount === 0) {
+      const slot = this.querySelector("pre");
+      slot.style.display = "block";
+    }
   }
 }
 

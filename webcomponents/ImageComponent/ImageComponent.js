@@ -103,7 +103,6 @@ class ImageComponent extends HTMLElement {
     // this.showModal(src);
     if (document.fullscreenEnabled) {
       if (!document.fullscreenElement) {
-        console.log("try fullscreen");
         img.requestFullscreen().catch((err) => {
           console.error(
             `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`
