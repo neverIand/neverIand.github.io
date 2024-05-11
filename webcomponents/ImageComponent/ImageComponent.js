@@ -34,6 +34,7 @@ class ImageComponent extends HTMLElement {
           position: relative;
           width: 100%;
           max-width: ${width};
+          margin-top: 0.5em;
         }
         p {
           margin: 0;
