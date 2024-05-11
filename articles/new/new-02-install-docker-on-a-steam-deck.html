@@ -17,14 +17,14 @@
         <berry-heading></berry-heading>
 
         <div class="soundcloud-player">
-          <iframe
+          <!-- <iframe
             width="100%"
             height="166"
             scrolling="no"
             frameborder="no"
             allow="autoplay"
             src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/290716922&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-          ></iframe>
+          ></iframe> -->
           <div
             style="
               font-size: 10px;
@@ -60,7 +60,10 @@
         <section>
           <p>
             Let's just ignore the reason for doing so and only focus on the
-            steps to take in this article. Also,
+            steps to take in this article. The goal is to make sure everyone,
+            with or without understanding linux, can finish the installation
+            steps following this guide. I'll try to make it as explicit as
+            possible. But, just in case,
           </p>
 
           <berry-disclaimer>
@@ -94,6 +97,24 @@
             I'll basically refer to this guide step by step with additional
             commentary on what issue I came across when executing it.
           </p>
+        </section>
+
+        <section>
+          <h5>Step 0</h5>
+          <p>Disable read-only file system:</p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo steamos-readonly disable
+          </pre
+            >
+          </berry-code>
+          <p>Generate key for pacman:</p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+sudo pacman-key --init
+          </pre
+            >
+          </berry-code>
         </section>
 
         <section>
@@ -168,8 +189,24 @@ xhost +si:localuser:$USER
           <p>
             Be sure docker is already running. If not, you may need to start the
             docker manually by running
-            <br />
             <code>sudo systemctl start docker</code>
+            or just restart your steam deck.
+          </p>
+          <p>
+            If you come across an error when running <code>docker images</code> like <code
+              >permission denied while trying to connect to the Docker daemon
+              socket at unix:///var/run/docker.sock: Get
+              "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/images/json": dial unix
+              /var/run/docker.sock: connect: permission denied</code
+            >, it means your current user does not have the permissions needed
+            to access the Docker socket file. You can run
+            <code>sudo usermod -aG docker $USER</code> and then
+            <b>restart</b> the steam deck.
+            <b
+              >This is actually included in a later step of the original
+              guide, but I moved it here in case you don't want to install
+              distrobox.</b
+            >
           </p>
           <p class="text-error">
             Steps below will install
@@ -262,7 +299,6 @@ echo \
 "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 sudo apt-get install docker-ce-cli docker-buildx-plugin docker-compose-plugin
-sudo usermod -aG docker $USER
 docker info
             </pre>
           </berry-code>
