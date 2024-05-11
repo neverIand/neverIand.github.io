@@ -3,11 +3,12 @@ body {
   justify-content: center;
   align-items: center;
 }
-
 section#intro {
   max-width: 800px;
 }
-
+section#article-list {
+  max-width: 64vw;
+}
 section#article-list h2 {
   width: 100%;
   text-align: center;

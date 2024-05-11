@@ -17,14 +17,14 @@
         <berry-heading></berry-heading>
 
         <div class="soundcloud-player">
-          <!-- <iframe
+          <iframe
             width="100%"
             height="166"
             scrolling="no"
             frameborder="no"
             allow="autoplay"
             src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/290716922&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"
-          ></iframe> -->
+          ></iframe>
           <div
             style="
               font-size: 10px;
@@ -71,6 +71,11 @@
               Everything documented in this article works for me at the time of
               writing. You may have different experience depending on the
               version of software you use.
+            </p>
+            <p slot="disclaimer-text">
+              In case you don't know, Steam Deck will reset the file system to
+              read-only after every SteamOS update, i.e. you'll need to go
+              through everthing in this guide again.
             </p>
           </berry-disclaimer>
 
@@ -193,7 +198,9 @@ xhost +si:localuser:$USER
             or just restart your steam deck.
           </p>
           <p>
-            If you come across an error when running <code>docker images</code> like <code
+            If you come across an error when running
+            <code>docker images</code> like
+            <code
               >permission denied while trying to connect to the Docker daemon
               socket at unix:///var/run/docker.sock: Get
               "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/images/json": dial unix
@@ -203,8 +210,8 @@ xhost +si:localuser:$USER
             <code>sudo usermod -aG docker $USER</code> and then
             <b>restart</b> the steam deck.
             <b
-              >This is actually included in a later step of the original
-              guide, but I moved it here in case you don't want to install
+              >This is actually included in a later step of the original guide,
+              but I moved it here in case you don't want to install
               distrobox.</b
             >
           </p>

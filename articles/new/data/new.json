@@ -20,6 +20,13 @@
     "subheading": "(for no reason)",
     "filename": "/articles/new/new-02-install-docker-on-a-steam-deck.html",
     "date": "2024-05-06",
-    "lastUpdate": "2024-05-12"
+    "lastUpdate": "2024-05-11"
+  },
+  {
+    "id": 3,
+    "title": "Minecraft Server Running in a Docker Container with Steam Deck",
+    "subheading": "How hard could it be?",
+    "filename": "/articles/new/new-03-minecraft-server-running-in-a-docker-container-with-steam-deck.html",
+    "date": "2024-05-12"
   }
 ]
