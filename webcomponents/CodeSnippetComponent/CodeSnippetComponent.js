@@ -11,8 +11,7 @@ class CodeSnippet extends HTMLElement {
     this.render();
     this.addCopyButtonEventListener();
     this.updateLineNumbers();
-    // this.highlightCode();
-    this.addRunButtonEventListener();
+
     // this.checkReader();
   }
 
@@ -29,7 +28,7 @@ class CodeSnippet extends HTMLElement {
   render() {
     //   const lang = this.getAttribute("code-lang")
     const skipHighight = this.getAttribute("nohighlight") === "";
-    const shouldDemo = this.getAttribute("runnable");
+    const shouldDemo = this.getAttribute("runnable") === "";
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
 
@@ -37,6 +36,11 @@ class CodeSnippet extends HTMLElement {
     <div class="snippet-container">
         <div class="snippet-header">
           ${title}
+          ${
+            skipHighight
+              ? ""
+              : `<button id="og-btn" data-hl="true">Toggle Highlight</button>`
+          }
           <button id="copy-btn">Copy</button>
         </div>
         <div class="snippet-content">
@@ -45,7 +49,7 @@ class CodeSnippet extends HTMLElement {
         </div>
     </div>
     ${
-      shouldDemo === ""
+      shouldDemo
         ? `
       <div class="snippet-container">
         <div class="snippet-header">
@@ -62,10 +66,14 @@ class CodeSnippet extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     if (!skipHighight) {
       const slot = this.querySelector("pre");
-      // console.log(slot);
+      //   console.log(slot);
       // slot.className = "hide";
       slot.style.display = "none";
       this.highlightCode();
+      this.addShowOGEventListener();
+    }
+    if (shouldDemo === "") {
+      this.addRunButtonEventListener();
     }
   }
 
@@ -93,9 +101,27 @@ class CodeSnippet extends HTMLElement {
     lineNumberContainer.appendChild(fragment); // Append all at once
   }
 
+  //   TODO: switch to a toggle
+  addShowOGEventListener() {
+    const btn = this.shadowRoot.getElementById("og-btn");
+    btn.addEventListener("click", () => {
+      const slottedPre = this.querySelector(`pre`);
+      const renderedPre = this.shadowRoot.querySelector("pre");
+      if (btn.getAttribute("data-hl") === "true") {
+        slottedPre.style.display = "block";
+        renderedPre.style.display = "none";
+        btn.setAttribute("data-hl", false);
+      } else {
+        slottedPre.style.display = "none";
+        renderedPre.style.display = "block";
+        btn.setAttribute("data-hl", true);
+      }
+    });
+  }
+
   addCopyButtonEventListener() {
-    const button = this.shadowRoot.getElementById("copy-btn");
-    button.addEventListener("click", () => {
+    const btn = this.shadowRoot.getElementById("copy-btn");
+    btn.addEventListener("click", () => {
       this.copyCodeToClipboard();
     });
   }
