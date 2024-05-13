@@ -11,8 +11,6 @@ class CodeSnippet extends HTMLElement {
     this.render();
     this.addCopyButtonEventListener();
     this.updateLineNumbers();
-
-    // this.checkReader();
   }
 
   loadStyles() {
@@ -36,12 +34,14 @@ class CodeSnippet extends HTMLElement {
     <div class="snippet-container">
         <div class="snippet-header">
           ${title}
-          ${
-            skipHighight
-              ? ""
-              : `<button id="og-btn" data-hl="true">Toggle Highlight</button>`
-          }
-          <button id="copy-btn">Copy</button>
+          <div class="btn-wrapper">
+            ${
+              skipHighight
+                ? ""
+                : `<input type="checkbox" id="og-btn" data-hl="true" checked /><label for="og-btn">Highlight</label>`
+            }
+            <button id="copy-btn">Copy</button>
+          </div>
         </div>
         <div class="snippet-content">
             <div class="line-numbers text"></div>
@@ -66,13 +66,11 @@ class CodeSnippet extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     if (!skipHighight) {
       const slot = this.querySelector("pre");
-      //   console.log(slot);
-      // slot.className = "hide";
       slot.style.display = "none";
       this.highlightCode();
       this.addShowOGEventListener();
     }
-    if (shouldDemo === "") {
+    if (shouldDemo) {
       this.addRunButtonEventListener();
     }
   }
@@ -101,7 +99,6 @@ class CodeSnippet extends HTMLElement {
     lineNumberContainer.appendChild(fragment); // Append all at once
   }
 
-  //   TODO: switch to a toggle
   addShowOGEventListener() {
     const btn = this.shadowRoot.getElementById("og-btn");
     btn.addEventListener("click", () => {
@@ -215,15 +212,6 @@ class CodeSnippet extends HTMLElement {
     // Restore original console.log
     console.log = originalConsoleLog;
   }
-
-  // checkReader() {
-  //   const snippet = this.shadowRoot.querySelector("pre");
-  //   console.log(snippet);
-  //   if (snippet.childElementCount === 0) {
-  //     const slot = this.querySelector("pre");
-  //     slot.style.display = "block";
-  //   }
-  // }
 }
 
 if (!customElements.get("berry-code")) {

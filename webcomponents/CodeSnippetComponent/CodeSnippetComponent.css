@@ -19,8 +19,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 5px;
+  gap: 5px;
   border-bottom: 1px solid;
   user-select: none;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .snippet-content {
   position: relative;
@@ -64,5 +70,11 @@ pre {
   color: #0000ff;
 }
 button {
+  margin-left: 5px;
+  cursor: pointer;
+}
+label,
+input[type="checkbox"] {
+  font-size: 0.8em;
   cursor: pointer;
 }
