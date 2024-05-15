@@ -108,6 +108,10 @@ code {
 hr {
   margin: 20px 0;
 }
+label,
+input[type="checkbox"] {
+  cursor: pointer;
+}
 
 /* Simple, tailwind-free util classes */
 
@@ -139,7 +143,7 @@ hr {
   border-radius: 12px;
 }
 /* soundcloud iframe&div should be inside this div */
-.soundcloud-player{
+.soundcloud-player {
   width: 100%;
   margin: 10px;
   text-align: center;

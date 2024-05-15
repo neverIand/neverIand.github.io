@@ -85,14 +85,12 @@ services:
     ports:
       - "25565:25565"
     restart: unless-stopped
-
             </pre>
           </berry-code>
           <p>This is equivalent to the command below:</p>
           <berry-code data-title="Command" nohighlight>
             <pre slot="code">
 docker run -d --name tfg-server -v "${PWD}:/data" -e TYPE=AUTO_CURSEFORGE -e CF_API_KEY='YOUR_CURSEFORGE_API_KEY' -e CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/terrafirmagreg/files/5307891 -e CF_EXCLUDE_MODS='823106 270441 833233' -e MEMORY=8G -p 25565:25565 -e EULA=TRUE itzg/minecraft-server:java17
-
             </pre>
           </berry-code>
         </section>
@@ -175,7 +173,7 @@ docker run -d --name tfg-server -v "${PWD}:/data" -e TYPE=AUTO_CURSEFORGE -e CF_
           </p>
           <ol>
             <li>
-              Go to the where you want to store the server data and create a new
+              Go to the directory you want to store the server data and create a new
               folder, e.g. <code>tfg-server</code>.
             </li>
             <li>
