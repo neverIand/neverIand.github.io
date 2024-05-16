@@ -1,5 +1,3 @@
-import { fetchData } from "/scripts/fetchData.js";
-
 class ToggleComponent extends HTMLElement {
   constructor() {
     super();
@@ -8,21 +6,88 @@ class ToggleComponent extends HTMLElement {
     });
   }
 
+  static get observedAttributes() {
+    return ["data-checked"];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch (name) {
+      case 'data-checked':
+        // TODO: update the checkbox status
+        break;
+      default:
+        break;
+    }
+  }
+
+
   connectedCallback() {
     this.render();
   }
 
+  // TODO: listen for theme-change event
   render() {
+    const size = this.getAttribute("data-size") || "50px";
+    const label = this.getAttribute("data-label") || "";
+    // TODO: monitor the checked state
+    const checked = this.getAttribute("data-checked") || "";
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
     <style>
     :host {
-        border: 1px solid red;
+        --btn-width: ${size};
+        --btn-height: calc(var(--btn-width) * 0.6);
+        --toggle-diameter: calc(var(--btn-width) * 0.5);
+        --toggle-shadow-offset: calc(var(--btn-width) * 0.02);
+        --toggle-wide: calc(var(--toggle-diameter) * 1.2);
+        --color-grey: #E9E9EA;
+        --color-dark-grey: #39393D;
+        --color-green: #30D158;
+        --color-purple: rgb(121,0,142);
+    }
+    span {
+      display: inline-block;
+      position: relative;
+      width: var(--btn-width);
+      height: var(--btn-height);
+      background-color: var(--color-grey);
+      border: 1px solid var(--color-dark-grey);
+      transition: .3s all ease-in-out;
+      cursor: pointer;
+    }
+    span::after {
+      position: absolute;
+      top: 0;
+      content: '${label}';
+      display: inline-block;
+      width: var(--toggle-diameter);
+      height: var(--btn-height);
+      background-color: #fff;
+      transform: translateX(0px);
+      box-shadow: var(--toggle-shadow-offset) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0,0,0,0.5);
+      transition: .3s all ease-in-out;
+    }
+    input[type="checkbox"]:checked+span {
+      background-color: var(--color-purple);
+    }
+    input[type="checkbox"]:checked + span::after {
+      transform: translateX(calc(var(--btn-width) - var(--toggle-diameter)));
+      box-shadow: calc(var(--toggle-shadow-offset) * -1) 0 calc(var(--toggle-shadow-offset) * 4) rgba(0,0,0,0.5);
+    }
+    input[type="checkbox"]:active + span::after {
+      width: var(--toggle-wide);
+    }
+    input[type="checkbox"]:checked:active + span::after {
+      transform: translateX(calc(var(--btn-width) - var(--toggle-wide)));
+    }
+    input[type="checkbox"] {
+      display: none;
     }
     </style>
-    <div>
-
-    </div>
+    <label for="toggle">
+      <input type="checkbox" id="toggle" ${checked ? "checked" : ""}>
+      <span></span>
+    </label>
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }

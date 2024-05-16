@@ -21,9 +21,6 @@ class LogoComponent extends HTMLElement {
   }
 
   render() {
-    const style = document.createElement("style");
-    this.shadowRoot.appendChild(style);
-
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
     <div class="square outline">
@@ -47,7 +44,6 @@ class LogoComponent extends HTMLElement {
     const rightSquareWidth = length / 2;
     const coreWidth = length / 3;
 
-    // The attributeChangedCallback might be getting called before the connectedCallback i.e <style> may not exist
     let styleElement = this.shadowRoot.querySelector("style");
     if (!styleElement) {
       styleElement = document.createElement("style");
@@ -62,14 +58,13 @@ class LogoComponent extends HTMLElement {
         --logo-left-square-width: ${leftSquareWidth}px;
         --logo-right-square-width: ${rightSquareWidth}px;
         --logo-core-width: ${coreWidth}px;
+        --logo-color: rgb(121,0,142);
     }
-
     .square {
         background-color: white;
-        border: var(--logo-border-width) solid purple;
+        border: var(--logo-border-width) solid var(--logo-color);
         border-radius: var(--logo-border-radius);
     }
-
     .outline {
         position: relative;
         width: var(--length);
@@ -77,7 +72,6 @@ class LogoComponent extends HTMLElement {
         z-index: 200;
         overflow: hidden;
     }
-
     .left-square {
         position: absolute;
         top: calc(var(--length) * 0.3);
@@ -90,7 +84,6 @@ class LogoComponent extends HTMLElement {
           isAnimated === "true" ? "transformLeft 4s infinite linear" : "inherit"
         };
     }
-
     .right-square {
         position: absolute;
         top: calc(var(--length) * calc(1 / 15));
@@ -103,7 +96,6 @@ class LogoComponent extends HTMLElement {
           isAnimated === "true" ? "transformLeft 4s infinite linear" : "none"
         };
     }
-
     .core {
         position: relative;
         top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);

@@ -1,4 +1,5 @@
 import "../LogoComponent.js";
+import "../ToggleComponent/ToggleComponent.js";
 
 class CustomHeader extends HTMLElement {
   constructor() {
@@ -11,6 +12,7 @@ class CustomHeader extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this.addToggleListener();
   }
 
   // TODO: add data-theme
@@ -40,11 +42,20 @@ class CustomHeader extends HTMLElement {
           <ul>
             <li><a href='/articles/misc/profile.html'>about</a></li>
             <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
+            <!--<li><berry-toggle data-label="🌙"></berry-toggle></li>-->
           </ul>
         </div>
       </header>
   `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+
+  addToggleListener() {
+    const toggle = this.shadowRoot.querySelector("berry-toggle");
+    if (!toggle) {
+      return;
+    }
+
   }
 }
 
