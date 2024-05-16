@@ -6,30 +6,15 @@ class ToggleComponent extends HTMLElement {
     });
   }
 
-  static get observedAttributes() {
-    return ["data-checked"];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    switch (name) {
-      case 'data-checked':
-        // TODO: update the checkbox status
-        break;
-      default:
-        break;
-    }
-  }
-
-
   connectedCallback() {
     this.render();
+    this.addClickListener();
   }
 
   // TODO: listen for theme-change event
   render() {
     const size = this.getAttribute("data-size") || "50px";
     const label = this.getAttribute("data-label") || "";
-    // TODO: monitor the checked state
     const checked = this.getAttribute("data-checked") || "";
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
@@ -91,6 +76,15 @@ class ToggleComponent extends HTMLElement {
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
+
+  addClickListener() {
+    const checkbox = this.shadowRoot.querySelector("input");
+    checkbox.addEventListener("click", (e) => {
+      // console.log(checkbox.checked);
+      this.setAttribute("data-checked", checkbox.checked);
+    });
+  }
+
 }
 
 if (!customElements.get("berry-toggle")) {
