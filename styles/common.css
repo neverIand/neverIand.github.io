@@ -20,6 +20,7 @@
   --header-bg-color: rgba(255, 255, 255, 0.8);
   --content-bg-color: #fff;
   --article-bg-color: #fff;
+  --visited-link-color: rgb(121, 0, 142);
   --text-color: #000;
   --text-muted-color: rgb(100, 100, 100);
   --text-error-color: red;
@@ -29,6 +30,7 @@
   --header-bg-color: rgba(0, 0, 0, 0.7);
   --content-bg-color: #404040;
   --article-bg-color: #404040;
+  --visited-link-color: rgb(206, 113, 245);
   --text-color: #fff;
 }
 /* TODO: web components non rendered */
@@ -81,7 +83,10 @@ a {
   text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+  text-decoration: underline var(--text-color);
+}
+a:visited {
+  color: var(--visited-link-color);
 }
 section {
   display: flex;

@@ -1,9 +1,11 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class LogoComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({
       mode: "open",
     });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   static get observedAttributes() {
@@ -61,7 +63,7 @@ class LogoComponent extends HTMLElement {
         --logo-color: rgb(121,0,142);
     }
     .square {
-        background-color: white;
+        background-color: var(--bg-color);
         border: var(--logo-border-width) solid var(--logo-color);
         border-radius: var(--logo-border-radius);
     }
@@ -102,7 +104,7 @@ class LogoComponent extends HTMLElement {
         width: var(--logo-core-width);
         height: var(--logo-core-width);
         margin: auto;
-        border: var(--logo-border-width) solid black;
+        border: var(--logo-border-width) solid var(--text-color);
     }
     /* TODO: replace with variables */
     @keyframes transformLeft {
