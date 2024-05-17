@@ -15,20 +15,20 @@ class ToggleComponent extends HTMLElement {
   render() {
     const size = this.getAttribute("data-size") || "50px";
     const label = this.getAttribute("data-label") || "";
-    const checked = this.getAttribute("data-checked") || "";
+    const checked = this.getAttribute("data-checked") === "";
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
     <style>
     :host {
-        --btn-width: ${size};
-        --btn-height: calc(var(--btn-width) * 0.6);
-        --toggle-diameter: calc(var(--btn-width) * 0.5);
-        --toggle-shadow-offset: calc(var(--btn-width) * 0.02);
-        --toggle-wide: calc(var(--toggle-diameter) * 1.2);
-        --color-grey: #E9E9EA;
-        --color-dark-grey: #39393D;
-        --color-green: #30D158;
-        --color-purple: rgb(121,0,142);
+      --btn-width: ${size};
+      --btn-height: calc(var(--btn-width) * 0.6);
+      --toggle-diameter: calc(var(--btn-width) * 0.5);
+      --toggle-shadow-offset: calc(var(--btn-width) * 0.02);
+      --toggle-wide: calc(var(--toggle-diameter) * 1.2);
+      --color-grey: #E9E9EA;
+      --color-dark-grey: #39393D;
+      --color-green: #30D158;
+      --color-purple: rgb(121,0,142);
     }
     span {
       display: inline-block;
@@ -66,7 +66,7 @@ class ToggleComponent extends HTMLElement {
       transform: translateX(calc(var(--btn-width) - var(--toggle-wide)));
     }
     input[type="checkbox"] {
-      display: none;
+      /* display: none; */
     }
     </style>
     <label for="toggle">
@@ -80,11 +80,10 @@ class ToggleComponent extends HTMLElement {
   addClickListener() {
     const checkbox = this.shadowRoot.querySelector("input");
     checkbox.addEventListener("click", (e) => {
-      // console.log(checkbox.checked);
       this.setAttribute("data-checked", checkbox.checked);
+      e.stopPropagation();
     });
   }
-
 }
 
 if (!customElements.get("berry-toggle")) {

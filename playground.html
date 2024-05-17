@@ -36,7 +36,7 @@
 
         <section>
           <code>&lt;berry-header&gt;</code>
-          <berry-header> </berry-header>
+          <berry-header disable-theme-toggle> </berry-header>
         </section>
 
         <hr />
@@ -160,7 +160,7 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
           </button>
           <script>
             function dispatchToast(type) {
-              const copyEvent = new CustomEvent("berry-copy", {
+              const copyEvent = new CustomEvent("berry-toast", {
                 detail: { type, message: type },
               });
               document.dispatchEvent(copyEvent);

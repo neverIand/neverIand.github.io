@@ -45,7 +45,7 @@ class ToastComponent extends HTMLElement {
 
   addCopyEventListener() {
     document.addEventListener(
-      "berry-copy",
+      "berry-toast",
       function (e) {
         this.showToast(e);
       }.bind(this)

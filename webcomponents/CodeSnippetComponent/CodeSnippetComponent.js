@@ -134,7 +134,7 @@ class CodeSnippet extends HTMLElement {
       .then(() => {
         const msg = "Code copied to clipboard!";
         console.log(msg);
-        const copyEvent = new CustomEvent("berry-copy", {
+        const copyEvent = new CustomEvent("berry-toast", {
           detail: { type: "success", message: msg },
         });
         document.dispatchEvent(copyEvent);
@@ -142,7 +142,7 @@ class CodeSnippet extends HTMLElement {
       .catch((err) => {
         const msg = `Failed to copy code: ${err}`;
         console.error(msg);
-        const copyEvent = new CustomEvent("berry-copy", {
+        const copyEvent = new CustomEvent("berry-toast", {
           detail: { type: "error", message: msg },
         });
         document.dispatchEvent(copyEvent);
