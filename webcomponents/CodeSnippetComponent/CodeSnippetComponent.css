@@ -10,7 +10,7 @@
 }
 .snippet-container {
   position: relative;
-  border: 1px solid;
+  border: 1px solid var(--text-color);
 }
 .snippet-header {
   position: relative;
@@ -20,6 +20,7 @@
   align-items: center;
   padding: 5px;
   gap: 5px;
+  color: var(--text-color);
   border-bottom: 1px solid;
   user-select: none;
 }
@@ -33,6 +34,7 @@
   display: flex;
   align-items: flex-start;
   min-height: 1em;
+  background-color: var(--bg-color);
   overflow-x: auto;
 }
 .line-numbers {
@@ -41,14 +43,16 @@
   top: 0;
   left: 0;
   padding: 0 5px;
-  user-select: none;
+  color: var(--text-color);
+  background-color: var(--content-bg-color);
   border-right: 1px solid;
-  background-color: #fff;
+  user-select: none;
 }
 ::slotted(pre),
 pre {
   margin: 0;
   padding: 0 5px !important;
+  color: var(--text-color);
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);

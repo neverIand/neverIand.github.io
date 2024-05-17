@@ -5,6 +5,7 @@ body {
 }
 section#intro {
   max-width: 800px;
+  color: var(--text-color);
 }
 section#article-list {
   max-width: 64vw;

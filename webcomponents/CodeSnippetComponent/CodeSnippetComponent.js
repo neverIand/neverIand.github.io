@@ -1,3 +1,4 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class CodeSnippet extends HTMLElement {
   constructor() {
     super();
@@ -5,6 +6,7 @@ class CodeSnippet extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {

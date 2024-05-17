@@ -1,4 +1,5 @@
 import { fetchData } from "/scripts/fetchData.js";
+import { getTheme } from "/scripts/theme.js";
 import "/webcomponents/ArticleComponent/ArticleComponent.js";
 
 function initHomePage() {
@@ -41,6 +42,7 @@ function renderArticleList(elementId, data) {
       articleEl.setAttribute("data-title", article.title);
       articleEl.setAttribute("data-url", article.filename);
       articleEl.setAttribute("data-subheading", article.subheading);
+      articleEl.setAttribute("data-theme", getTheme());
       listEl.appendChild(articleEl);
     });
 }

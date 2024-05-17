@@ -1,4 +1,5 @@
 import { fetchData } from "/scripts/fetchData.js";
+import { handleThemeChange } from "/scripts/theme.js";
 
 class CustomDate extends HTMLElement {
   constructor() {
@@ -7,6 +8,7 @@ class CustomDate extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {

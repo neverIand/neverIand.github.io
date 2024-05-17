@@ -10,17 +10,27 @@
   font-family: Libre Baskerville Italic;
   src: url("/fonts/LibreBaskerville-Italic.ttf");
 }
-
-/* TODO: components can access variables */
 :root {
   --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
     "Times New Roman", Times, Georgia, serif;
   --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
   --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
+
+  --bg-color: #fff;
+  --header-bg-color: rgba(255, 255, 255, 0.8);
+  --content-bg-color: #fff;
+  --article-bg-color: #fff;
+  --text-color: #000;
   --text-muted-color: rgb(100, 100, 100);
   --text-error-color: red;
 }
-
+[data-theme="dark"] {
+  --bg-color: #000;
+  --header-bg-color: rgba(0, 0, 0, 0.7);
+  --content-bg-color: #404040;
+  --article-bg-color: #404040;
+  --text-color: #fff;
+}
 /* TODO: web components non rendered */
 :not(:defined) {
   display: block;
@@ -38,6 +48,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: var(--body-font);
+  background-color: var(--bg-color);
 }
 h1,
 h2,
@@ -45,6 +56,7 @@ h3,
 h4,
 h5,
 h6 {
+  color: var(--text-color);
   font-family: var(--title-font);
 }
 h1 {
@@ -85,6 +97,7 @@ section ol {
 }
 section ul > li,
 section ol > li {
+  color: var(--text-color);
   line-height: 150%;
   margin-top: 10px;
 }
@@ -94,6 +107,7 @@ main {
 }
 berry-disclaimer > p {
   margin-top: 1em;
+  color: #000 !important;
 }
 code {
   display: inline;
@@ -102,11 +116,13 @@ code {
   align-self: flex-start;
   font-family: var(--code-font);
   word-wrap: break-word;
+  color: #000;
   background-color: #f4f4f4;
   border-radius: 2px;
 }
 hr {
   margin: 20px 0;
+  width: 100%;
 }
 label,
 input[type="checkbox"] {

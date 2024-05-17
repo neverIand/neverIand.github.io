@@ -1,4 +1,5 @@
 import { fetchData } from "/scripts/fetchData.js";
+import { handleThemeChange } from "/scripts/theme.js";
 
 class ArticleSubheading extends HTMLElement {
   constructor() {
@@ -7,6 +8,7 @@ class ArticleSubheading extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
@@ -31,6 +33,7 @@ class ArticleSubheading extends HTMLElement {
       font-family: var(--title-font);
     }
     h2 {
+      color: var(--text-color);
       font-size: 2em;
     }
     h4 {

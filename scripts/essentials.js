@@ -1,12 +1,20 @@
+import { getTheme, setTheme } from "./theme.js";
 import "/webcomponents/LogoComponent.js";
 import "/webcomponents/HeaderComponent/HeaderComponent.js";
 import "/webcomponents/FooterComponent/FooterComponent.js";
 import "/webcomponents/DisclaimerComponent/DisclaimerComponent.js";
 import "/webcomponents/ImageComponent/ImageComponent.js";
 import "/webcomponents/ToolbarComponent/ToolbarComponent.js";
-// TODO: implement theme checking logic
+
+document.addEventListener("DOMContentLoaded", function () {
+  const currTheme = document.querySelector("html").getAttribute("data-theme");
+  if (!currTheme) {
+    setTheme(getTheme());
+  }
+});
+
 document.addEventListener("berry-theme", function (e) {
-  console.log(e.detail);
+  setTheme(e.detail.theme);
 });
 
 document.addEventListener("blockScroll", function (e) {

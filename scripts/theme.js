@@ -14,6 +14,7 @@ export function getTheme() {
 export function setTheme(theme) {
   try {
     localStorage.setItem("berry-theme", theme);
+    document.querySelector("html").setAttribute("data-theme", theme);
     return theme;
   } catch (e) {
     console.error(e);
@@ -36,4 +37,8 @@ export function dispatchThemeChangeEvent() {
     });
     document.dispatchEvent(themeEvent);
   }
+}
+
+export function handleThemeChange(event, el) {
+  el.setAttribute("data-theme", event.detail.theme);
 }

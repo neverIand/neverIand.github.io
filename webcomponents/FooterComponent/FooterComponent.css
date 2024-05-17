@@ -1,9 +1,9 @@
 :host {
   width: 100%;
   font-family: var(--font-main, sans-serif);
-  border-top: 1px solid;
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--content-bg-color);
 }
-
 ul {
   display: flex;
   flex-wrap: wrap;
@@ -13,23 +13,20 @@ ul {
   padding: 10px;
   list-style: none;
 }
-
 a {
   padding: 4px 8px;
-  color: black;
+  color: var(--text-color);
   font-family: consolas, "Menlo", "Monaco", "Courier New", monospace;
   text-decoration: none;
   border-radius: 4px;
   transition: color 0.3s, background-color 0.3s;
 }
-
 a:hover,
 a:focus {
   color: #ff6600;
   text-decoration: underline;
   background-color: #f2f2f2;
 }
-
 a:visited {
   color: #7744aa;
 }

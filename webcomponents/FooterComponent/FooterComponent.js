@@ -1,3 +1,4 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class CustomFooter extends HTMLElement {
   constructor() {
     super();
@@ -5,11 +6,11 @@ class CustomFooter extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
     this.render();
-    // this.attachInfo();
   }
 
   loadStyles() {
@@ -23,7 +24,6 @@ class CustomFooter extends HTMLElement {
   }
 
   render() {
-    // Create and append the footer template
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
     <footer id="footer">

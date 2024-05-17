@@ -66,7 +66,7 @@ class ToggleComponent extends HTMLElement {
       transform: translateX(calc(var(--btn-width) - var(--toggle-wide)));
     }
     input[type="checkbox"] {
-      /* display: none; */
+      display: none;
     }
     </style>
     <label for="toggle">

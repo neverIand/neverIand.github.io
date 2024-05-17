@@ -2,7 +2,6 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: 1px solid red; */
 }
 article {
   display: flex;
@@ -13,6 +12,7 @@ article {
   padding: 20px;
   width: 100%;
   max-width: 840px;
+  background-color: var(--article-bg-color);
   border: 1px solid;
 }
 article h2 {
@@ -22,6 +22,7 @@ section {
   width: 100%;
 }
 section p {
+  color: var(--text-color);
   line-height: 175%;
 }
 blockquote {
@@ -29,6 +30,7 @@ blockquote {
 }
 blockquote p {
   padding: 10px;
+  color: #000;
   background: #eee;
   border-radius: 5px;
 }

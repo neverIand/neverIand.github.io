@@ -1,6 +1,6 @@
 import "../LogoComponent.js";
 import "../ToggleComponent/ToggleComponent.js";
-import { dispatchThemeChangeEvent, getTheme } from "../../scripts/theme.js";
+import { dispatchThemeChangeEvent, getTheme,handleThemeChange  } from "../../scripts/theme.js";
 class CustomHeader extends HTMLElement {
   constructor() {
     super();
@@ -8,13 +8,13 @@ class CustomHeader extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
     this.render();
   }
 
-  // TODO: add data-theme
   loadStyles() {
     const styles = document.createElement("link");
     styles.setAttribute("rel", "stylesheet");
@@ -25,7 +25,6 @@ class CustomHeader extends HTMLElement {
     this.shadowRoot.appendChild(styles);
   }
 
-  // TODO: add data-theme
   // TODO: replace ul with a hamburger menu on mobile
   render() {
     // in case more than 1 header on the same page
@@ -43,9 +42,9 @@ class CustomHeader extends HTMLElement {
           <ul>
             <li><a href='/articles/misc/profile.html'>about</a></li>
             <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
-            <!--<li><berry-toggle data-label="🌙" ${
+            <li><berry-toggle data-label="🌙" ${
               getTheme() === "light" ? "" : "data-checked"
-            }></berry-toggle></li>-->
+            }></berry-toggle></li>
           </ul>
         </div>
       </header>
@@ -61,9 +60,7 @@ class CustomHeader extends HTMLElement {
     if (!toggle) {
       return;
     }
-
     toggle.addEventListener("click", () => {
-      // console.log("curr theme:", getTheme());
       dispatchThemeChangeEvent();
     });
   }

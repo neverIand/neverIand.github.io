@@ -17,6 +17,7 @@ class ToastComponent extends HTMLElement {
             top: 0;
             left: 10px;
             transform: translateY(-200%);
+            z-index: 9999;
           }
           #toast {
             padding: 10px 20px;

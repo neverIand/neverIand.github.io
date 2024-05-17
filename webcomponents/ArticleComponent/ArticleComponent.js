@@ -1,3 +1,4 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class ArticleList extends HTMLElement {
   constructor() {
     super();
@@ -5,13 +6,13 @@ class ArticleList extends HTMLElement {
       mode: "open",
     });
     this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
     this.render();
   }
 
-  // TODO? a shared css for components that conatins all variables
   loadStyles() {
     const styles = document.createElement("link");
     styles.setAttribute("rel", "stylesheet");
@@ -24,7 +25,9 @@ class ArticleList extends HTMLElement {
 
   render() {
     const title = this.getAttribute("data-title");
-    const subheading = this.getAttribute("data-subheading")||'(No subheading for this article)';
+    const subheading =
+      this.getAttribute("data-subheading") ||
+      "(No subheading for this article)";
     const url = this.getAttribute("data-url") || "/404.html";
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
