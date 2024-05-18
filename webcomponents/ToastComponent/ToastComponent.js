@@ -1,7 +1,9 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class ToastComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
@@ -15,18 +17,22 @@ class ToastComponent extends HTMLElement {
           :host {
             position: fixed;
             top: 0;
-            left: 10px;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
             transform: translateY(-200%);
-            z-index: 9999;
+            z-index: 500;
           }
           #toast {
             padding: 10px 20px;
-            color: white;
-            background-color: black;
+            color: var(--bg-color);
+            background-color: var(--text-color);
             transition: all 0.3s;
           }
           #toast.show {
-            transform: translateY(200%);
+            transform: translateY(calc(200% + 70px));
           }
           #toast.error {
             background-color: red;

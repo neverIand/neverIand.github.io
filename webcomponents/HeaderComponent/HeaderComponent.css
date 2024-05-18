@@ -5,6 +5,7 @@
   width: 100%;
   z-index: 1000;
   backdrop-filter: blur(4px) saturate(10%);
+  -webkit-backdrop-filter: blur(4px) saturate(10%);
 }
 header {
   display: flex;

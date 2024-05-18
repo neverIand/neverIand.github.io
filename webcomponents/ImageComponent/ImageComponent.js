@@ -1,7 +1,9 @@
+import { handleThemeChange } from "/scripts/theme.js";
 class ImageComponent extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
@@ -38,6 +40,7 @@ class ImageComponent extends HTMLElement {
         }
         p {
           margin: 0;
+          color: var(--text-color);
           text-align: center;
         }
         img {

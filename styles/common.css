@@ -51,6 +51,7 @@ body {
   min-height: 100vh;
   font-family: var(--body-font);
   background-color: var(--bg-color);
+  /* transition: all 0.3s; */
 }
 h1,
 h2,
