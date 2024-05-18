@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/album=551760206/size=small/bgcol=ffffff/linkcol=0687f5/track=2274526044/transparent=true/"
+          seamless
+          ><a href="https://c418.bandcamp.com/album/minecraft-volume-beta"
+            >Minecraft - Volume Beta by C418</a
+          ></iframe
+        >
+
+        <section>
+          <p>
+            It's hard to believe I'm writing a third blogpost in this series.
+            Anyway, this time I will document how I transfered our own save to
+            the test server I
+            <a
+              href="./new-03-minecraft-server-running-in-a-docker-container-with-steam-deck.html"
+              >previously set up on steam deck</a
+            >, along with how to upgrade the server version (you probably
+            already figured it out yourself), how to run a minecraft server
+            without using docker, and an extremely unscientific testing in terms
+            of server performance on both methods.
+          </p>
+        </section>
+
+        <section>
+          <h5>Loading saves and access server terminal</h5>
+          <p>
+            I aksed my friend (i.e. server owner) to send me our own saves for
+            me to test. In our case (TFG1.20.x), all necessary files are in
+            <code>/world</code> folder, so I only need to overwrite the exact
+            same folder in the container's volume. I was a bit nervous at first
+            because our world was under modpack version 0.6.15 while the version
+            hosted in the container is 0.7.7. Luckliy, there weren't any issue
+            and the server succesfully started again.
+          </p>
+          <p>
+            Another reason my friend sent me the save was that we want to see
+            how the server perform, but because this is still a relatively niche
+            modpack (for now), there isn't any existing saves made by others for
+            testing purpose. For context, at later stages of such modpack,
+            there'll be tons of multiblock structures and automated pipeline,
+            which will definitly have performance requirments on the server
+            hardware. Therefore, we can only use our own game saves to test the
+            performance for now. There was another small issue though: I'm
+            logging in as a new player, so I have an empty inventory and am at
+            spawn. Our in-game base is thousands of blocks away and I don't want
+            to walk all the way there in survival.
+          </p>
+          <p>
+            Therefore, in order to change the game mode, I have to make myself
+            an op. I know almost nothing to minecraft server commands before, so
+            it took me a little while to figure things out. Since we are using
+            docker, we need to access the server console first (don't forget to
+            replace the container name with your own):
+          </p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+docker exec -it tfg-server rcon-cli
+            </pre>
+          </berry-code>
+          <p>
+            Then you can run any kinds of server command you want. In this case,
+          </p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+/op playername
+            </pre>
+          </berry-code>
+          <p>
+            Now, I can finally change the game mode to creative and teleport to
+            our base.
+          </p>
+          <berry-img
+            data-title="It feels really nice to see our base again"
+            data-src="/articles/images/new/04/base_20240518155222.jpg"
+          ></berry-img>
+        </section>
+
+        <section>
+          <h5>Run the server on steam deck directly</h5>
+          <p>
+            I got asked when I was trying to install docker on my SD: why not
+            just run the server directly? Well, yes, I use docker because this
+            is just an excuse for me to learn and use docker. Since we want to
+            do a simple performance comparison later, I took the chance to
+            install JDK on my SD as well. Originally I considered to use the JDK
+            downloaded by
+            <a href="https://prismlauncher.org/" target="_blank"
+              >Prism Launcher</a
+            >, but since these kind of lauchers typically manage games by
+            <b>instances</b>, meaning that if I delete the game instance, the
+            JDK in that instance will also be removed, and I need to download
+            and add JDK to the path again. So I just installed JDK using
+            <a href="https://github.com/BlackCorsair/install-jdk-on-steam-deck"
+              >this script</a
+            >:
+          </p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+git clone https://github.com/BlackCorsair/install-jdk-on-steam-deck.git && \
+JDK_VERSION=17 ./install-jdk-on-steam-deck/scripts/install-jdk.sh
+            </pre>
+          </berry-code>
+          <p>
+            Then you can run <code>java -version</code> to verify the
+            installation.
+          </p>
+          <p>
+            With java installed, I can now execute the jar file in the server
+            version of the modback:
+          </p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+java -jar minecraft_server.jar -Xmx8192M -Xms1024M nogui
+            </pre>
+          </berry-code>
+          <p>
+            (This only applies to this modpack and to be honest, I don't know
+            whether other modpacks works similarly.)
+          </p>
+        </section>
+
+        <section>
+          <h5>A very unscientific performance comparison</h5>
+          <p>
+            The test itself has already been very unscientific given the lack of
+            a more comprehensive save file, and it became even more unscientific
+            after I discovered that I wasn't able to iteract with any block in
+            our base because it's claimed by my friend. Therefore, all machines
+            in our base will only run for a very short period and then stop due
+            to lack of power source. Anyway, I mangaged to run
+            <code>/forge tps</code> before all machines have stopped in the
+            non-container version:
+          </p>
+          <berry-img
+            data-title="Outside container"
+            data-src="/articles/images/new/04/native_20240518164418.jpg"
+          ></berry-img>
+          <berry-img
+            data-title="Inside container"
+            data-src="/articles/images/new/04/container_20240518155640.jpg"
+          ></berry-img>
+          <p>
+            As you can see, the difference is almost neglectable due to lack of
+            performance pressure - both game runs at 20 tps. But, if the result
+            is to be believed, then the non-container version is a bit faster.
+            The gap will definitely be larger with the progression of the game,
+            so I might test it again in the future.
+          </p>
+        </section>
+
+        <section>
+          <h5>Upgrade the modpack</h5>
+          <p>
+            Transferring the save from 0.6.15 to 0.7.7 technically is a server
+            upgrade. Frankly speaking, I haven't come up with a better way than
+            just recreating the container and then transfer the saves (if
+            necessary at all). If you also use docker compose, you only need to
+            replace the <code>CF_PAGE_URL</code> with the newer version of the
+            modpack, just as running the <code>docker run</code> command
+            directly.
+          </p>
+          <p>
+            It might still too early to draw the conclusion since my friends and
+            I are still in early game, but I do think using docker to run a
+            minecraft server is a bit overkill - unless you need to manage
+            multiple server instances or create a image that contains the save
+            files.
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

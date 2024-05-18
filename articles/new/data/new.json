@@ -28,5 +28,12 @@
     "subheading": "How hard could it be?",
     "filename": "/articles/new/new-03-minecraft-server-running-in-a-docker-container-with-steam-deck.html",
     "date": "2024-05-12"
+  },
+  {
+    "id": 4,
+    "title": "Minecraft Server on Steam Deck: Without Container, Backup and More",
+    "subheading": "Upgrade server modpack version and a glimpse of performance",
+    "filename": "/articles/new/new-04-minecraft-server-on-steam-deck-without-container-backup-and-more.html",
+    "date": "2024-05-19"
   }
 ]
