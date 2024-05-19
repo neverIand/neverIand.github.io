@@ -42,6 +42,10 @@ function renderArticleList(elementId, data) {
       articleEl.setAttribute("data-title", article.title);
       articleEl.setAttribute("data-url", article.filename);
       articleEl.setAttribute("data-subheading", article.subheading);
+      articleEl.setAttribute("data-date", article.date);
+      if (article.lastUpdate) {
+        articleEl.setAttribute("data-lastupdate", article.lastUpdate);
+      }
       articleEl.setAttribute("data-theme", getTheme());
       listEl.appendChild(articleEl);
     });

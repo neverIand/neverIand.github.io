@@ -13,6 +13,13 @@
 #article a:hover {
   text-decoration: underline var(--text-color);
 }
+#footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+}
 h4,
 h6 {
   margin: 0;
@@ -24,9 +31,14 @@ h4 {
 }
 h6 {
   color: grey;
+  font-size: 1.2em;
+}
+p {
+  margin: 0;
+  margin-top: 0.5em;
+  color: var(--text-color);
   font-size: 1em;
 }
-
 @media (max-width: 768px) {
   h4 {
     font-size: 1.25em;
