@@ -1,1 +1,73 @@
-import"../LogoComponent.js";import"../ToggleComponent/ToggleComponent.js";import{dispatchThemeChangeEvent,getTheme,handleThemeChange}from"../../scripts/theme.js";class CustomHeader extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.loadStyles(),document.addEventListener("berry-theme",(e=>handleThemeChange(e,this)))}connectedCallback(){this.render()}loadStyles(){const e=document.createElement("link");e.setAttribute("rel","stylesheet"),e.setAttribute("href","/webcomponents/HeaderComponent/HeaderComponent.css"),this.shadowRoot.appendChild(e)}render(){const e=""===this.getAttribute("disable-theme-toggle"),t=document.createElement("template");t.innerHTML=`\n      <header>\n        <div id="logo">\n        <a href="/">\n          <berry-logo size="50" animate="false"></berry-logo>\n        </a>\n          <a href="/"><h1>neverIand</h1></a>\n        </div>\n        <div id="links">\n          <ul>\n            <li><a href='/articles/misc/profile.html'>about</a></li>\n            <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>\n            <li><berry-toggle data-label="🌙" ${"light"===getTheme()?"":"data-checked"}></berry-toggle></li>\n          </ul>\n        </div>\n      </header>\n  `,this.shadowRoot.appendChild(t.content.cloneNode(!0)),e||this.addToggleListener()}addToggleListener(){const e=this.shadowRoot.querySelector("berry-toggle");e&&e.addEventListener("click",(()=>{dispatchThemeChangeEvent()}))}}customElements.get("berry-header")||customElements.define("berry-header",CustomHeader);export default CustomHeader;
+import "../LogoComponent.js";
+import "../ToggleComponent/ToggleComponent.js";
+import { dispatchThemeChangeEvent, getTheme,handleThemeChange  } from "../../scripts/theme.js";
+class CustomHeader extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  loadStyles() {
+    const styles = document.createElement("link");
+    styles.setAttribute("rel", "stylesheet");
+    styles.setAttribute(
+      "href",
+      "/webcomponents/HeaderComponent/HeaderComponent.css"
+    );
+    this.shadowRoot.appendChild(styles);
+  }
+
+  // TODO: replace ul with a hamburger menu on mobile
+  render() {
+    // in case more than 1 header on the same page
+    const disableThemeToggle = this.getAttribute("disable-theme-toggle") === "";
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+      <header>
+        <div id="logo">
+        <a href="/">
+          <berry-logo size="50" animate="false"></berry-logo>
+        </a>
+          <a href="/"><h1>neverIand</h1></a>
+        </div>
+        <div id="links">
+          <ul>
+            <li><a href='/articles/misc/profile.html'>about</a></li>
+            <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
+            <li><berry-toggle data-label="🌙" ${
+              getTheme() === "light" ? "" : "data-checked"
+            }></berry-toggle></li>
+          </ul>
+        </div>
+      </header>
+  `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    if (!disableThemeToggle) {
+      this.addToggleListener();
+    }
+  }
+
+  addToggleListener() {
+    const toggle = this.shadowRoot.querySelector("berry-toggle");
+    if (!toggle) {
+      return;
+    }
+    toggle.addEventListener("click", () => {
+      dispatchThemeChangeEvent();
+    });
+  }
+}
+
+if (!customElements.get("berry-header")) {
+  customElements.define("berry-header", CustomHeader);
+}
+
+export default CustomHeader;

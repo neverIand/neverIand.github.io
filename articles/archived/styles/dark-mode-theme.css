@@ -1,1 +1,38 @@
-:root{--body:black;--theme-inverse:white;--links:white;--links-hover:rgb(49, 114, 255);--links-no-hover:yellow;--color-grey:#39393D;--main:black;--header:rgba(40, 40, 40, .7);--header-title:white;--header-border:rgb(46, 46, 46);--header-shadow:rgb(105, 105, 105);--darkmode-indicator-text:white;--container-shadow:rgb(92, 92, 92);--aside:rgb(49, 49, 49);--sidebar-title:rgb(189, 189, 189);--sidebar-title-background:rgb(82, 82, 82);--sidebar-button:rgb(211, 211, 211);--sidebar-button-hover:rgb(255, 255, 255);--article-list-item-border:rgb(75, 75, 75);--article-main-title:white;--article-sub-title:rgb(158, 158, 158);--article-background:rgb(56, 56, 56);--article-paragraph:rgb(221, 221, 221);--code-background:rgb(36, 36, 36);--footer:white;--contact:rgb(175, 175, 175);--copyright:grey;--certificate:rgb(97, 97, 97);--common-button:rgb(65, 65, 65);--common-button-hover:rgb(44, 44, 44)}
+/* color.adobe.com */
+/* https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/dark-mode/ */
+
+/* Define dark mode colors */
+:root {
+  --body: black;
+  --theme-inverse:white;
+  --links: white;
+  --links-hover: rgb(49, 114, 255);
+  --links-no-hover: yellow;
+  --color-grey: #39393D;
+  --main: black;
+  --header: rgba(40, 40, 40, .7);
+  --header-title: white;
+  --header-border: rgb(46, 46, 46);
+  --header-shadow: rgb(105, 105, 105);
+  --darkmode-indicator-text: white;
+  --container-shadow: rgb(92, 92, 92);
+  --aside: rgb(49, 49, 49);
+  --sidebar-title: rgb(189, 189, 189);
+  --sidebar-title-background: rgb(82, 82, 82);
+  --sidebar-button: rgb(211, 211, 211);
+  --sidebar-button-hover: rgb(255, 255, 255);
+  --article-list-item-border: rgb(75, 75, 75);
+  --article-main-title: white;
+  --article-sub-title: rgb(158, 158, 158);
+  --article-background: rgb(56, 56, 56);
+  --article-paragraph: rgb(221, 221, 221);
+  --code-background: rgb(36, 36, 36);
+  --footer: white;
+  --contact: rgb(175, 175, 175);
+  --copyright: grey;
+  --certificate: rgb(97, 97, 97);
+  --common-button: rgb(65, 65, 65);
+  --common-button-hover: rgb(44, 44, 44);
+}
+
+/* @media (prefers-color-scheme: dark) {} */

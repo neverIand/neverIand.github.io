@@ -1,1 +1,223 @@
-import{handleThemeChange}from"/scripts/theme.js";class CodeSnippet extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.loadStyles(),document.addEventListener("berry-theme",(e=>handleThemeChange(e,this)))}connectedCallback(){this.render(),this.addCopyButtonEventListener(),this.updateLineNumbers()}loadStyles(){const e=document.createElement("link");e.setAttribute("rel","stylesheet"),e.setAttribute("href","/webcomponents/CodeSnippetComponent/CodeSnippetComponent.css"),this.shadowRoot.appendChild(e)}render(){const e=""===this.getAttribute("nohighlight"),t=""===this.getAttribute("runnable"),n=this.getAttribute("data-title")||"Code Snippet",o=document.createElement("template");if(o.innerHTML=`\n    <div class="snippet-container">\n        <div class="snippet-header">\n          ${n}\n          <div class="btn-wrapper">\n            ${e?"":'<input type="checkbox" id="og-btn" data-hl="true" checked /><label for="og-btn">Highlight</label>'}\n            <button id="copy-btn">Copy</button>\n          </div>\n        </div>\n        <div class="snippet-content">\n            <div class="line-numbers text"></div>\n            <slot name="code"></slot>\n        </div>\n    </div>\n    ${t?'\n      <div class="snippet-container">\n        <div class="snippet-header">\n          Result\n          <button id="run-btn">Run</button>\n        </div>\n        <div id="result" class="snippet-content text">\n        </div>\n      </div>':""}\n    `,this.shadowRoot.appendChild(o.content.cloneNode(!0)),!e){this.querySelector("pre").style.display="none",this.highlightCode(),this.addShowOGEventListener()}t&&this.addRunButtonEventListener()}updateLineNumbers(){const e=this.shadowRoot.querySelector("slot[name='code']").assignedNodes({flatten:!0}).find((e=>e.nodeType===Node.TEXT_NODE||"PRE"===e.tagName)),t=(e?e.textContent:"").split("\n"),n=this.shadowRoot.querySelector(".line-numbers"),o=document.createDocumentFragment();for(let e=0;e<t.length;e++){const t=document.createElement("br"),n=document.createElement("span");n.textContent=`${e+1}`,o.appendChild(n),o.appendChild(t)}n.appendChild(o)}addShowOGEventListener(){const e=this.shadowRoot.getElementById("og-btn");e.addEventListener("click",(()=>{const t=this.querySelector("pre"),n=this.shadowRoot.querySelector("pre");"true"===e.getAttribute("data-hl")?(t.style.display="block",n.style.display="none",e.setAttribute("data-hl",!1)):(t.style.display="none",n.style.display="block",e.setAttribute("data-hl",!0))}))}addCopyButtonEventListener(){this.shadowRoot.getElementById("copy-btn").addEventListener("click",(()=>{this.copyCodeToClipboard()}))}copyCodeToClipboard(){const e=this.shadowRoot.querySelector('slot[name="code"]').assignedNodes({flatten:!0}).map((e=>e.textContent)).join("\n");navigator.clipboard.writeText(e).then((()=>{const e="Code copied to clipboard!";console.log(e);const t=new CustomEvent("berry-toast",{detail:{type:"success",message:e}});document.dispatchEvent(t)})).catch((e=>{const t=`Failed to copy code: ${e}`;console.error(t);const n=new CustomEvent("berry-toast",{detail:{type:"error",message:t}});document.dispatchEvent(n)}))}highlightCode(){const e=this.shadowRoot.querySelector('slot[name="code"]');if(!e)return void console.error("Code slot not found");let t=Array.from(e.assignedNodes({flatten:!0})).map((e=>e.nodeType===Node.TEXT_NODE?e.textContent:e.outerHTML)).join("");t=t.replace(new RegExp("\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b","g"),'<span class="keyword">$1</span>'),t=t.replace(/(\/\/.*$)/gm,'<span class="comment">$1</span>'),t=t.replace(/(\/\*[\s\S]*?\*\/)/gm,'<span class="comment">$1</span>'),e.insertAdjacentHTML("beforebegin",t),this.shadowRoot.querySelector("pre").style.display="block"}addRunButtonEventListener(){const e=this.shadowRoot.getElementById("run-btn");e&&e.addEventListener("click",(()=>this.runCode()))}runCode(){const e=this.shadowRoot.querySelector('slot[name="code"]').assignedNodes({flatten:!0}).map((e=>e.textContent)).join("\n"),t=this.shadowRoot.getElementById("result");t.innerHTML="";const n=console.log;console.log=(...e)=>{t.innerHTML+=e.join(" ")+"<br>"};try{new Function(e)()}catch(e){t.innerHTML=`<span style="color: red;">Error: ${e.message}</span>`}console.log=n}}customElements.get("berry-code")||customElements.define("berry-code",CodeSnippet);export default CodeSnippet;
+import { handleThemeChange } from "/scripts/theme.js";
+class CodeSnippet extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+    this.addCopyButtonEventListener();
+    this.updateLineNumbers();
+  }
+
+  loadStyles() {
+    const styles = document.createElement("link");
+    styles.setAttribute("rel", "stylesheet");
+    styles.setAttribute(
+      "href",
+      "/webcomponents/CodeSnippetComponent/CodeSnippetComponent.css"
+    );
+    this.shadowRoot.appendChild(styles);
+  }
+
+  render() {
+    //   const lang = this.getAttribute("code-lang")
+    const skipHighight = this.getAttribute("nohighlight") === "";
+    const shouldDemo = this.getAttribute("runnable") === "";
+    const title = this.getAttribute("data-title") || "Code Snippet";
+    const template = document.createElement("template");
+
+    template.innerHTML = /*html*/ `
+    <div class="snippet-container">
+        <div class="snippet-header">
+          ${title}
+          <div class="btn-wrapper">
+            ${
+              skipHighight
+                ? ""
+                : `<input type="checkbox" id="og-btn" data-hl="true" checked /><label for="og-btn">Highlight</label>`
+            }
+            <button id="copy-btn">Copy</button>
+          </div>
+        </div>
+        <div class="snippet-content">
+            <div class="line-numbers text"></div>
+            <slot name="code"></slot>
+        </div>
+    </div>
+    ${
+      shouldDemo
+        ? `
+      <div class="snippet-container">
+        <div class="snippet-header">
+          Result
+          <button id="run-btn">Run</button>
+        </div>
+        <div id="result" class="snippet-content text">
+        </div>
+      </div>`
+        : ""
+    }
+    `;
+
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    if (!skipHighight) {
+      const slot = this.querySelector("pre");
+      slot.style.display = "none";
+      this.highlightCode();
+      this.addShowOGEventListener();
+    }
+    if (shouldDemo) {
+      this.addRunButtonEventListener();
+    }
+  }
+
+  updateLineNumbers() {
+    const node = this.shadowRoot
+      .querySelector("slot[name='code']")
+      .assignedNodes({ flatten: true })
+      .find(
+        (node) => node.nodeType === Node.TEXT_NODE || node.tagName === "PRE"
+      );
+    const codeContent = node ? node.textContent : "";
+    const lines = codeContent.split("\n");
+    const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
+
+    const fragment = document.createDocumentFragment();
+    for (let index = 0; index < lines.length; index++) {
+      const brEl = document.createElement("br");
+      const spanEl = document.createElement("span");
+      spanEl.textContent = `${index + 1}`;
+      fragment.appendChild(spanEl);
+      fragment.appendChild(brEl);
+    }
+    // Clear existing content if any
+    // lineNumberContainer.innerHTML = "";
+    lineNumberContainer.appendChild(fragment); // Append all at once
+  }
+
+  addShowOGEventListener() {
+    const btn = this.shadowRoot.getElementById("og-btn");
+    btn.addEventListener("click", () => {
+      const slottedPre = this.querySelector(`pre`);
+      const renderedPre = this.shadowRoot.querySelector("pre");
+      if (btn.getAttribute("data-hl") === "true") {
+        slottedPre.style.display = "block";
+        renderedPre.style.display = "none";
+        btn.setAttribute("data-hl", false);
+      } else {
+        slottedPre.style.display = "none";
+        renderedPre.style.display = "block";
+        btn.setAttribute("data-hl", true);
+      }
+    });
+  }
+
+  addCopyButtonEventListener() {
+    const btn = this.shadowRoot.getElementById("copy-btn");
+    btn.addEventListener("click", () => {
+      this.copyCodeToClipboard();
+    });
+  }
+
+  copyCodeToClipboard() {
+    const slot = this.shadowRoot.querySelector(`slot[name="code"]`);
+    const codeContent = slot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent)
+      .join("\n");
+    navigator.clipboard
+      .writeText(codeContent)
+      .then(() => {
+        const msg = "Code copied to clipboard!";
+        console.log(msg);
+        const copyEvent = new CustomEvent("berry-toast", {
+          detail: { type: "success", message: msg },
+        });
+        document.dispatchEvent(copyEvent);
+      })
+      .catch((err) => {
+        const msg = `Failed to copy code: ${err}`;
+        console.error(msg);
+        const copyEvent = new CustomEvent("berry-toast", {
+          detail: { type: "error", message: msg },
+        });
+        document.dispatchEvent(copyEvent);
+      });
+  }
+
+  highlightCode() {
+    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    if (!slot) {
+      console.error("Code slot not found");
+      return;
+    }
+
+    let codeContent = Array.from(slot.assignedNodes({ flatten: true }))
+      .map((node) =>
+        node.nodeType === Node.TEXT_NODE ? node.textContent : node.outerHTML
+      )
+      .join("");
+
+    const keywords =
+      "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
+    codeContent = codeContent.replace(
+      new RegExp(keywords, "g"),
+      '<span class="keyword">$1</span>'
+    );
+    codeContent = codeContent.replace(
+      /(\/\/.*$)/gm,
+      '<span class="comment">$1</span>'
+    );
+    codeContent = codeContent.replace(
+      /(\/\*[\s\S]*?\*\/)/gm,
+      '<span class="comment">$1</span>'
+    );
+
+    slot.insertAdjacentHTML("beforebegin", codeContent);
+    this.shadowRoot.querySelector("pre").style.display = "block";
+  }
+
+  addRunButtonEventListener() {
+    const runButton = this.shadowRoot.getElementById("run-btn");
+    if (runButton) {
+      runButton.addEventListener("click", () => this.runCode());
+    }
+  }
+
+  runCode() {
+    const slot = this.shadowRoot.querySelector('slot[name="code"]');
+    const codeContent = slot
+      .assignedNodes({ flatten: true })
+      .map((node) => node.textContent)
+      .join("\n");
+
+    const resultContainer = this.shadowRoot.getElementById("result");
+    resultContainer.innerHTML = "";
+
+    const originalConsoleLog = console.log;
+    console.log = (...args) => {
+      resultContainer.innerHTML += args.join(" ") + "<br>";
+    };
+
+    try {
+      new Function(codeContent)(); // Execute the code
+    } catch (error) {
+      resultContainer.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+    }
+
+    // Restore original console.log
+    console.log = originalConsoleLog;
+  }
+}
+
+if (!customElements.get("berry-code")) {
+  customElements.define("berry-code", CodeSnippet);
+}
+
+export default CodeSnippet;
