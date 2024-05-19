@@ -1,0 +1,1 @@
+export async function fetchData(t){try{const r=await fetch(t);if(!r.ok)throw new Error(`HTTP error, status: ${r.status}`);return await r.json()}catch(t){return console.error(t),null}}

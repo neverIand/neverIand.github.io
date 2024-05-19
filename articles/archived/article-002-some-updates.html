@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./styles/archived.css" />
+    <link
+      href="./styles/light-mode-theme.css"
+      rel="stylesheet"
+      type="text/css"
+      id="theme-link"
+    />
+    <script src="./scripts/archived.js" defer></script>
+    <script src="../../webcomponents/DisclaimerComponent/DisclaimerComponent.js" type="module" defer></script>
+  </head>
+  <body>
+    <header>
+      <a href="/index.html">
+        <h1>Ricky's Blog</h1>
+      </a>
+      <div id="darkmode-indicator">
+        <span id="darkmode-indicator-text">Dark&nbsp;Mode</span>
+        <label for="toggle">
+          <input type="checkbox" id="toggle" />
+          <span id="theme-toggle"></span>
+        </label>
+      </div>
+    </header>
+
+    <div id="top-anchor" style="visibility: none"></div>
+    <span id="scrollToTop">
+      <!-- yes im too lazy to fix the icon -->
+      <div class="fas fa-chevron-up">^</div>
+    </span>
+
+    <main>
+      <div class="main-container">
+        <berry-disclaimer></berry-disclaimer>
+        <article>
+          <h1>一些更新</h1>
+
+          <section>
+            <p>
+              更新文章比我预想的要慢，倒不是因为没东西可写，而是我担心写的东西太多导致之后更改博客的工作量大幅上升。现在这个博客还是有很多东西需要做。
+            </p>
+
+            <p>
+              简而言之，我花了点时间用php把页面共用的部分抽象了出来。一开始我其实是想要用Web
+              Components的，也就是声明一个单独的模板文件后再在页面内引用。中途还遇到一个在模板内引用外部css文件的问题。总之，当各种东西弄得差不多了以后，我却发现HTML
+              Imports已经不再被支持了。如果想要引用外部模板的话似乎只能引用外部js。
+            </p>
+
+            <div
+              class="responsive-img"
+              description="Browsers' support for HTML Imports, source: caniuse.com"
+            >
+              <img
+                data-src="../images/html-imports-support.png"
+                alt="Screenshot"
+                title="doesn't look good..."
+              />
+              <div class="zoomed-img" style="display: none">
+                <img data-src="../images/html-imports-support.png" />
+              </div>
+            </div>
+
+            <p>
+              但这就带来了一个问题：如果我只是想引用js代码，那确实可以使用module。但是如果引用的是HTML模板的话，我就不得不用js一个个的创建DOM元素。如果这个模板比较复杂，那么代码将会非常的啰嗦，至少我个人并不是很想这么干。我也不想简单粗暴的把HTML代码直接当成字符串变量来处理。所以目前只能先这个样子了。如果我想到了其他的解决办法再说吧。
+            </p>
+          </section>
+
+          <section id="article-date"></section>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>

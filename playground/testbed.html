@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./testbed.css">
+  </head>
+  <body>
+    <header class="blog-header">
+      <h1 class="blog-title">Blog Title</h1>
+      <nav class="blog-nav">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <img
+          src="https://loremflickr.com/320/240"
+          alt="Featured Article"
+          class="hero-image"
+        />
+        <div class="hero-text">
+          <h2>Featured Article Title</h2>
+          <p>Short excerpt from the featured article...</p>
+        </div>
+      </section>
+      <section class="articles">
+        <h2>New Articles</h2>
+        <div class="article-list">
+          <!-- Repeat this block for each article -->
+          <article class="article-preview">
+            <img src="https://loremflickr.com/160/160" alt="Article Thumbnail" />
+            <h3>Article Title</h3>
+            <p>Article summary or excerpt...</p>
+          </article>
+          <!-- End of article block -->
+        </div>
+      </section>
+      <aside class="sidebar">
+        <h2>Archived Articles</h2>
+        <div class="archive-list">
+          <div class="archive-category">
+            <h3>Category 1</h3>
+            <!-- List of archived articles -->
+            <ul>
+              <li><a href="#">Archived Article 1</a></li>
+              <li><a href="#">Archived Article 2</a></li>
+            </ul>
+          </div>
+          <div class="archive-category">
+            <h3>Category 2</h3>
+            <ul>
+              <li><a href="#">Archived Article 3</a></li>
+              <li><a href="#">Archived Article 4</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+    <footer class="blog-footer">
+      <p>© 2024 Blog Title. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

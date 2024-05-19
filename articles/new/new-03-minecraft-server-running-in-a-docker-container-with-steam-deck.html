@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/album=551760206/size=small/bgcol=ffffff/linkcol=0687f5/track=2143258278/transparent=true/"
+          seamless
+          ><a href="https://c418.bandcamp.com/album/minecraft-volume-beta"
+            >Minecraft - Volume Beta by C418</a
+          ></iframe
+        >
+
+        <section>
+          <p>
+            Welcome to part 2 of the series. In this article, I'll explain how
+            to run a (modded) minecraft server using docker on a steam deck. You
+            can find part 1
+            <a href="/articles/new/new-02-install-docker-on-a-steam-deck.html"
+              >here</a
+            >
+            where I go through how to install Docker on a steam deck step by
+            step.
+          </p>
+          <p>
+            More specifically, I'll run the server version of
+            <a
+              target="_blank"
+              href="https://github.com/TerraFirmaGreg-Team/Modpack-1.20.x/tree/main"
+              >TerraFirmaGreg - 1.20.x</a
+            >, a modpack I've been playing with my friends recently.
+          </p>
+          <p>Note: Although you need to reinstall Docker after every SteamOS update, the Docker images and containers data will still be there.</p>
+        </section>
+
+        <section>
+          <h5>Step 1: Assemble the command</h5>
+          <p>
+            The image I used was
+            <a
+              target="_blank"
+              href="https://docker-minecraft-server.readthedocs.io/en/latest/"
+              >docker-minecraft-server</a
+            >. To improve readability, I'll show the
+            <code>docker-compose.yml</code> as well. But in reality, if you
+            really want to use <code>docker-compose</code>,
+            <b>you'll need to install it on the steam deck yourself</b> - The
+            linux version of docker doesn't come with
+            <code>docker-compose</code>, and I'm just going to run this one
+            instance anyway so I just used the equivalent command.
+          </p>
+
+          <berry-code
+            data-title="docker-compose.yml for TFG 1.20.x"
+            nohighlight
+          >
+            <pre slot="code">
+services:
+  tfg-server:
+    image: itzg/minecraft-server:java17
+    container_name: tfg-server
+    environment:
+      TYPE: AUTO_CURSEFORGE
+      CF_API_KEY: "YOUR_CURSEFORGE_API_KEY"
+      CF_PAGE_URL: https://www.curseforge.com/minecraft/modpacks/terrafirmagreg/files/5307891
+      CF_EXCLUDE_MODS: '823106 270441 833233' # ignore client mods
+      MEMORY: 8G
+      EULA: TRUE
+    volumes:
+      - "./data:/data"
+    ports:
+      - "25565:25565"
+    restart: unless-stopped
+            </pre>
+          </berry-code>
+          <p>This is equivalent to the command below:</p>
+          <berry-code data-title="Command" nohighlight>
+            <pre slot="code">
+docker run -d --name tfg-server -v "${PWD}:/data" -e TYPE=AUTO_CURSEFORGE -e CF_API_KEY='YOUR_CURSEFORGE_API_KEY' -e CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/terrafirmagreg/files/5307891 -e CF_EXCLUDE_MODS='823106 270441 833233' -e MEMORY=8G -p 25565:25565 -e EULA=TRUE itzg/minecraft-server:java17
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <p>Several things worth mentioning here:</p>
+          <ol>
+            <li>
+              <code>image</code>: I used the tag <code>java17</code> after the
+              image name because I've run into some issues with this modpack
+              when using JDK 21.
+            </li>
+            <li>
+              <code>TYPE</code>: This image features auto-downloading mods or
+              modpacks from several sources. Since the modpack I play is
+              available on CurseForge, I set it to <code>AUTO_CURSEFORGE</code>.
+              You can find other configurable sources
+              <a
+                href="https://docker-minecraft-server.readthedocs.io/en/latest/mods-and-plugins/"
+                >here</a
+              >.
+            </li>
+            <li>
+              <code>CF_API_KEY</code>: You'll need a CurseForge API key to be
+              able to download the mods automatically when creating the
+              container. You can get one
+              <a target="_blank" href="https://console.curseforge.com/">here</a
+              >.
+            </li>
+            <li>
+              <code>CF_PAGE_URL</code>: This image supports multiple url formats
+              to specify which mod you want to download. I chose this format
+              because I can make it download this particular file so that I'm
+              100% sure the version I use is correct. In order to find such
+              link, You need to go the mods page and switch to the
+              <b>Files</b> tab. Then, click on the file you want to download and
+              you can see the url in browser's address bar.
+              <berry-img
+                data-title="Go to the Files tab"
+                data-src="/articles/images/new/03/files.jpg"
+              ></berry-img>
+              <berry-img
+                data-title="Use link of the page"
+                data-src="/articles/images/new/03/link.jpg"
+              ></berry-img>
+            </li>
+            <li>
+              <code>CF_EXCLUDE_MODS</code>: If you are lucky, this field is
+              <b>not</b> needed at all. The reason I had to add this config is
+              that several <b>client</b> mods in this modpack are mislabeled as
+              <b>server</b> mods, causing the server unable to start up. If
+              similar thing happens to you and the container stopped, My
+              suggestion is that you go through the error logs and ignore the
+              stack traces - only pay attention to the mods that failed to load
+              (if any) first. In my case, the mods that failed to load were
+              blur, Rrls, ItemPhysicsLite. Then, go to CurseForge, search for
+              these mods one by one and add their project id to this field. The
+              screenshot below demonstrates how to find the project id of a mod:
+              <berry-img
+                data-src="/articles/images/new/03/project_id.jpg"
+              ></berry-img>
+            </li>
+          </ol>
+          <p>
+            You can find the explanation of the rest of the configuration in the
+            <a
+              target="_blank"
+              href="https://docker-minecraft-server.readthedocs.io/en/latest/"
+              >official docs</a
+            >
+            of docker-minecraft-server.
+          </p>
+        </section>
+
+        <section>
+          <h5>Step 2: Run the command</h5>
+          <p>
+            With all the configuration out of the way and the command ready, now
+            you can finally start the server:
+          </p>
+          <ol>
+            <li>
+              Go to the directory you want to store the server data and create a new
+              folder, e.g. <code>tfg-server</code>.
+            </li>
+            <li>
+              Right click and open the command line tool (e.g. Konsole) here,
+              then run the command. If you are using
+              <code>docker-compose</code>, you'll need to copy the
+              <code>docker-compose.yml</code> to this folder you've just created
+              and then run <code>docker-compose up -d --force-recreate</code>
+            </li>
+            <li>
+              It will now start downloading all the dependencies and do all
+              kinds of installation. Use
+              <code>docker logs tfg-server -f</code> to see the container logs
+              in real time (remember to replace <code>tfg-server</code> with you
+              own container name).
+            </li>
+            <li>
+              Usually you can ignore all the warning (or even error) messages it
+              prints, but if the container somehow stopped, you'll have to go
+              through the errors like I did above and figure out the issues
+              yourself. Good luck!🫡
+            </li>
+            <li>
+              In my case, the terminal looked something like this when the
+              server started properly:
+              <berry-img
+                data-title="Yours might be different depending on the Minecraft version you use."
+                data-src="/articles/images/new/03/server_running.jpg"
+              ></berry-img>
+              <berry-img
+                data-title="Joining the server on my laptop"
+                data-src="/articles/images/new/03/join_the_server_on_my_laptop.jpg"
+              ></berry-img>
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <p>
+            And that's it. I won't cover port forwarding because I don't have
+            the router's password of the room I'm living🫠. You can only start a
+            LAN server by following this guide (which is the real difficult part
+            from my perspective). With that said, I may try to install
+            <code>docker-compose</code> and experiment with some other stuff in
+            the future.
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

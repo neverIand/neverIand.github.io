@@ -1,0 +1,1 @@
+body{flex-wrap:wrap;justify-content:center;align-items:center}section#intro{max-width:800px;color:var(--text-color)}section.title-list{min-width:300px}section.title-list h2{width:100%;text-align:center;border-bottom:1px solid}

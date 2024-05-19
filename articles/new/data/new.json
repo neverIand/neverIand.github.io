@@ -1,0 +1,39 @@
+[
+  {
+    "id": 0,
+    "title": "Hello World (again)",
+    "subheading": "They say third time's the charm",
+    "filename": "/articles/new/new-00-preface.html",
+    "date": "2024-04-30"
+  },
+  {
+    "id": 1,
+    "title": "Check If All Items in a Javascript Array are Identical",
+    "subheading": "Spot the imposter",
+    "filename": "/articles/new/new-01-array-with-all-identical-items.html",
+    "date": "2024-05-03",
+    "lastUpdate": "2024-05-10"
+  },
+  {
+    "id": 2,
+    "title": "Install Docker on a Steam Deck",
+    "subheading": "(for no reason)",
+    "filename": "/articles/new/new-02-install-docker-on-a-steam-deck.html",
+    "date": "2024-05-06",
+    "lastUpdate": "2024-05-11"
+  },
+  {
+    "id": 3,
+    "title": "Minecraft Server Running in a Docker Container with Steam Deck",
+    "subheading": "How hard could it be?",
+    "filename": "/articles/new/new-03-minecraft-server-running-in-a-docker-container-with-steam-deck.html",
+    "date": "2024-05-12"
+  },
+  {
+    "id": 4,
+    "title": "Minecraft Server on Steam Deck: Without Container, Backup and More",
+    "subheading": "Upgrade server modpack version and a glimpse of performance",
+    "filename": "/articles/new/new-04-minecraft-server-on-steam-deck-without-container-backup-and-more.html",
+    "date": "2024-05-19"
+  }
+]

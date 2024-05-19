@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "code": 200
+  },
+  "response": {
+    "articles": [
+      {
+        "article_id": 0,
+        "article_name": "Rewind, Recursed, Rephrased",
+        "url": "../others/others-001-rewind-recursed-rephrased.php",
+        "new_url":"/articles/archived/others-001-rewind-recursed-rephrased.html",
+        "date": "2021-9-2"
+      },
+      {
+        "article_id": 1,
+        "article_name": "上岛",
+        "url": "../others/others-002-on-the-way-home.php",
+        "new_url":"/articles/archived/others-002-on-the-way-home.html",
+        "date": "2021-9-10"
+      },
+      {
+        "article_id": 2,
+        "article_name": "留学生活记录：到达",
+        "url": "../others/others-003-how-I-get-here.php",
+        "new_url":"/articles/archived/others-003-how-I-get-here.html",
+        "date": "2021-11-22"
+      }
+    ]
+  }
+}

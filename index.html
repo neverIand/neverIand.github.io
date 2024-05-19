@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/index.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <!-- banner -->
+      <section class="flex-col-center">
+        <berry-logo></berry-logo>
+      </section>
+
+      <!-- intro -->
+      <section id="intro">
+        <p>
+          This is the 3rd iteration of my blog. I may post something relevant to
+          tech and other random stuff here.
+        </p>
+        <p>
+          In case you wonder, the first iteration is written in php and you can
+          have a glimpse
+          <a href="/articles/archived/article-000-hello-world.html">here</a>
+          (HTML). The second iteration works fine but I just decided to throw it
+          away, and now I
+          <a href="/articles/new/new-00-preface.html">end up here.</a>
+        </p>
+        <p>Note: Use <code>Ctrl + f</code> to search for content.</p>
+      </section>
+
+      <!-- article list -->
+      <section id="article-list" class="title-list flex-col-center">
+        <h2>Newest Articles</h2>
+      </section>
+
+      <section id="misc-list" class="title-list flex-col-center">
+        <h2>Misc</h2>
+      </section>
+    </main>
+    <berry-footer></berry-footer>
+
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/index.js"></script>
+  </body>
+</html>
