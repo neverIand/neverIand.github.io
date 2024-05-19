@@ -23,11 +23,13 @@ jobs:
 
     - name: Minify JavaScript
       run: |
-        find ./scripts -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+        find scripts -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+        find webcomponents -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
 
     - name: Minify CSS
       run: |
-        find ./styles -name '*.css' -exec csso {} --output {} \;
+        find styles -name '*.css' -exec csso {} --output {} \;
+        find webcomponents -name '*.css' -exec csso {} --output {} \;
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
