@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install --global terser csso-cli
+
+    - name: Minify JavaScript
+      run: |
+        find scripts -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+        find webcomponents -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+
+    - name: Minify CSS
+      run: |
+        find styles -name '*.css' -exec csso {} --output {} \;
+        find webcomponents -name '*.css' -exec csso {} --output {} \;
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.BLOG_TOKEN }}
+        publish_dir: ./
