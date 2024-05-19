@@ -31,15 +31,8 @@ jobs:
         find styles -name '*.css' -exec csso {} --output {} \;
         find webcomponents -name '*.css' -exec csso {} --output {} \;
 
-    - name: Prepare deployment
-      run: |
-        mkdir -p public
-        cp -r articles fonts playground scripts styles webcomponents public
-        cp index.html public
-        cp -r .github public
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.BLOG_TOKEN }}
-        publish_dir: ./public
+        publish_dir: ./
