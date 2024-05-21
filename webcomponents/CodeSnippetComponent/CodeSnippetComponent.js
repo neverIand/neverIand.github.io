@@ -47,7 +47,7 @@ class CodeSnippet extends HTMLElement {
         </div>
         <div class="snippet-content">
             <div class="line-numbers text"></div>
-            <slot name="code"></slot>
+            <slot name="code">If you can't see the code snippet, it's likely that you are in Safari's reader mode. You'll need to exit reader mode to view or copy the code.</slot>
         </div>
     </div>
     ${
