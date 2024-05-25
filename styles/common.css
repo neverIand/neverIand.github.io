@@ -20,7 +20,8 @@
   --header-bg-color: rgba(255, 255, 255, 0.8);
   --content-bg-color: #fff;
   --article-bg-color: #fff;
-  --visited-link-color: rgb(121, 0, 142);
+  --link-color: #0072c6;
+  --link-visited-color: rgb(121, 0, 142);
   --text-color: #000;
   --text-muted-color: rgb(100, 100, 100);
   --text-error-color: red;
@@ -34,7 +35,8 @@
   --header-bg-color: rgba(0, 0, 0, 0.7);
   --content-bg-color: #404040;
   --article-bg-color: #404040;
-  --visited-link-color: rgb(206, 113, 245);
+  --link-color: #8ab4f8;
+  --link-visited-color: rgb(206, 113, 245);
   --text-color: #fff;
   --code-color: rgb(175, 219, 251);
   --code-kw-color: rgb(110, 156, 209);
@@ -89,13 +91,14 @@ h6 {
   font-size: 1em;
 }
 a {
+  color: var(--link-color);
   text-decoration: none;
 }
 a:hover {
   text-decoration: underline var(--text-color);
 }
 a:visited {
-  color: var(--visited-link-color);
+  color: var(--link-visited-color);
 }
 section {
   display: flex;
