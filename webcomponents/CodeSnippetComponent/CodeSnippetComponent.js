@@ -170,6 +170,7 @@ class CodeSnippet extends HTMLElement {
       new RegExp(keywords, "g"),
       '<span class="keyword">$1</span>'
     );
+
     codeContent = codeContent.replace(
       /(\/\/.*$)/gm,
       '<span class="comment">$1</span>'

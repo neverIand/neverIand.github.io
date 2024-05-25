@@ -34,7 +34,7 @@
   display: flex;
   align-items: flex-start;
   min-height: 1em;
-  background-color: var(--bg-color);
+  background-color: var(--code-bg-color);
   overflow-x: auto;
 }
 .line-numbers {
@@ -52,7 +52,7 @@
 pre {
   margin: 0;
   padding: 0 5px !important;
-  color: var(--text-color);
+  color: var(--code-color);
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
@@ -61,17 +61,21 @@ pre {
   padding: 5px;
 }
 .text {
+  color: var(--text-color);
   font-family: var(--code-font);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
 }
 .comment,
 .comment .keyword {
-  color: #008000;
+  color: var(--code-comment-color);
   font-style: italic;
 }
 .keyword {
-  color: #0000ff;
+  color: var(--code-kw-color);
+}
+.operator {
+  color: red;
 }
 button {
   margin-left: 5px;

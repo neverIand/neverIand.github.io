@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <!-- <iframe
+          class="spotify-player"
+          src="https://open.spotify.com/embed/track/1G576qOKq0CdSGvSmHD4pz?utm_source=generator"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe> -->
+
+        <section>
+          <p>
+            When I switch on reader mode on my iPhone (iOS 15.7) and iPad (iOS
+            17.5.1), I can't see anything inside the custom
+            <a
+              href="https://github.com/neverIand/neverIand.github.io/blob/main/webcomponents/CodeSnippetComponent/CodeSnippetComponent.js"
+              target="_blank"
+              >code snippet component</a
+            >:
+          </p>
+
+          <code>&lt;berry-code&gt;</code>
+          <berry-code>
+            <pre slot="code">
+let result = new Set(arr).size === 1;
+console.log(result);
+            </pre>
+          </berry-code>
+
+          <code>&lt;berry-code nohighlight&gt;</code>
+          <berry-code nohighlight>
+            <pre slot="code">
+docker run -d --name tfg-server -v "${PWD}:/data" -e TYPE=AUTO_CURSEFORGE -e CF_API_KEY='YOUR_CURSEFORGE_API_KEY' -e CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/terrafirmagreg/files/5307891 -e CF_EXCLUDE_MODS='823106 270441 833233' -e MEMORY=8G -p 25565:25565 -e EULA=TRUE itzg/minecraft-server:java17
+            </pre>
+          </berry-code>
+
+          <p>
+            For context, the code content is a slotted <code>pre</code> element,
+            where in the highlighted version it's only used for getting text
+            context and will not be displayed, while the non-highlighted version
+            just display the original slotted element directly. Also, these two
+            versions of iOS Safari should fully support <code>slot</code> and
+            the API I used (<a
+              href="https://caniuse.com/?search=slot"
+              target="_blank"
+              >reference</a
+            >).
+          </p>
+        </section>
+
+        <section>
+          <p>
+            This issue has been bothering me for quite a while. I've already
+            refactored once so that the non-highlight version will only display
+            the original slotted element, but it does nothing. This means that
+            Safari's reader mode simply ignores elements with
+            <code>slot</code> attribute, which is a bit annoying because the
+            slotted element itself has more purpose than a generic element like
+            <code>div</code> (which is understandably ignored), at least from my
+            understanding.
+          </p>
+
+          <p>
+            Making matters worse, from my research, there isn't a way to tell
+            whether reader mode is on, making it impossible to implement a
+            fallback specifically for this view. I can kind of understand why:
+            if there is a way to tell, then many sites will just try to put as
+            many <s>ads</s> elements in this view as well, defeating its
+            purpose. But it's still frustrating to me nevertheless.
+          </p>
+
+          <p>
+            Frankly speaking, I have no idea what I can do, at least in terms of
+            changing the code snippet component. And this is basically the only
+            thing that doesn't work properly in reader mode - I've already using
+            semantic html across the entire site, so everthing else all looks
+            fine.
+          </p>
+        </section>
+
+        <section>
+          <p>
+            I'm also considering making the site more functional without
+            javascript. It seems that by conducting good pratices, it is
+            possible to make web components more friendly to browsers with js
+            disabled (see top comment in
+            <a
+              href="https://dev.to/richharris/why-i-don-t-use-web-components-2cia"
+              target="_blank"
+              >this article</a
+            >). I've still got tons of things to learn (as always).
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

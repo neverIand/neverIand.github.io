@@ -35,5 +35,12 @@
     "subheading": "Upgrade server modpack version and a glimpse of performance",
     "filename": "/articles/new/new-04-minecraft-server-on-steam-deck-without-container-backup-and-more.html",
     "date": "2024-05-19"
+  },
+  {
+    "id": 5,
+    "title": "iOS Safari Reader Mode Does Not Render Slotted Elements",
+    "subheading": "Why are we still here",
+    "filename": "/articles/new/new-05-iOS-safari-reader-mode-does-not-render-slotted-elements.html",
+    "date": "2024-05-26"
   }
 ]
