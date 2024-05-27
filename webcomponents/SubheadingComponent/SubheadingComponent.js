@@ -24,6 +24,7 @@ class ArticleSubheading extends HTMLElement {
     }
     const styles = `
     :host {
+      width: 100%;
       --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
     "Times New Roman", Times, Georgia, serif;
     }
@@ -32,6 +33,34 @@ class ArticleSubheading extends HTMLElement {
       text-align: center;
       font-family: var(--title-font);
     }
+    #link-container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1em;
+      width: 100%;
+      margin: 1em 0;
+    }
+    .prev {
+      padding-left: 2em;
+    }
+    .next {
+      padding-right: 2em;
+    }
+    .prev:before, .next:after {
+      position: absolute;
+      top: 0;
+      transform: translateY(50%);
+    }
+    .prev:before {
+      content: '←';
+      left: 0;
+    }
+    .next:after {
+      content: '→';
+      right: 0;
+    }
     h2 {
       color: var(--text-color);
       font-size: 2em;
@@ -39,6 +68,17 @@ class ArticleSubheading extends HTMLElement {
     h4 {
       font-size: 1.5em;
       color: grey;
+    }
+    a {
+      flex-basis: 40%;
+      color: var(--link-color);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline var(--text-color);
+    }
+    a:visited {
+      color: var(--link-visited-color);
     }
     `;
     styleElement.textContent = styles;
@@ -53,11 +93,32 @@ class ArticleSubheading extends HTMLElement {
     headingEl.textContent = data;
   }
 
+  renderLink(prevArticle, nextArticle) {
+    const conatiner = this.shadowRoot.getElementById("link-container");
+    if (prevArticle) {
+      const linkEl = document.createElement("a");
+      linkEl.className = "prev";
+      linkEl.href = prevArticle.filename;
+      linkEl.textContent = prevArticle.title;
+      conatiner.appendChild(linkEl);
+    }
+    if (nextArticle) {
+      const linkEl = document.createElement("a");
+      linkEl.className = "next";
+      linkEl.href = nextArticle.filename;
+      linkEl.textContent = nextArticle.title;
+      conatiner.appendChild(linkEl);
+    }
+  }
+
   render() {
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
       <h2 id="heading" class="heading"></h2>
       <h4 id="subheading" class="heading"></h4>
+      <div id="link-container">
+  
+      </div>
     `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
@@ -71,11 +132,26 @@ async function initSubheading(component) {
   const response = await fetchData(url);
   if (response) {
     const id = parseInt(path[1]);
-    const articleInfo = response.find((article) => article.id === id) || {
-      subheading: "(No subheading for this article)",
-    };
-    component.renderHeading("heading", articleInfo.title);
-    component.renderHeading("subheading", articleInfo.subheading);
+    const articleIndex = response.findIndex((article) => article.id === id);
+    let articleInfo =
+      articleIndex === -1
+        ? {
+            title: null,
+            subheading: null,
+          }
+        : response[articleIndex];
+
+    if (articleInfo.title) {
+      component.renderHeading("heading", articleInfo.title);
+    }
+    if (articleInfo.subheading) {
+      component.renderHeading("subheading", articleInfo.subheading);
+    }
+
+    component.renderLink(
+      response[articleIndex - 1],
+      response[articleIndex + 1]
+    );
   }
 }
 
