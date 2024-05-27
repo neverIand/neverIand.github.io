@@ -50,8 +50,8 @@ class ArticleSubheading extends HTMLElement {
     }
     .prev:before, .next:after {
       position: absolute;
-      top: 0;
-      transform: translateY(50%);
+      top: 50%;
+      transform: translateY(-50%);
     }
     .prev:before {
       content: '←';
