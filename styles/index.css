@@ -3,6 +3,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+p {
+  color: var(--text-color);
+}
 section#intro {
   max-width: 800px;
   color: var(--text-color);
