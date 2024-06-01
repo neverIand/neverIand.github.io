@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <noscript>This website requires Javascript to function properly.</noscript>
+  <body>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="spotify-player"
+          src="https://open.spotify.com/embed/track/4KD9cNZdAH9L8xFytzMba3?utm_source=generator"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe>
+
+        <section>
+          <p>
+            My friend asked me to help him with styling an image element on a
+            page:
+          </p>
+          <h5>Requirements:</h5>
+          <ul>
+            <li>
+              All content (header, content, footer) fits in a single page, no
+              overflow scrolling
+            </li>
+            <li>
+              A single carousel in the main section, with image(s) of any
+              possible size and aspect ratio taking over the remaining space
+            </li>
+          </ul>
+          <p>The simplfied DOM structure looks like this:</p>
+          <berry-code data-title="HTML" nohighlight>
+            <pre slot="code">
+&lt;body&gt;
+  &lt;div id="layout"&gt;
+    &lt;header&gt;&lt;h1&gt;Header&lt;/h1&gt;&lt;/header&gt;
+    &lt;main&gt;
+      Main
+      &lt;div class="widget-carousel"&gt;
+        &lt;div class="widget-carousel-item"&gt;
+        &lt;img src="https://sdfsdf.dev/600x1500.jpg,000000,ffffff" /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;Footer&lt;/footer&gt;
+  &lt;/div>
+&lt;/body>
+            </pre>
+          </berry-code>
+        </section>
+
+        <section>
+          <p>
+            My original thought was to use <code>flex: 1</code> to make the main
+            section fits the remaining space of the page. It worked for
+            <code>div</code> but not <code>img</code>. Setting
+            <code>height</code> to 100% will cause overflow if the image is
+            taller than viewport height, and adding
+            <code>object-fit: contain</code> didn't help either. Here's the
+            original styling:
+          </p>
+
+          <berry-code data-title="CSS" nohighlight>
+            <pre slot="code">
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+header {
+  flex-shrink: 0;
+  border: 1px solid;
+}
+main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  border: 1px solid;
+}
+footer {
+  flex-shrink: 0;
+  border: 1px solid;
+}
+#layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
+.widget-carousel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.widget-carousel-item {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: antiquewhite;
+}
+.widget-carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border: 1px solid red;
+}
+            </pre>
+          </berry-code>
+
+          <p>
+            Although I can almost confirm that the <code>img</code> element is
+            the issue, I just couldn't figure out how to properly handle it when
+            it exceeds viewport height. To try out some possible fallbacks, I
+            added a fixed height <code>height: 300px</code> to the image
+            container <code>.widget-carousel-item</code>. Suddenly, it works:
+            the image will scale to fit the screen no matter what's its size or
+            aspect ratio (you can check out the interactive demo
+            <a target="_blank" href="/articles/misc/imageLayoutDemo.html"
+              >here</a
+            >):
+          </p>
+
+          <berry-img
+            data-title="screenshot"
+            data-src="/articles/images/new/06/20240601134906.jpg"
+          ></berry-img>
+
+          <p>
+            I don't have a definitive answer for why this happened (yet), but I
+            suspect that having no height with absolute unit assigned is the
+            cause. Before adding this line, the height of everything on this
+            page is either <code>100%</code> or <code>100vh</code>, and from my
+            experience, dynamic height often requires some extra effort to deal
+            with (e.g. <code>transition: height 1s</code> won't work on an
+            element that has <code>height: auto</code>).
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

@@ -42,5 +42,12 @@
     "subheading": "Why are we still here",
     "filename": "/articles/new/new-05-iOS-safari-reader-mode-does-not-render-slotted-elements.html",
     "date": "2024-05-26"
+  },
+  {
+    "id": 6,
+    "title": "Auto-resize an Image to Fit Inside a div - an Unexpected Discovery",
+    "subheading": "It's not really about object-fit",
+    "filename": "/articles/new/new-06-auto-resize-an-image-to-fit-inside-a-div-an-unexpected-discovery.html",
+    "date": "2024-06-02"
   }
 ]
