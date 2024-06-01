@@ -97,7 +97,7 @@
       heightToggle.addEventListener("click", function () {
         const container = document.querySelector(".widget-carousel-item");
         if (container.style.height === "auto") {
-            container.style.height = "1px";
+          container.style.height = "1px";
           heightToggle.textContent = "img container height: 1px";
         } else {
           container.style.height = "auto";
@@ -111,7 +111,7 @@
           const width = document.getElementById("width").value;
           const height = document.getElementById("height").value;
           console.log(width, height);
-          const imageUrl = `https://sdfsdf.dev/${width}x${height}.jpg,000000,ffffff`;
+          const imageUrl = `https://sdfsdf.dev/${width}x${height}.jpg`;
           const image = document.getElementById("image");
           image.src = imageUrl;
         });
