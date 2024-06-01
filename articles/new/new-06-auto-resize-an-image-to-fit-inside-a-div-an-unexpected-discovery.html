@@ -146,6 +146,11 @@ footer {
             >):
           </p>
 
+          <p class="text-error">
+            Note: It only works for Chrome. At the time of writing, I'm using
+            version 125.
+          </p>
+
           <berry-img
             data-title="screenshot"
             data-src="/articles/images/new/06/20240601134906.jpg"
@@ -164,7 +169,44 @@ footer {
 
         <section>
           <h5>Update</h5>
-          <p>After I've deployed the page and checked it on Safari, it seems that Safari will correctly set the height of image's container to 1px, which means I probably need to do more research.</p>
+          <p>
+            After I've deployed the page and checked it on Safari, it seems that
+            Safari will correctly set the height of image's container to 1px,
+            which means this is a browser-specific behaviour.
+          </p>
+          <p>
+            Therefore, I experimented a bit more on a possible
+            <a target="_blank" href="/articles/misc/imageLayoutDemo2.html"
+              >alternative implementation</a
+            >. The main difference is that I added
+            <code>overflow: hidden</code> to main and the updated the image
+            styling:
+          </p>
+
+          <berry-code data-title="CSS" nohighlight>
+            <pre slot="code">
+.widget-carousel-item img {
+  /* width: 100%;
+  height: 100%; */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid red;
+}
+            </pre>
+          </berry-code>
+
+          <p>
+            The problem is, unlike version 1, when the image is smaller than the
+            container, it will not scale to fit it. Meanwhile, if I add
+            <code>flex: 1</code> to the container
+            <code>.widget-carousel-item</code>, then it overflow will still
+            happen when the image is too tall.
+          </p>
+
+          <p>I'll update this section once I have better solution.</p>
         </section>
 
         <berry-date></berry-date>
