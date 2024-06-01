@@ -56,7 +56,7 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        /* height: 1px; */
+        height: 1px;
         background-color: antiquewhite;
       }
       .widget-carousel-item img {
@@ -97,13 +97,10 @@
       heightToggle.addEventListener("click", function () {
         const container = document.querySelector(".widget-carousel-item");
         if (container.style.height === "auto") {
-          //   container.style.height = "1px";
-          // heightToggle.textContent = "img container height: 1px";
-          container.style.height = "100%";
-          heightToggle.textContent = "img container height: 100%";
+            container.style.height = "1px";
+          heightToggle.textContent = "img container height: 1px";
         } else {
           container.style.height = "auto";
-          //   container.style.height = "100%";
           heightToggle.textContent = "img container height: auto";
         }
       });
