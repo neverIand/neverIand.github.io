@@ -36,6 +36,7 @@ class ToastComponent extends HTMLElement {
             padding: 10px;
             box-sizing: border-box;
             transform: translateY(calc(200% + 70px));
+            pointer-events: none;
           }
           .toast {
             display: flex;
