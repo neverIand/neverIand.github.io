@@ -29,6 +29,7 @@ class ToastComponent extends HTMLElement {
             z-index: 500;
           }
           .toast-container {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -42,6 +43,9 @@ class ToastComponent extends HTMLElement {
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100%;
+            max-width: 720px;
+            margin: auto;
             padding: 10px 20px;
             color: var(--bg-color);
             background-color: var(--text-color);
