@@ -1,10 +1,10 @@
-:host {
+/* :host {
   width: 100%;
-}
+  border: 1px solid red;
+} */
 #article {
   padding: 10px 20px;
-  background-color: var(--content-bg-color);
-  border-bottom: 1px solid;
+  /* background-color: var(--content-bg-color); */
 }
 #article a {
   color: #000;

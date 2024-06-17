@@ -16,7 +16,7 @@
   --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
   --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
 
-  --bg-color: #fff;
+  --bg-color: #f1f1f1;
   --header-bg-color: rgba(255, 255, 255, 0.8);
   --content-bg-color: #fff;
   --article-bg-color: #fff;
@@ -43,12 +43,29 @@
   --code-comment-color: rgb(118, 151, 92);
   --code-bg-color: rgb(31, 31, 31);
 }
+/* component styles */
 /* TODO: web components non rendered */
 :not(:defined) {
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
+berry-header{
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(4px) saturate(10%);
+  -webkit-backdrop-filter: blur(4px) saturate(10%);
+  /* border: 1px solid red; */
+}
+berry-article {
+  width: 100%;
+  background-color: var(--content-bg-color);
+  border-bottom: 1px solid;
+}
+/* Page styles */
 * {
   margin: 0;
   padding: 0;

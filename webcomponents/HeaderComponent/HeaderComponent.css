@@ -1,4 +1,4 @@
-:host {
+/* :host {
   position: sticky;
   top: 0;
   left: 0;
@@ -6,7 +6,8 @@
   z-index: 1000;
   backdrop-filter: blur(4px) saturate(10%);
   -webkit-backdrop-filter: blur(4px) saturate(10%);
-}
+  border: 1px solid red;
+} */
 header {
   display: flex;
   justify-content: space-between;
