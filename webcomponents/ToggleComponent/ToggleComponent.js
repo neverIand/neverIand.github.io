@@ -69,7 +69,7 @@ class ToggleComponent extends HTMLElement {
       display: none;
     }
     </style>
-    <label for="toggle">
+    <label for="toggle" tabindex="0">
       <input type="checkbox" id="toggle" ${checked ? "checked" : ""}>
       <span></span>
     </label>
