@@ -14,13 +14,10 @@ header {
   align-items: center;
   gap: 1em;
   padding: 5px;
-  background-color: var(--header-bg-color);
-  border-bottom: 1px solid var(--content-bg-color);
 }
 header h1 {
   margin: 0;
   color: var(--text-color);
-  font-family: consolas, "Menlo", "Monaco", "Courier New", monospace;
 }
 #logo {
   display: flex;

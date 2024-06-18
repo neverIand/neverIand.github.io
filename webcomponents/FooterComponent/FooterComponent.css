@@ -1,8 +1,8 @@
 :host {
-  width: 100%;
+  /* width: 100%;
   font-family: var(--font-main, sans-serif);
   background-color: var(--bg-color);
-  border-top: 1px solid var(--content-bg-color);
+  border-top: 1px solid var(--content-bg-color); */
 }
 ul {
   display: flex;
