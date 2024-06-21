@@ -38,7 +38,7 @@ class CustomHeader extends HTMLElement {
         </a>
           <a href="/"><h1>neverIand</h1></a>
         </div>
-        <div id="links">
+        <nav id="links">
           <ul>
             <li><a href='/articles/misc/profile.html'>about</a></li>
             <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
@@ -46,7 +46,7 @@ class CustomHeader extends HTMLElement {
               getTheme() === "light" ? "" : "data-checked"
             }></berry-toggle></li>
           </ul>
-        </div>
+        </nav>
       </header>
   `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
