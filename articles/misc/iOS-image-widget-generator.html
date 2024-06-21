@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Widget Generator</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+      }
+      form,
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding: 10px;
+      }
+      form {
+        max-width: 600px;
+        background: #fff;
+        border: 1px solid;
+      }
+      fieldset {
+      }
+      legend {
+        font-weight: bold;
+      }
+      input {
+        min-width: 180px;
+      }
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>This page requires Javascript to function properly.</noscript>
+    <header><h1>Scriptable Widget Generator</h1></header>
+    <main>
+      <form id="scriptConfigForm">
+        <h2>Script Config</h2>
+
+        <p>
+          You can customize the widget through this form. By default, it will
+          display a random image with different keywords you picked, but you can
+          leave the birthday blank to disable it.
+        </p>
+
+        <div class="form-row">
+          <label for="title">Title:</label>
+          <input type="text" id="title" name="title" />
+        </div>
+
+        <fieldset>
+          <legend>Birthday Info</legend>
+
+          <div class="form-row">
+            <label for="month">Month:</label>
+            <input type="number" id="month" name="month" min="1" max="12" />
+          </div>
+
+          <div class="form-row">
+            <label for="day">Day:</label>
+            <input type="number" id="day" name="day" min="1" max="31" />
+          </div>
+
+          <div class="form-row">
+            <label for="imgKeywords">Image Keywords (comma-separated):</label>
+            <input type="text" id="imgKeywords" name="imgKeywords" />
+          </div>
+
+          <div class="form-row">
+            <label for="bDayImgKeywords"
+              >Birthday Image Keywords (comma-separated):</label
+            >
+            <input type="text" id="bDayImgKeywords" name="bDayImgKeywords" />
+          </div>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+      </form>
+    </main>
+
+    <berry-toast></berry-toast>
+    <script
+      type="module"
+      src="/webcomponents//ToastComponent/ToastComponent.js"
+    ></script>
+    <script>
+      // TODO
+      document
+        .getElementById("scriptConfigForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const scriptConfig = {
+            title: formData.get("title"),
+            month: parseInt(formData.get("month")),
+            day: parseInt(formData.get("day")),
+            bDayMsg: formData.get("bDayMsg"),
+            specialDates: {},
+            imgKeywords: formData
+              .get("imgKeywords")
+              .split(",")
+              .map((keyword) => keyword.trim()),
+            bDayImgKeywords: formData
+              .get("bDayImgKeywords")
+              .split(",")
+              .map((keyword) => keyword.trim()),
+          };
+
+          console.log(JSON.stringify(scriptConfig));
+
+          // TODO: copy to pasteboard
+          const copyEvent = new CustomEvent("berry-toast", {
+            detail: { type: "success", message: "test" },
+          });
+          document.dispatchEvent(copyEvent);
+        });
+    </script>
+  </body>
+</html>
