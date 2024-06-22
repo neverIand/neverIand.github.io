@@ -34,7 +34,7 @@ class CustomHeader extends HTMLElement {
       <header>
         <div id="logo">
         <a href="/">
-          <berry-logo size="50" animate="false"></berry-logo>
+          <berry-logo size="50" animate="true"></berry-logo>
         </a>
           <a href="/"><h1>neverIand</h1></a>
         </div>

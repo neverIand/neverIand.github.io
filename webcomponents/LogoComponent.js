@@ -9,13 +9,14 @@ class LogoComponent extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["size"];
+    return ["size", "animate"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === "size") {
-      this.updateStyles();
-    }
+    // if (name === "size") {
+    //   this.updateStyles();
+    // }
+    this.updateStyles();
   }
 
   connectedCallback() {
@@ -25,7 +26,7 @@ class LogoComponent extends HTMLElement {
   render() {
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
-    <div class="square outline">
+    <div class="square outline" role="presentation" aria-hidden="true">
         <div class="square left-square">
         </div>
         <div class="square right-square"></div>
@@ -37,7 +38,7 @@ class LogoComponent extends HTMLElement {
   }
 
   updateStyles(/* TODO: move parms here*/) {
-    const size = this.getAttribute("size") || "240"; // Default size
+    const size = this.getAttribute("size") || "300"; // Default size
     const isAnimated = this.getAttribute("animate") || "true";
     const length = parseInt(size);
     const borderWidth = length * 0.04;
@@ -106,13 +107,13 @@ class LogoComponent extends HTMLElement {
         margin: auto;
         border: var(--logo-border-width) solid var(--text-color);
     }
-    /* TODO: replace with variables */
+    /* TODO: add optional rotation animation */
     @keyframes transformLeft {
         from {
-            transform: translateX(-440px) rotateZ(60deg);
+            transform: translateX(-${1.467 * length}px) rotateZ(60deg);
         }
         to {
-            transform: translateX(520px) rotateZ(-300deg);
+            transform: translateX(${1.733 * length}px) rotateZ(-300deg);
         }
     }
 `;
@@ -124,4 +125,4 @@ if (!customElements.get("berry-logo")) {
   customElements.define("berry-logo", LogoComponent);
 }
 
-export default LogoComponent
+export default LogoComponent;
