@@ -31,6 +31,7 @@
   min-height: 1em;
   background-color: var(--code-bg-color);
   overflow-x: auto;
+  -webkit-overflow-scrolling: auto;
 }
 .line-numbers {
   position: sticky;

@@ -38,7 +38,7 @@ class LogoComponent extends HTMLElement {
   }
 
   updateStyles(/* TODO: move parms here*/) {
-    const size = this.getAttribute("size") || "300"; // Default size
+    const size = this.getAttribute("size") || "240"; // Default size
     const isAnimated = this.getAttribute("animate") || "true";
     const length = parseInt(size);
     const borderWidth = length * 0.04;
