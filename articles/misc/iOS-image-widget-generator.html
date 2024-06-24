@@ -34,7 +34,8 @@
       legend {
         font-weight: bold;
       }
-      input {
+      input,
+      select {
         min-width: 180px;
       }
       .form-row {
@@ -68,13 +69,29 @@
           <legend>Birthday Info</legend>
 
           <div class="form-row">
-            <label for="month">Month:</label>
-            <input type="number" id="month" name="month" min="1" max="12" />
+            <label for="b-month-select">Month:</label>
+            <select name="b-month-select" id="b-month-select">
+              <option value="">Select a month</option>
+              <option value="0">January</option>
+              <option value="1">Feburary</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
           </div>
 
           <div class="form-row">
-            <label for="day">Day:</label>
-            <input type="number" id="day" name="day" min="1" max="31" />
+            <label for="b-day-select">Day:</label>
+            <select id="b-day-select" name="b-day-select">
+              <option value="">Select a month first</option>
+            </select>
           </div>
 
           <div class="form-row">
@@ -90,6 +107,42 @@
           </div>
         </fieldset>
 
+        <fieldset>
+          <legend>Special Dates</legend>
+
+          <div class="form-row">
+            <label for="s-month-select">Month:</label>
+            <select name="s-month-select" id="s-month-select">
+              <option value="">Select a month</option>
+              <option value="0">January</option>
+              <option value="1">Feburary</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="s-day-select">Day:</label>
+            <select id="s-day-select" name="s-day-select">
+              <option value="">Select a month first</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            TODO: Special Day Keywords
+          </div>
+
+          <button id="addSpecialDateBtn">Add</button>
+        </fieldset>
+
         <button type="submit">Submit</button>
       </form>
     </main>
@@ -100,37 +153,118 @@
       src="/webcomponents//ToastComponent/ToastComponent.js"
     ></script>
     <script>
-      // TODO
-      document
-        .getElementById("scriptConfigForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const formData = new FormData(this);
-          const scriptConfig = {
-            title: formData.get("title"),
-            month: parseInt(formData.get("month")),
-            day: parseInt(formData.get("day")),
-            bDayMsg: formData.get("bDayMsg"),
-            specialDates: {},
-            imgKeywords: formData
-              .get("imgKeywords")
-              .split(",")
-              .map((keyword) => keyword.trim()),
-            bDayImgKeywords: formData
-              .get("bDayImgKeywords")
-              .split(",")
-              .map((keyword) => keyword.trim()),
-          };
-
-          console.log(JSON.stringify(scriptConfig));
-
-          // TODO: copy to pasteboard
-          const copyEvent = new CustomEvent("berry-toast", {
-            detail: { type: "success", message: "test" },
+      const M_Table = [
+        31, // Jan
+        isLeapYear(new Date().getFullYear()) ? 29 : 28,
+        31, // Mar
+        30, // Apr
+        31, // May
+        30, // June
+        31, // July
+        31, // Aug
+        30, // Sept
+        31, // Oct
+        30, // Nov
+        31, // Dec
+      ];
+      function isLeapYear(y) {
+        if (y % 400 === 0) {
+          return true;
+        }
+        if (y % 100 === 0) {
+          return false;
+        }
+        if (y % 4 === 0) {
+          return true;
+        }
+        return false;
+      }
+      function handleDayMonthSelect(monthElId, dayElId) {
+        const bDaySelect = document.getElementById(dayElId);
+        document
+          .getElementById(monthElId)
+          .addEventListener("change", function (e) {
+            console.log(e.target.value);
+            const selectedValue = e.target.value;
+            if (!selectedValue) {
+              bDaySelect.innerHTML = "<option value=''>Select a month</option>";
+              return;
+            }
+            bDaySelect.innerHTML = "";
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < M_Table[e.target.value]; i++) {
+              const option = document.createElement("option");
+              option.setAttribute("value", i + 1);
+              option.innerHTML = i + 1;
+              fragment.appendChild(option);
+            }
+            bDaySelect.appendChild(fragment);
           });
-          document.dispatchEvent(copyEvent);
+      }
+
+      handleDayMonthSelect("b-month-select", "b-day-select");
+      handleDayMonthSelect("s-month-select", "s-day-select");
+
+      let scriptConfig = {
+        title: "",
+        month: "",
+        day: "",
+        bDayMsg: "",
+        specialDates: [],
+        imgKeywords: [],
+        bDayImgKeywords: [],
+      };
+
+      // TODO: handle special dates update
+      document
+        .getElementById("addSpecialDateBtn")
+        .addEventListener("click", function () {
+          // 
+          const form = document.getElementById("scriptConfigForm");
+          const formData = new FormData(form);
+          const specialMonth = formData.get("s-month-select");
+          const specialDay = formData.get("s-day-select");
+          if (!specialDay || !specialMonth) {
+            console.error("No special date specified");
+            return;
+          }
+
+          console.log("specialMonth:", specialMonth, "specialDay:", specialDay);
+          // TODO: add this date and corresponsing keywords to scriptConfig 
         });
+
+      // TODO: handle submit
+      const form = document.getElementById("scriptConfigForm");
+      const formData = new FormData(form);
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        scriptConfig = {
+          title: formData.get("title"),
+          month: parseInt(formData.get("b-month-select")),
+          day: parseInt(formData.get("b-day-select")),
+          bDayMsg: formData.get("bDayMsg"),
+          // TODO: validate keyword string
+          // [''] should be converted to []
+          specialDates: [],
+          imgKeywords: formData
+            .get("imgKeywords")
+            .split(",")
+            .map((keyword) => keyword.trim()),
+          bDayImgKeywords: formData
+            .get("bDayImgKeywords")
+            .split(",")
+            .map((keyword) => keyword.trim()),
+        };
+
+        console.log(JSON.stringify(scriptConfig));
+
+        // TODO: copy to pasteboard
+        const copyEvent = new CustomEvent("berry-toast", {
+          detail: { type: "success", message: "test" },
+        });
+        document.dispatchEvent(copyEvent);
+      });
     </script>
   </body>
 </html>
