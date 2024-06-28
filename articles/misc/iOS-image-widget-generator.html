@@ -62,7 +62,7 @@
 
         <div class="form-row">
           <label for="title">Title:</label>
-          <input type="text" id="title" name="title" />
+          <input type="text" id="title" name="title" maxlength="20" />
         </div>
 
         <fieldset>
@@ -95,15 +95,25 @@
           </div>
 
           <div class="form-row">
-            <label for="imgKeywords">Image Keywords (comma-separated):</label>
-            <input type="text" id="imgKeywords" name="imgKeywords" />
+            <label for="imgKeywords">Image keywords (comma-separated):</label>
+            <input
+              type="text"
+              id="imgKeywords"
+              name="imgKeywords"
+              maxlength="100"
+            />
           </div>
 
           <div class="form-row">
             <label for="bDayImgKeywords"
-              >Birthday Image Keywords (comma-separated):</label
+              >Birthday image keywords (comma-separated):</label
             >
-            <input type="text" id="bDayImgKeywords" name="bDayImgKeywords" />
+            <input
+              type="text"
+              id="bDayImgKeywords"
+              name="bDayImgKeywords"
+              maxlength="100"
+            />
           </div>
         </fieldset>
 
@@ -137,10 +147,28 @@
           </div>
 
           <div class="form-row">
-            TODO: Special Day Keywords
+            <label for="sDayImgKeywords"
+              >Image keywords (comma-separated):</label
+            >
+            <input
+              type="text"
+              id="sDayImgKeywords"
+              name="sDayImgKeywords"
+              maxlength="100"
+            />
+          </div>
+
+          <div class="form-row">
+            <label for="sDayMsg">Message to display:</label>
+            <input type="text" id="sDayMsg" name="sDayMsg" maxlength="20" />
           </div>
 
           <button id="addSpecialDateBtn">Add</button>
+
+          <div class="form-row">
+            <span>Special Dates Added:</span>
+            <ul id="sDateList"></ul>
+          </div>
         </fieldset>
 
         <button type="submit">Submit</button>
@@ -210,27 +238,57 @@
         month: "",
         day: "",
         bDayMsg: "",
-        specialDates: [],
+        specialDates: Array.from({ length: 12 }, () => new Map()),
         imgKeywords: [],
         bDayImgKeywords: [],
       };
 
-      // TODO: handle special dates update
+      // handle special dates update
+      const listEl = document.getElementById("sDateList");
       document
         .getElementById("addSpecialDateBtn")
-        .addEventListener("click", function () {
-          // 
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          //
           const form = document.getElementById("scriptConfigForm");
           const formData = new FormData(form);
-          const specialMonth = formData.get("s-month-select");
-          const specialDay = formData.get("s-day-select");
-          if (!specialDay || !specialMonth) {
+          const specialMsg = formData.get("sDayMsg") || "";
+          const specialMonth = parseInt(formData.get("s-month-select"));
+          const specialDay = parseInt(formData.get("s-day-select"));
+          if (!specialDay || specialMonth === NaN) {
+            // TODO: show prompt
             console.error("No special date specified");
             return;
           }
+          const specialImgKeywords = formData
+            .get("sDayImgKeywords")
+            .split(",")
+            .map((keyword) => keyword.trim());
+          if (specialImgKeywords.length === 0) {
+            // TODO: show prompt
+            console.error("No image keyword specified");
+            return;
+          }
 
-          console.log("specialMonth:", specialMonth, "specialDay:", specialDay);
-          // TODO: add this date and corresponsing keywords to scriptConfig 
+          console.log("scriptConfig before update:", scriptConfig.specialDates);
+          if (scriptConfig.specialDates[specialMonth].get(specialDay)) {
+            // TODO: instead of overwrite, ask for delete first
+            console.error("Special day already exist");
+            return;
+          }
+          scriptConfig.specialDates[specialMonth].set(specialDay, {
+            msg: specialMsg,
+            keywords: specialImgKeywords,
+          });
+
+          // TODO: remove from list
+          const dateEl = document.createElement("li");
+          dateEl.innerHTML = `[MM-DD]: ${
+            specialMonth + 1
+          }-${specialDay}; Message: '${specialMsg}; Image keywords: ${specialImgKeywords.join(
+            ","
+          )}'`;
+          listEl.appendChild(dateEl);
         });
 
       // TODO: handle submit
@@ -240,13 +298,14 @@
         e.preventDefault();
 
         scriptConfig = {
+          ...scriptConfig,
           title: formData.get("title"),
           month: parseInt(formData.get("b-month-select")),
           day: parseInt(formData.get("b-day-select")),
           bDayMsg: formData.get("bDayMsg"),
           // TODO: validate keyword string
           // [''] should be converted to []
-          specialDates: [],
+          // specialDates: [],
           imgKeywords: formData
             .get("imgKeywords")
             .split(",")
@@ -257,6 +316,8 @@
             .map((keyword) => keyword.trim()),
         };
 
+        console.log(scriptConfig);
+        // TODO: Map cannot be stringfied
         console.log(JSON.stringify(scriptConfig));
 
         // TODO: copy to pasteboard
