@@ -207,6 +207,18 @@
         }
         return false;
       }
+      function mapToArray(map) {
+        return Array.from(map.entries());
+      }
+      function replacer(key, value) {
+        if (value instanceof Map) {
+          return {
+            __type: "Map",
+            value: mapToArray(value),
+          };
+        }
+        return value;
+      }
       function handleDayMonthSelect(monthElId, dayElId) {
         const bDaySelect = document.getElementById(dayElId);
         document
@@ -280,14 +292,18 @@
             msg: specialMsg,
             keywords: specialImgKeywords,
           });
-
           // TODO: remove from list
+          // TODO: better list styling
           const dateEl = document.createElement("li");
           dateEl.innerHTML = `[MM-DD]: ${
             specialMonth + 1
-          }-${specialDay}; Message: '${specialMsg}; Image keywords: ${specialImgKeywords.join(
-            ","
-          )}'`;
+          }-${specialDay}; Message: '${
+            specialMsg || "No message"
+          }'; Image keywords: ${
+            !specialImgKeywords[0]
+              ? "No keywords"
+              : specialImgKeywords.join(",")
+          }`;
           listEl.appendChild(dateEl);
         });
 
@@ -318,7 +334,7 @@
 
         console.log(scriptConfig);
         // TODO: Map cannot be stringfied
-        console.log(JSON.stringify(scriptConfig));
+        console.log(JSON.stringify(scriptConfig, replacer));
 
         // TODO: copy to pasteboard
         const copyEvent = new CustomEvent("berry-toast", {
