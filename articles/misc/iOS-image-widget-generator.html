@@ -65,6 +65,16 @@
           <input type="text" id="title" name="title" maxlength="20" />
         </div>
 
+        <div class="form-row">
+          <label for="imgKeywords">Image keywords (comma-separated):</label>
+          <input
+            type="text"
+            id="imgKeywords"
+            name="imgKeywords"
+            maxlength="100"
+          />
+        </div>
+
         <fieldset>
           <legend>Birthday Info</legend>
 
@@ -95,18 +105,8 @@
           </div>
 
           <div class="form-row">
-            <label for="imgKeywords">Image keywords (comma-separated):</label>
-            <input
-              type="text"
-              id="imgKeywords"
-              name="imgKeywords"
-              maxlength="100"
-            />
-          </div>
-
-          <div class="form-row">
             <label for="bDayImgKeywords"
-              >Birthday image keywords (comma-separated):</label
+              >Image keywords (comma-separated):</label
             >
             <input
               type="text"
@@ -171,7 +171,7 @@
           </div>
         </fieldset>
 
-        <button type="submit">Submit</button>
+        <button id="submitBtn">Submit</button>
       </form>
     </main>
 
@@ -307,41 +307,166 @@
           listEl.appendChild(dateEl);
         });
 
-      // TODO: handle submit
-      const form = document.getElementById("scriptConfigForm");
-      const formData = new FormData(form);
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+      // handle submission
+      // const form = document.getElementById("scriptConfigForm");
+      // const formData = new FormData(form);
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          const form = document.getElementById("scriptConfigForm");
+          const formData = new FormData(form);
 
-        scriptConfig = {
-          ...scriptConfig,
-          title: formData.get("title"),
-          month: parseInt(formData.get("b-month-select")),
-          day: parseInt(formData.get("b-day-select")),
-          bDayMsg: formData.get("bDayMsg"),
-          // TODO: validate keyword string
-          // [''] should be converted to []
-          // specialDates: [],
-          imgKeywords: formData
-            .get("imgKeywords")
-            .split(",")
-            .map((keyword) => keyword.trim()),
-          bDayImgKeywords: formData
-            .get("bDayImgKeywords")
-            .split(",")
-            .map((keyword) => keyword.trim()),
-        };
+          scriptConfig = {
+            ...scriptConfig,
+            title: formData.get("title"),
+            // non-valid value will be ignored later in the script
+            month: parseInt(formData.get("b-month-select")) || "",
+            day: parseInt(formData.get("b-day-select")) || "",
+            bDayMsg: formData.get("bDayMsg"),
+            // TODO: validate keyword string
+            // [''] should be converted to []
+            // specialDates: [],
+            imgKeywords: formData
+              .get("imgKeywords")
+              .split(",")
+              .map((keyword) => keyword.trim()),
+            bDayImgKeywords: formData
+              .get("bDayImgKeywords")
+              .split(",")
+              .map((keyword) => keyword.trim()),
+          };
 
-        console.log(scriptConfig);
-        // TODO: Map cannot be stringfied
-        console.log(JSON.stringify(scriptConfig, replacer));
+          // console.log("scriptConfig:", scriptConfig);
+          const finalConfig = JSON.stringify(scriptConfig, replacer);
+          // console.log(finalConfig);
 
-        // TODO: copy to pasteboard
-        const copyEvent = new CustomEvent("berry-toast", {
-          detail: { type: "success", message: "test" },
+          const fullScript = `
+        const SCRIPT_CONFIG = ${finalConfig};
+        let parsedConfig = JSON.parse(SCRIPT_CONFIG, reviver);
+
+        let widget = await createWidget();
+        if (config.runsInWidget) {
+          Script.setWidget(widget);
+        } else {
+          widget.presentMedium();
+        }
+        Script.complete();
+
+        async function createWidget() {
+          let widget = new ListWidget();
+
+          let titleStack = widget.addStack();
+          let titleElement = titleStack.addText(SCRIPT_CONFIG.title);
+          titleElement.textColor = Color.white();
+          titleElement.textOpacity = 0.95;
+          titleElement.font = Font.boldSystemFont(24);
+
+          widget.addSpacer(4);
+
+          let img;
+          const date = new Date();
+          const { imgKeywords, bDayImgKeywords, bDayMsg, specialDates } = SCRIPT_CONFIG;
+
+          if (isBDay(date)) {
+            img = await loadRandomImage(bDayImgKeywords);
+            renderMsg(widget, bDayMsg);
+          } else if (isSpecialDay(date)) {
+            img = await loadRandomImage(
+              specialDates[date.getMonth()].get(date.getDate()).keywords || [
+                "cat",
+                "loaf",
+              ]
+            );
+            renderMsg(
+              widget,
+              specialDates[date.getMonth()].get(date.getDate()).msg || ""
+            );
+          } else {
+            img = await loadRandomImage(imgKeywords);
+          }
+
+          widget.backgroundImage = img;
+
+          return widget;
+        }
+
+        async function loadImgMetaData(keywords) {
+          let url = 'https://loremflickr.com/json/g/540/540/'+ keywords.join(
+            ","
+          ) + '/all?random=1';
+          let req = new Request(url);
+          return await req.loadJSON();
+        }
+
+        async function loadRandomImage(keywords) {
+          let data = await loadImgMetaData(keywords);
+          let url = data.file;
+          let req = new Request(url);
+          return req.loadImage();
+        }
+
+        function isBDay(date) {
+          const { bMonth: month, bDay: day } = SCRIPT_CONFIG;
+          if (!month || !day) {
+            return false;
+          }
+          return date.getMonth() === month - 1 && date.getDate() === day;
+        }
+
+        function isSpecialDay(date) {
+          const { specialDates } = SCRIPT_CONFIG;
+          const specialMonth = specialDates[date.getMonth()];
+          if (!specialMonth) {
+            return false;
+          }
+          const specialDay = specialMonth.get(date.getDate());
+          if (!specialDay) {
+            return false;
+          }
+          return true;
+        }
+
+        function renderMsg(widget, msg) {
+          let textElement = widget.addText(msg);
+          textElement.textColor = Color.white();
+          textElement.textOpacity = 0.9;
+          textElement.font = Font.boldSystemFont(20);
+        }
+
+        function arrayToMap(array) {
+          return new Map(array);
+        }
+
+        function reviver(key, value) {
+          if (value && value.__type === "Map") {
+            return arrayToMap(value.value);
+          }
+          return value;
+        }
+        `;
+
+          // console.log("fullScript", fullScript);
+
+          navigator.clipboard
+            .writeText(fullScript)
+            .then(() => {
+              const msg = "Code copied to clipboard!";
+              console.log(msg);
+              const copyEvent = new CustomEvent("berry-toast", {
+                detail: { type: "success", message: msg },
+              });
+              document.dispatchEvent(copyEvent);
+            })
+            .catch((err) => {
+              const msg = `Failed to copy code: ${err}`;
+              console.error(msg);
+              const copyEvent = new CustomEvent("berry-toast", {
+                detail: { type: "error", message: msg },
+              });
+              document.dispatchEvent(copyEvent);
+            });
         });
-        document.dispatchEvent(copyEvent);
-      });
     </script>
   </body>
 </html>
