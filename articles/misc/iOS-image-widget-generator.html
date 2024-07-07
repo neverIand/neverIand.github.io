@@ -337,13 +337,18 @@
               .map((keyword) => keyword.trim()),
           };
 
-          // console.log("scriptConfig:", scriptConfig);
+          console.log("scriptConfig:", scriptConfig);
           const finalConfig = JSON.stringify(scriptConfig, replacer);
           // console.log(finalConfig);
 
           const fullScript = `
-        const SCRIPT_CONFIG = ${finalConfig};
-        let parsedConfig = JSON.parse(SCRIPT_CONFIG, reviver);
+        let SCRIPT_CONFIG = ${finalConfig};
+        SCRIPT_CONFIG.specialDates = SCRIPT_CONFIG.specialDates.map((date) => {
+          if (date.__type === "Map") {
+            return new Map(date.value);
+          }
+          return date;
+        });
 
         let widget = await createWidget();
         if (config.runsInWidget) {
@@ -432,17 +437,6 @@
           textElement.textColor = Color.white();
           textElement.textOpacity = 0.9;
           textElement.font = Font.boldSystemFont(20);
-        }
-
-        function arrayToMap(array) {
-          return new Map(array);
-        }
-
-        function reviver(key, value) {
-          if (value && value.__type === "Map") {
-            return arrayToMap(value.value);
-          }
-          return value;
         }
         `;
 
