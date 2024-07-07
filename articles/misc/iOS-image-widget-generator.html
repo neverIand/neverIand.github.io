@@ -29,7 +29,10 @@
         background: #fff;
         border: 1px solid;
       }
-      fieldset {
+      label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
       legend {
         font-weight: bold;
@@ -55,18 +58,21 @@
         <h2>Script Config</h2>
 
         <p>
-          You can customize the widget through this form. By default, it will
-          display a random image with different keywords you picked, but you can
-          leave the birthday blank to disable it.
+          Customize the widget through this form. Incomplete or empty settings
+          will be ignored by the script.
         </p>
 
         <div class="form-row">
-          <label for="title">Title:</label>
+          <label for="title">Title</label>
           <input type="text" id="title" name="title" maxlength="20" />
         </div>
 
         <div class="form-row">
-          <label for="imgKeywords">Image keywords (comma-separated):</label>
+          <label for="imgKeywords"
+            >Image keywords
+            <span><small>comma-separated</small></span>
+            <span><small>&lt;100 characters</small></span>
+          </label>
           <input
             type="text"
             id="imgKeywords"
@@ -79,7 +85,7 @@
           <legend>Birthday Info</legend>
 
           <div class="form-row">
-            <label for="b-month-select">Month:</label>
+            <label for="b-month-select">Month</label>
             <select name="b-month-select" id="b-month-select">
               <option value="">Select a month</option>
               <option value="0">January</option>
@@ -98,7 +104,7 @@
           </div>
 
           <div class="form-row">
-            <label for="b-day-select">Day:</label>
+            <label for="b-day-select">Day</label>
             <select id="b-day-select" name="b-day-select">
               <option value="">Select a month first</option>
             </select>
@@ -106,7 +112,9 @@
 
           <div class="form-row">
             <label for="bDayImgKeywords"
-              >Image keywords (comma-separated):</label
+              >Image keywords
+              <span><small>comma-separated</small></span>
+              <span><small>&lt;100 characters</small></span></label
             >
             <input
               type="text"
@@ -121,7 +129,7 @@
           <legend>Special Dates</legend>
 
           <div class="form-row">
-            <label for="s-month-select">Month:</label>
+            <label for="s-month-select">Month</label>
             <select name="s-month-select" id="s-month-select">
               <option value="">Select a month</option>
               <option value="0">January</option>
@@ -140,7 +148,7 @@
           </div>
 
           <div class="form-row">
-            <label for="s-day-select">Day:</label>
+            <label for="s-day-select">Day</label>
             <select id="s-day-select" name="s-day-select">
               <option value="">Select a month first</option>
             </select>
@@ -148,7 +156,8 @@
 
           <div class="form-row">
             <label for="sDayImgKeywords"
-              >Image keywords (comma-separated):</label
+              >Image keywords <span><small>comma-separated</small></span>
+              <span><small>&lt;100 characters</small></span></label
             >
             <input
               type="text"
@@ -159,7 +168,7 @@
           </div>
 
           <div class="form-row">
-            <label for="sDayMsg">Message to display:</label>
+            <label for="sDayMsg">Message to display</label>
             <input type="text" id="sDayMsg" name="sDayMsg" maxlength="20" />
           </div>
 
