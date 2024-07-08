@@ -16,22 +16,234 @@
       <article>
         <berry-heading></berry-heading>
 
-        <!-- <iframe
-          class="bandcamp-player"
-          src="https://bandcamp.com/EmbeddedPlayer/track=1102841585/size=small/bgcol=ffffff/linkcol=0687f5/transparent=true/"
-          seamless
-          ><a href="https://bolispupul.bandcamp.com/track/completely-half"
-            >Completely Half by Bolis Pupul</a
-          ></iframe
-        > -->
+        <iframe
+          class="spotify-player"
+          src="https://open.spotify.com/embed/track/0jk0AxfwUJbnuUKPuy8e2k?utm_source=generator&theme=0"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe>
 
         <section>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis
-            nesciunt, expedita fugit asperiores repellendus dolores recusandae
-            nihil soluta dolorem vitae, quibusdam similique placeat consequatur
-            deleniti modi, optio nobis architecto doloribus!
+            <a
+              href="https://scriptable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Scriptable</a
+            >
+            is an iOS App that makes it possible to write iOS widget using
+            Javascript. It appears to be capable of some light automation as
+            well, but I found most of its use case being creating custom
+            widgets. Now that I finally have some time, I decide to play around
+            and write a simple hello world script with its API and see how it
+            actually works.
           </p>
+        </section>
+
+        <section>
+          <h5>First Script</h5>
+          <p>
+            The App creator provides a variety of sample scripts in the App
+            itself as well as the
+            <a
+              href="https://docs.scriptable.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >full documentation of the APIs</a
+            >. My plan was to create a simple widget that displays some text and
+            a random image, that is:
+          </p>
+          <ul>
+            <li>It displays some text (hardcoded)</li>
+            <li>
+              It uses a random image from an API:
+              <ul>
+                <li>It fetches the image from an API</li>
+                <li>It then uses the image as the widget background.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <p>
+            Most of the code is based on an official demo script
+            <code>Random Scriptable API</code>, and I implemented the functions
+            for handling images after doing some reading - to load an image, you
+            need to use the same <code>Request</code> API and provide the image
+            url. Here's the full script:
+          </p>
+
+          <berry-code data-title="Random Image Widget">
+            <pre slot="code">
+let SCRIPT_CONFIG = {
+   title: "",
+   bMonth: 5,
+   bDay: 13,
+   bDayMsg: "",
+   // Jan: 0, Feb: 1, ...
+   specialDates: [
+     null,
+     null,
+     null,
+     null,
+     null,
+     new Map([[22, { msg: "Today is June 22th", keywords: ["bunny"] }]]),
+     null,
+     null,
+     null,
+     null,
+     null,
+     null,
+   ],
+   imgKeywords: ["cat", "loaf"],
+   bDayImgKeywords: ["cake", "round"],
+ };
+
+let widget = await createWidget();
+if (config.runsInWidget) {
+  Script.setWidget(widget);
+} else {
+  widget.presentMedium();
+}
+Script.complete();
+
+async function createWidget() {
+  let widget = new ListWidget();
+
+// let gradient = new LinearGradient();
+// gradient.locations = [0, 1];
+// gradient.colors = [new Color("00A2E8 "), new Color("#39C5BB")];
+// widget.backgroundGradient = gradient;
+
+  let titleStack = widget.addStack();
+  let titleElement = titleStack.addText(SCRIPT_CONFIG.title);
+  titleElement.textColor = Color.white();
+  titleElement.textOpacity = 0.95;
+  titleElement.font = Font.boldSystemFont(24);
+
+  widget.addSpacer(4);
+
+  let img;
+  const date = new Date();
+  const { imgKeywords, bDayImgKeywords, bDayMsg, specialDates } = SCRIPT_CONFIG;
+
+  // Note that Birthday will has higher priority
+  if (isBDay(date)) {
+    img = await loadRandomImage(bDayImgKeywords);
+    renderMsg(widget, bDayMsg);
+  } else if (isSpecialDay(date)) {
+    img = await loadRandomImage(
+      // could use some other image to indicate there's no custom keywords
+      specialDates[date.getMonth()].get(date.getDate()).keywords || [
+        "cat",
+        "loaf",
+      ]
+    );
+    renderMsg(
+      widget,
+      specialDates[date.getMonth()].get(date.getDate()).msg || ""
+    );
+  } else {
+    img = await loadRandomImage(imgKeywords);
+  }
+
+  widget.backgroundImage = img;
+
+  return widget;
+}
+
+async function loadImgMetaData(keywords) {
+  let url =
+    "https://loremflickr.com/json/g/540/540/" +
+    keywords.join(",") +
+    "/all?random=1";
+  let req = new Request(url);
+  return await req.loadJSON();
+}
+
+async function loadRandomImage(keywords) {
+  let data = await loadImgMetaData(keywords);
+  let url = data.file;
+  let req = new Request(url);
+  return req.loadImage();
+}
+
+function isBDay(date) {
+  const { bMonth: month, bDay: day } = SCRIPT_CONFIG;
+  if (!month || !day) {
+    return false;
+  }
+  return date.getMonth() === month - 1 && date.getDate() === day;
+}
+
+function isSpecialDay(date) {
+  const { specialDates } = SCRIPT_CONFIG;
+
+  const specialMonth = specialDates[date.getMonth()];
+  if (!specialMonth) {
+    return false;
+  }
+  const specialDay = specialMonth.get(date.getDate());
+  if (!specialDay) {
+    return false;
+  }
+  return true;
+}
+
+function renderMsg(widget, msg) {
+  let textElement = widget.addText(msg);
+  textElement.textColor = Color.white();
+  textElement.textOpacity = 0.9;
+  textElement.font = Font.boldSystemFont(20);
+}
+            </pre>
+          </berry-code>
+
+          <p>
+            Then, I extracted some hardcoded variables and made them
+            configurable, and that's when I decided to make a widget generator -
+            the widget itself is already very configurable, I'll just make a
+            simple form (also as a coding proctice) to make the process more
+            streamlined anyway.
+          </p>
+        </section>
+
+        <section>
+          <h5>Image Widget Generator</h5>
+          <p>
+            Without further ado, here's the link to the form:
+            <a
+              href="/articles/misc/iOS-image-widget-generator.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Scriptable Widget Generator</a
+            >
+          </p>
+          <p>
+            I did not come across too many issues making it as it's a very
+            simple page after all, but there's still something worth mentioning:
+            <code>JSON.stringfy</code> is used for copying the generated script
+            to pasteboard, but there's <code>Map</code> in the script
+            configuration. <code>Map</code> cannot be parsed to JSON text, so I
+            had to do some extra processing. I could change the data structure
+            in the original script, but that would take more effort and I was
+            just lazy.
+          </p>
+
+          <p>
+            Another thing I did not expect was that comparing to template
+            literals <code>`</code>, apostrophe is actually more easy to work
+            with in this case where there is string manipulation in the string
+            needs to be copied. Therefore, I guess aside from logging objects,
+            old-school way of string concatentation do have some other benefits
+            as well.
+          </p>
+
+          <berry-img
+            data-src="/articles/images/new/07/20240708230525.jpg"
+            data-title="Backtick cannot be used directly in the string"
+          ></berry-img>
         </section>
 
         <berry-date></berry-date>

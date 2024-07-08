@@ -50,5 +50,12 @@
     "subheading": "It's not really about object-fit",
     "filename": "/articles/new/new-06-auto-resize-an-image-to-fit-inside-a-div-an-unexpected-discovery.html",
     "date": "2024-06-02"
+  },
+  {
+    "id": 7,
+    "title": "A Simple iOS Widget Generator",
+    "subheading": "And a quick look at the Scriptable App",
+    "filename": "/articles/new/",
+    "date": "2024-07-08"
   }
 ]
