@@ -44,7 +44,7 @@ class CustomArchivedList extends HTMLElement {
     // Create and append the footer template
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
-      <aside class="sidebar">
+      <aside class="sidebar" role="complementary">
         <h2>Archived Articles</h2>
         <div id="archive-list">
             <div class="archive-category">
