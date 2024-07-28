@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/album=3330423057/size=small/bgcol=ffffff/linkcol=f171a2/track=2452718722/transparent=true/"
+          seamless
+          ><a href="https://metronomy.bandcamp.com/album/love-letters"
+            >Love Letters by Metronomy</a
+          ></iframe
+        >
+
+        <section>
+          <p>
+            Welcome to part one of the series "I saw this effect somewhere else
+            and decide to implement it myself" where I
+            <s>reinvent the wheel</s> try to replicate some interesting effect
+            from other websites. In this article, I'll be presenting the feature
+            where you can use your cursor as an image filter when hovering on an
+            image (touch screen compatible of course).
+          </p>
+
+          <p>
+            My first thought on seeing this effect for the first time is to use
+            <code>backdrop-filter</code>. Therefore, the implementation is very
+            straightforward:
+          </p>
+
+          <!-- inline demo -->
+          <style>
+            * {
+              margin: 0;
+              box-sizing: border-box;
+            }
+            body {
+              overflow-x: hidden;
+            }
+            .container {
+              position: relative;
+              width: 100%;
+              max-width: 800px;
+              height: 600px;
+              background-image: url("https://loremflickr.com/800/600");
+              background-size: cover;
+              background-position: center;
+              overflow: hidden;
+            }
+            #mask1,
+            #mask2 {
+              position: absolute;
+              display: none;
+              justify-content: center;
+              align-items: center;
+              width: 200px;
+              height: 200px;
+              background: rgba(255, 255, 255, 0.2);
+              border: 1px solid silver;
+              border-radius: 50%;
+            }
+            #mask1 {
+              backdrop-filter: invert(100%);
+              -webkit-backdrop-filter: invert(100%);
+            }
+            canvas {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+          </style>
+
+          <div class="container" id="img1">
+            <div id="mask1"></div>
+          </div>
+
+          <script>
+            const imgElement = document.getElementById("img1");
+            const mask = document.getElementById("mask1");
+
+            function adjustMaskPosition(x, y) {
+              const maskWidth = mask.offsetWidth;
+              const maskHeight = mask.offsetHeight;
+              mask.style.top = `${y - maskHeight / 2}px`;
+              mask.style.left = `${x - maskWidth / 2}px`;
+            }
+
+            imgElement.addEventListener("mouseenter", function (event) {
+              mask.style.display = "flex";
+            });
+
+            imgElement.addEventListener("mousemove", function (event) {
+              // const x = event.offsetX;
+              // const y = event.offsetY;
+              const rect = imgElement.getBoundingClientRect();
+              const x = event.clientX - rect.left;
+              const y = event.clientY - rect.top;
+
+              adjustMaskPosition(x, y);
+            });
+
+            imgElement.addEventListener("mouseleave", function (event) {
+              mask.style.display = "none";
+            });
+
+            imgElement.addEventListener("touchstart", function (event) {
+              mask.style.display = "flex";
+            });
+
+            imgElement.addEventListener("touchmove", function (event) {
+              const touch = event.touches[0];
+              const rect = imgElement.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const y = touch.clientY - rect.top;
+              event.preventDefault();
+              adjustMaskPosition(x, y);
+            });
+
+            imgElement.addEventListener("touchend", function (event) {
+              mask.style.display = "none";
+            });
+          </script>
+
+          <p>Here's the DOM structure and some styling:</p>
+
+          <berry-code
+            data-title="Implementation with backdrop-filter (HTML and CSS)"
+            nohighlight
+          >
+            <pre slot="code">
+  &lt;style&gt;
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      overflow-x: hidden;
+    }
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 600px;
+      background-image: url("https://loremflickr.com/800/600");
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    #mask {
+      position: absolute;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid silver;
+      border-radius: 50%;
+      backdrop-filter: invert(100%);
+      -webkit-backdrop-filter: invert(100%);
+    }
+  &lt;/style&gt;
+
+  &lt;div class="container" id="img"&gt;
+    &lt;div id="mask"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+</pre
+            >
+          </berry-code>
+
+          <p>And here's the js:</p>
+
+          <berry-code data-title="Implementation with backdrop-filter (JS)">
+            <pre slot="code">
+const imgElement = document.getElementById("img");
+const mask = document.getElementById("mask");
+
+function adjustMaskPosition(x, y) {
+  const maskWidth = mask.offsetWidth;
+  const maskHeight = mask.offsetHeight;
+  mask.style.top = `${y - maskHeight / 2}px`;
+  mask.style.left = `${x - maskWidth / 2}px`;
+}
+
+imgElement.addEventListener("mouseenter", function (event) {
+  mask.style.display = "flex";
+});
+
+imgElement.addEventListener("mousemove", function (event) {
+  // offsetX and offsetY may have inconsistent implementation between browsers
+  // const x = event.offsetX;
+  // const y = event.offsetY;
+  const rect = imgElement.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+
+  adjustMaskPosition(x, y);
+});
+imgElement.addEventListener("mouseleave", function (event) {
+  mask.style.display = "none";
+});
+
+// handle touch events
+imgElement.addEventListener("touchstart", function (event) {
+  mask.style.display = "flex";
+});
+imgElement.addEventListener("touchmove", function (event) {
+  const touch = event.touches[0];
+  const rect = imgElement.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  event.preventDefault();
+  adjustMaskPosition(x, y);
+});
+imgElement.addEventListener("touchend", function (event) {
+  mask.style.display = "none";
+});
+            </pre>
+          </berry-code>
+
+          <p>
+            Nothing really worth mentioning here, but there is one major
+            downside using this method: the compatibility of
+            <code>backdrop-filter</code> isn't great overall (<a
+              href="https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter#browser_compatibility"
+              target="_blank"
+              rel="noopener noreferrer"
+              >MDN</a
+            >). Therefore, I also wanted to try to figure out an alternative way
+            to implement this effect.
+          </p>
+        </section>
+
+        <section>
+          <p>
+            There are two potential ways I know of: <code>canvas</code> or
+            <code>mix-blend-mode</code> (<a
+              href="https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode"
+              target="_blank"
+              rel="noopener noreferrer"
+              >MDN</a
+            >). The <code>mix-blend-mode</code> implementation should be very
+            similar to those above, so I'll only put the
+            <code>canvas</code> implementation here:
+          </p>
+
+          <!-- inline demo -->
+          <div class="container" id="img2">
+            <canvas id="canvas"></canvas>
+            <div id="mask2"></div>
+          </div>
+
+          <script>
+            const imgElement2 = document.getElementById("img2");
+            const mask2 = document.getElementById("mask2");
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const img = new Image();
+            img.src = "https://loremflickr.com/800/600";
+
+            function drawImageCover() {
+              const rect = imgElement2.getBoundingClientRect();
+              canvas.width = rect.width;
+              canvas.height = rect.height;
+
+              const imgRatio = img.width / img.height;
+              const canvasRatio = canvas.width / canvas.height;
+
+              let width, height, x, y;
+
+              if (canvasRatio > imgRatio) {
+                width = canvas.width;
+                height = width / imgRatio;
+                x = 0;
+                y = (canvas.height - height) / 2;
+              } else {
+                height = canvas.height;
+                width = height * imgRatio;
+                x = (canvas.width - width) / 2;
+                y = 0;
+              }
+
+              ctx.drawImage(img, x, y, width, height);
+            }
+
+            img.onload = drawImageCover;
+            window.addEventListener("resize", drawImageCover);
+
+            function adjustMaskPosition2(x, y) {
+              const maskWidth = mask2.offsetWidth;
+              const maskHeight = mask2.offsetHeight;
+              mask2.style.top = `${y - maskHeight / 2}px`;
+              mask2.style.left = `${x - maskWidth / 2}px`;
+
+              // Clear the canvas and redraw the image
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              drawImageCover();
+
+              // Create an inverted circle
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(x, y, maskWidth / 2, 0, 2 * 3.1416);
+              ctx.clip();
+
+              // Apply the filter effect inside the circle
+              ctx.globalCompositeOperation = "difference";
+              ctx.fillStyle = "white";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+              ctx.restore();
+            }
+
+            imgElement2.addEventListener("mouseenter", function (event) {
+              mask2.style.display = "flex";
+              canvas.style.display = "block";
+            });
+
+            imgElement2.addEventListener("mousemove", function (event) {
+              const rect = imgElement2.getBoundingClientRect();
+              const x = event.clientX - rect.left;
+              const y = event.clientY - rect.top;
+
+              adjustMaskPosition2(x, y);
+            });
+            imgElement2.addEventListener("mouseleave", function (event) {
+              mask2.style.display = "none";
+              canvas.style.display = "none";
+            });
+
+            // handle touch input on mobile devices
+            imgElement2.addEventListener("touchstart", function (event) {
+              mask2.style.display = "flex";
+              canvas.style.display = "block";
+            });
+            imgElement2.addEventListener("touchmove", function (event) {
+              const touch = event.touches[0];
+              const rect = imgElement2.getBoundingClientRect();
+              const x = touch.clientX - rect.left;
+              const y = touch.clientY - rect.top;
+              event.preventDefault();
+              adjustMaskPosition2(x, y);
+            });
+            imgElement2.addEventListener("touchend", function (event) {
+              mask2.style.display = "none";
+              canvas.style.display = "none";
+            });
+          </script>
+
+          <berry-code
+            data-title="Implementation with canvas (HTML and CSS)"
+            nohighlight
+          >
+            <pre slot="code">
+  &lt;style&gt;
+    * {
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body {
+      overflow-x: hidden;
+    }
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 600px;
+      background-image: url("https://loremflickr.com/800/600");
+      background-size: cover;
+      /* Make sure it matches the layout in canvas */
+      background-position: center;
+      overflow: hidden;
+    }
+    #mask {
+      position: absolute;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid silver;
+      border-radius: 50%;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  &lt;/style&gt;
+
+  &lt;div class="container" id="img"&gt;
+    &lt;canvas id="canvas"&gt;&lt;/canvas&gt;
+    &lt;div id="mask"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+</pre
+            >
+          </berry-code>
+
+          <berry-code data-title="Implementation with canvas (JS)">
+            <pre slot="code">
+const imgElement = document.getElementById("img");
+const mask = document.getElementById("mask");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const img = new Image();
+img.src = "https://loremflickr.com/800/600";
+
+function drawImageCover() {
+  const rect = imgElement.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+
+  const imgRatio = img.width / img.height;
+  const canvasRatio = canvas.width / canvas.height;
+
+  let width, height, x, y;
+
+  if (canvasRatio > imgRatio) {
+    width = canvas.width;
+    height = width / imgRatio;
+    x = 0;
+    y = (canvas.height - height) / 2;
+  } else {
+    height = canvas.height;
+    width = height * imgRatio;
+    x = (canvas.width - width) / 2;
+    y = 0;
+  }
+
+  ctx.drawImage(img, x, y, width, height);
+}
+
+img.onload = drawImageCover;
+window.addEventListener("resize", drawImageCover);
+
+function adjustMaskPosition(x, y) {
+  const maskWidth = mask.offsetWidth;
+  const maskHeight = mask.offsetHeight;
+  mask.style.top = `${y - maskHeight / 2}px`;
+  mask.style.left = `${x - maskWidth / 2}px`;
+
+  // Clear the canvas and redraw the image
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawImageCover();
+
+  // Create an inverted circle
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, maskWidth / 2, 0, 2 * 3.1416);
+  ctx.clip();
+
+  // Apply the filter effect inside the circle
+  ctx.globalCompositeOperation = "difference";
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.restore();
+}
+
+imgElement.addEventListener("mouseenter", function (event) {
+  mask.style.display = "flex";
+  canvas.style.display = "block";
+});
+
+imgElement.addEventListener("mousemove", function (event) {
+  const rect = imgElement.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+
+  adjustMaskPosition(x, y);
+});
+imgElement.addEventListener("mouseleave", function (event) {
+  mask.style.display = "none";
+  canvas.style.display = "none";
+});
+
+// handle touch input on mobile devices
+imgElement.addEventListener("touchstart", function (event) {
+  mask.style.display = "flex";
+  canvas.style.display = "block";
+});
+imgElement.addEventListener("touchmove", function (event) {
+  const touch = event.touches[0];
+  const rect = imgElement.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  event.preventDefault();
+  adjustMaskPosition(x, y);
+});
+imgElement.addEventListener("touchend", function (event) {
+  mask.style.display = "none";
+  canvas.style.display = "none";
+});
+            </pre>
+          </berry-code>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+
+      <script
+        src="https://utteranc.es/client.js"
+        repo="neverIand/neverIand.github.io"
+        issue-term="url"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>

@@ -57,5 +57,12 @@
     "subheading": "And a quick look at the Scriptable App",
     "filename": "/articles/new/new-07-a-simple-iOS-widget-generator.html",
     "date": "2024-07-08"
+  },
+  {
+    "id": 8,
+    "title": "Cursor Image Filter Effect",
+    "subheading": "With backdrop-filter's polyfill",
+    "filename": "/articles/new/new-08-cursor-image-filter-effect.html",
+    "date": "2024-07-29"
   }
 ]
