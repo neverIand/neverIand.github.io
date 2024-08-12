@@ -9,10 +9,14 @@ class LogoComponent extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["size", "animate"];
+    return ["size", "animate", "muted"];
   }
 
+  // All styling changes are in updateStyles() at the moment
   attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {
+      return;
+    }
     // if (name === "size") {
     //   this.updateStyles();
     // }
@@ -40,6 +44,7 @@ class LogoComponent extends HTMLElement {
   updateStyles(/* TODO: move parms here*/) {
     const size = this.getAttribute("size") || "240"; // Default size
     const isAnimated = this.getAttribute("animate") || "true";
+    const isMuted = this.getAttribute("muted") || "false";
     const length = parseInt(size);
     const borderWidth = length * 0.04;
     const borderRadius = length * (2 / 75);
@@ -62,6 +67,7 @@ class LogoComponent extends HTMLElement {
         --logo-right-square-width: ${rightSquareWidth}px;
         --logo-core-width: ${coreWidth}px;
         --logo-color: rgb(121,0,142);
+        opacity: ${isMuted === "true" ? "0.2" : "1"};
     }
     .square {
         background-color: var(--bg-color);

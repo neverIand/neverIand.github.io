@@ -6,6 +6,7 @@ function initHomePage() {
   console.info("Hello World");
   initArticleList();
   initArticleList("misc");
+  highlightBanner();
 }
 
 async function initArticleList(type) {
@@ -53,6 +54,25 @@ function renderArticleList(elementId, data) {
 
 function compareDate(date1, date2) {
   return new Date(date2) - new Date(date1);
+}
+
+function highlightBanner() {
+  const banner = document.getElementById("banner");
+  const squares = banner.querySelectorAll("berry-logo");
+  let startIndex = 0;
+  squares.length > 0 &&
+    setInterval(() => {
+      squares.forEach((square) => {
+        square.setAttribute("muted", true);
+      });
+
+      squares[startIndex].setAttribute("muted", false);
+
+      startIndex++;
+      if (startIndex === squares.length) {
+        startIndex = 0;
+      }
+    }, 1000);
 }
 
 document.addEventListener("DOMContentLoaded", initHomePage);

@@ -6,8 +6,19 @@ body {
 p {
   color: var(--text-color);
 }
-section#intro {
+main {
+  width: 100%;
+  overflow-x: hidden;
+}
+section {
   max-width: 800px;
+}
+section#banner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+section#intro {
   color: var(--text-color);
 }
 section.title-list {
