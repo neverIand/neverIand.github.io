@@ -13,5 +13,12 @@
     "subheading": "Literally hello world for cooking (or baking)",
     "filename": "/articles/misc/misc-01-first-time-making-eton-mess.html",
     "date": "2024-07-18"
+  },
+  {
+    "id": 2,
+    "title": "Trouble shooting VSCode Formatting Shortcut",
+    "subheading": "",
+    "filename": "/articles/misc/misc-02-trouble-shooting-vscode-formatting-shortcut.html",
+    "date": "2024-08-20"
   }
 ]

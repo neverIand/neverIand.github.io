@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/common.css" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="spotify-player"
+          src="https://open.spotify.com/embed/track/4KD9cNZdAH9L8xFytzMba3?utm_source=generator&theme=0"
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe>
+
+        <section>
+          <p>
+            I've been having issues with VSCode's code formatting shortcut for
+            quite a while. For files not supported by prettier like
+            <code>.prisma</code>, every time I use
+            <kbd>shift</kbd>+<kbd>alt</kbd>+<kbd>f</kbd>, the prettier complains
+            the file format not being supported and thus skipping the file:
+          </p>
+
+          <berry-code nohighlight>
+            <pre slot="code">
+["INFO" - 4:15:28 PM] File Info:
+{
+  "ignored": true,
+  "inferredParser": null
+}
+["WARN" - 4:15:28 PM] Parser not inferred, trying VS Code language.
+["ERROR" - 4:15:28 PM] Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.
+  </pre
+            >
+          </berry-code>
+          <p>
+            However, I've already set up the specific plugin for formatting
+            those unsupported files accordingly:
+          </p>
+
+          <berry-code nohighlight data-title="settings.json">
+            <pre slot="code">
+{
+  "[prisma]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}
+            </pre>
+          </berry-code>
+
+          <p>
+            I've also checked my keyboard shortcut settings multiple times as
+            well as the file association, and everything looks correct. Being
+            clueless, I had to use <code>formatOnSave</code> as a workaround.
+          </p>
+        </section>
+
+        <section>
+          <p>
+            However, I decide to resolve this issue once and for all this time.
+            Again, after invesgating all relevant settings I can think of, no
+            progress. So I decided to disable prettier and see if there would be
+            any different. After prettier was disabled, I tried the shortcut
+            again and an unexpected error message showed up:
+            <code>prettier.forceFormatDocument</code> was not able to format the
+            document (obviously). This is it! I then went to the keyboard
+            shortcut settings and removed the key bind, then enabled prettier -
+            now other unsupported files can finally be formatted using the
+            specified plugin. (Though I have no idea when did I set up that key
+            bind)
+          </p>
+
+          <p>
+            In conclusion: avoid using
+            <code>prettier.forceFormatDocument</code>, especially do not use the
+            same keybind with the default formatting shortcut for it.
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+
+      <script
+        src="https://utteranc.es/client.js"
+        repo="neverIand/neverIand.github.io"
+        issue-term="url"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+    <script type="module" src="/scripts/essentials.js"></script>
+    <script type="module" src="/scripts/articles.js"></script>
+  </body>
+</html>
