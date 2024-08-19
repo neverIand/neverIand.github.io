@@ -25,9 +25,7 @@ class ArticleList extends HTMLElement {
 
   render() {
     const title = this.getAttribute("data-title");
-    const subheading =
-      this.getAttribute("data-subheading") ||
-      "(No subheading for this article)";
+    const subheading = this.getAttribute("data-subheading") || "";
     const url = this.getAttribute("data-url") || "/404.html";
     const date = this.getAttribute("data-date") || "unknown date";
     const lastUpdate = this.getAttribute("data-lastupdate");
