@@ -33,15 +33,15 @@ class CustomHeader extends HTMLElement {
     template.innerHTML = /*html*/ `
       <header>
         <div id="logo">
-        <a href="/">
+        <a href="/" title="home page">
           <berry-logo size="50" animate="true"></berry-logo>
         </a>
-          <a href="/"><h1>neverIand</h1></a>
+          <a href="/" title="home page"><h1>neverIand</h1></a>
         </div>
         <nav id="links">
           <ul>
-            <li><a href='/articles/misc/profile.html'>about</a></li>
-            <li><a href="/articles/archived/index.html" title="archived articles">archived</a></li>
+            <li><a title="about" href='/articles/misc/profile.html'>about</a></li>
+            <li><a title="archived articles" href="/articles/archived/index.html" title="archived articles">archived</a></li>
             <li><berry-toggle data-label="🌙" ${
               getTheme() === "light" ? "" : "data-checked"
             }></berry-toggle></li>
