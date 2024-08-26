@@ -100,6 +100,7 @@ class ArticleSubheading extends HTMLElement {
       linkEl.className = "prev";
       linkEl.href = prevArticle.filename;
       linkEl.textContent = prevArticle.title;
+      linkEl.title = `Previous: ${prevArticle.title}`;
       conatiner.appendChild(linkEl);
     }
     if (nextArticle) {
@@ -107,6 +108,7 @@ class ArticleSubheading extends HTMLElement {
       linkEl.className = "next";
       linkEl.href = nextArticle.filename;
       linkEl.textContent = nextArticle.title;
+      linkEl.title = `Next: ${nextArticle.title}`;
       conatiner.appendChild(linkEl);
     }
   }
