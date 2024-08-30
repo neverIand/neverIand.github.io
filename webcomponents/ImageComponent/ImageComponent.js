@@ -70,7 +70,7 @@ class ImageComponent extends HTMLElement {
       </style>
       <div id="container">
         <img id="image" title="${title}" alt="${placeholder}"></img>
-        <p>${title}<p>
+        ${title && `<p>${title}</p>`}
       </div>
       <div id="modal">
         <img></img>

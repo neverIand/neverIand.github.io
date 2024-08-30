@@ -163,6 +163,7 @@ code {
   display: inline;
   margin: 0 4px;
   padding: 0 4px;
+  width: fit-content;
   font-family: var(--code-font);
   word-wrap: break-word;
   color: #000;

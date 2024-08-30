@@ -171,6 +171,11 @@ class CodeSnippet extends HTMLElement {
       '<span class="keyword">$1</span>'
     );
 
+    // codeContent = codeContent.replace(
+    //   /([+-.])/g,
+    //   '<span class="symbol">$1</span>'
+    // );
+
     codeContent = codeContent.replace(
       /(\/\/.*$)/gm,
       '<span class="comment">$1</span>'

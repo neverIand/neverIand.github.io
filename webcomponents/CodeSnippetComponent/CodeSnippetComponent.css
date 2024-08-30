@@ -62,6 +62,9 @@ pre {
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
 }
+.symbol {
+  color: var(--text-color);
+}
 .comment,
 .comment .keyword {
   color: var(--code-comment-color);
