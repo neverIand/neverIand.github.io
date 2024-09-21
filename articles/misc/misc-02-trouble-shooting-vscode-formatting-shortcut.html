@@ -32,35 +32,29 @@
             <code>.prisma</code>, every time I use
             <kbd>shift</kbd>+<kbd>alt</kbd>+<kbd>f</kbd>, the prettier complains
             the file format not being supported and thus skipping the file:
+            <samp>
+              ["INFO" - 4:15:28 PM] File Info:
+              {
+                "ignored": true,
+                "inferredParser": null
+              }
+              ["WARN" - 4:15:28 PM] Parser not inferred, trying VS Code language.
+              ["ERROR" - 4:15:28 PM] Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.
+            </samp>
           </p>
 
-          <berry-code nohighlight>
-            <pre slot="code">
-["INFO" - 4:15:28 PM] File Info:
-{
-  "ignored": true,
-  "inferredParser": null
-}
-["WARN" - 4:15:28 PM] Parser not inferred, trying VS Code language.
-["ERROR" - 4:15:28 PM] Failed to resolve a parser, skipping file. If you registered a custom file extension, be sure to configure the parser.
-  </pre
-            >
-          </berry-code>
           <p>
             However, I've already set up the specific plugin for formatting
             those unsupported files accordingly:
+            <samp>
+              {
+                "[prisma]": {
+                  "editor.formatOnSave": true,
+                  "editor.defaultFormatter": "Prisma.prisma"
+                }
+              }
+            </samp>
           </p>
-
-          <berry-code nohighlight data-title="settings.json">
-            <pre slot="code">
-{
-  "[prisma]": {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "Prisma.prisma"
-  }
-}
-            </pre>
-          </berry-code>
 
           <p>
             I've also checked my keyboard shortcut settings multiple times as

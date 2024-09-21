@@ -200,12 +200,10 @@ xhost +si:localuser:$USER
           <p>
             If you come across an error when running
             <code>docker images</code> like
-            <code
-              >permission denied while trying to connect to the Docker daemon
-              socket at unix:///var/run/docker.sock: Get
-              "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/images/json": dial unix
-              /var/run/docker.sock: connect: permission denied</code
-            >, it means your current user does not have the permissions needed
+            <samp>
+              permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: 
+              Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/images/json": dial unix/var/run/docker.sock: connect: permission denied
+              </samp>, it means your current user does not have the permissions needed
             to access the Docker socket file. You can run
             <code>sudo usermod -aG docker $USER</code> and then
             <b>restart</b> the steam deck.
@@ -277,9 +275,8 @@ distrobox create --name ubuntu-22-04 --image ubuntu:22.04 --volume /var/run/dock
             In the original guide this is where you enter the Ubuntu container,
             but I came across this error when running the first command in step
             7 after entering the container:
-            <code
-              >chmod: changing permission of /var/run/docker.sock: operation not
-              permitted </code
+            <samp
+              >chmod: changing permission of /var/run/docker.sock: operation not permitted </samp
             >. Therefore, I ended up running the command in the host machine
             before entering the container:
           </p>
@@ -352,9 +349,8 @@ sudo ln -s /usr/bin/distrobox-host-exec /usr/local/bin/xdg-open
 
           <p>
             If you get an error saying
-            <code
-              >failed to create symbolic link /usr/local/bin/xdg-open: file
-              exists</code
+            <samp
+              >failed to create symbolic link /usr/local/bin/xdg-open: file exists</samp
             >, you can remove the existing one and then create the new symbolic
             link as intended:
           </p>
