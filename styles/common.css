@@ -170,6 +170,15 @@ code {
   background-color: #f4f4f4;
   border-radius: 2px;
 }
+samp{
+  display: block;
+  padding: 0 10px;
+  white-space: pre;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  font-family: var(--code-font);
+  overflow-x: auto;
+}
 /* copied from MDN */
 kbd {
   background-color: #eee;

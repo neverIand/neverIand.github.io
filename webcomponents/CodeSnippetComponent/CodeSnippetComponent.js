@@ -58,6 +58,7 @@ class CodeSnippet extends HTMLElement {
           Result
           <button id="run-btn">Run</button>
         </div>
+        <!-- TODO? replace div with <samp> -->
         <div id="result" class="snippet-content text">
         </div>
       </div>`
