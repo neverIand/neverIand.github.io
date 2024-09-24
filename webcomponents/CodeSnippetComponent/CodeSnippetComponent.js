@@ -165,27 +165,52 @@ class CodeSnippet extends HTMLElement {
       )
       .join("");
 
-    const keywords =
-      "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b";
-    codeContent = codeContent.replace(
-      new RegExp(keywords, "g"),
-      '<span class="keyword">$1</span>'
-    );
+    const lang = this.getAttribute("code-lang") || "javascript";
 
-    // codeContent = codeContent.replace(
-    //   /([+-.])/g,
-    //   '<span class="symbol">$1</span>'
-    // );
+    // Define keyword patterns for different languages
+    const keywordLists = {
+      javascript:
+        "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b",
+      python:
+        "\\b(def|return|if|elif|else|for|while|break|continue|class|try|except|finally|with|as|import|from|lambda|pass|raise|yield|global|nonlocal|assert|True|False|None)\\b",
+      // TODO?: Add more languages
+    };
 
-    codeContent = codeContent.replace(
-      /(\/\/.*$)/gm,
-      '<span class="comment">$1</span>'
-    );
-    codeContent = codeContent.replace(
-      /(\/\*[\s\S]*?\*\/)/gm,
-      '<span class="comment">$1</span>'
-    );
+    const keywords = keywordLists[lang];
+    if (keywords) {
+      // Highlight keywords
+      codeContent = codeContent.replace(
+        new RegExp(keywords, "g"),
+        '<span class="keyword">$1</span>'
+      );
+    }
 
+    // Highlight comments based on language
+    if (
+      lang === "javascript" ||
+      lang === "java" ||
+      lang === "c" ||
+      lang === "cpp"
+    ) {
+      // Single-line comments
+      codeContent = codeContent.replace(
+        /(\/\/.*$)/gm,
+        '<span class="comment">$1</span>'
+      );
+      // Multi-line comments
+      codeContent = codeContent.replace(
+        /(\/\*[\s\S]*?\*\/)/gm,
+        '<span class="comment">$1</span>'
+      );
+    } else if (lang === "python") {
+      // Single-line comments
+      codeContent = codeContent.replace(
+        /(#.*$)/gm,
+        '<span class="comment">$1</span>'
+      );
+    }
+
+    // Insert the highlighted code before the slot and display it
     slot.insertAdjacentHTML("beforebegin", codeContent);
     this.shadowRoot.querySelector("pre").style.display = "block";
   }
