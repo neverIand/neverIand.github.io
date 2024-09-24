@@ -27,7 +27,7 @@ class CodeSnippet extends HTMLElement {
 
   render() {
     //   const lang = this.getAttribute("code-lang")
-    const skipHighight = this.getAttribute("nohighlight") === "";
+    const skipHighlight = this.getAttribute("nohighlight") === "";
     const shouldDemo = this.getAttribute("runnable") === "";
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
@@ -37,11 +37,6 @@ class CodeSnippet extends HTMLElement {
         <div class="snippet-header">
           ${title}
           <div class="btn-wrapper">
-            ${
-              skipHighight
-                ? ""
-                : `<input type="checkbox" id="og-btn" data-hl="true" checked /><label for="og-btn">Highlight</label>`
-            }
             <button id="copy-btn">Copy</button>
           </div>
         </div>
@@ -67,11 +62,11 @@ class CodeSnippet extends HTMLElement {
     `;
 
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    if (!skipHighight) {
+    if (!skipHighlight) {
       const slot = this.querySelector("pre");
       slot.style.display = "none";
       this.highlightCode();
-      this.addShowOGEventListener();
+      // this.addShowOGEventListener();
     }
     if (shouldDemo) {
       this.addRunButtonEventListener();
@@ -100,23 +95,6 @@ class CodeSnippet extends HTMLElement {
     // Clear existing content if any
     // lineNumberContainer.innerHTML = "";
     lineNumberContainer.appendChild(fragment); // Append all at once
-  }
-
-  addShowOGEventListener() {
-    const btn = this.shadowRoot.getElementById("og-btn");
-    btn.addEventListener("click", () => {
-      const slottedPre = this.querySelector(`pre`);
-      const renderedPre = this.shadowRoot.querySelector("pre");
-      if (btn.getAttribute("data-hl") === "true") {
-        slottedPre.style.display = "block";
-        renderedPre.style.display = "none";
-        btn.setAttribute("data-hl", false);
-      } else {
-        slottedPre.style.display = "none";
-        renderedPre.style.display = "block";
-        btn.setAttribute("data-hl", true);
-      }
-    });
   }
 
   addCopyButtonEventListener() {
