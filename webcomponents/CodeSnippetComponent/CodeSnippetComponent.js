@@ -159,60 +159,119 @@ class CodeSnippet extends HTMLElement {
       return;
     }
 
-    let codeContent = Array.from(slot.assignedNodes({ flatten: true }))
-      .map((node) =>
-        node.nodeType === Node.TEXT_NODE ? node.textContent : node.outerHTML
-      )
-      .join("");
+    // Find the code node within the slot
+    // in many cases it will be an array with a single <pre> node
+    const codeNode = slot
+      .assignedNodes({ flatten: true })
+      .find(
+        (node) =>
+          node.nodeType === Node.TEXT_NODE ||
+          (node.nodeType === Node.ELEMENT_NODE && node.tagName === "PRE")
+      );
+
+    if (!codeNode) {
+      console.error("No code node found in slot");
+      return;
+    }
+
+    // Get the text content of the code node
+    let codeContent = codeNode.textContent;
 
     const lang = this.getAttribute("code-lang") || "javascript";
 
-    // Define keyword patterns for different languages
-    const keywordLists = {
-      javascript:
-        "\\b(if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b",
-      python:
-        "\\b(def|return|if|elif|else|for|while|break|continue|class|try|except|finally|with|as|import|from|lambda|pass|raise|yield|global|nonlocal|assert|True|False|None)\\b",
-      // TODO?: Add more languages
-    };
+    // Escape HTML characters in the code content
+    codeContent = codeContent
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
 
-    const keywords = keywordLists[lang];
-    if (keywords) {
-      // Highlight keywords
-      codeContent = codeContent.replace(
-        new RegExp(keywords, "g"),
-        '<span class="keyword">$1</span>'
-      );
-    }
+    // Tokenize the code into strings, comments, and code
+    const tokens = [];
+    let regex;
 
-    // Highlight comments based on language
     if (
       lang === "javascript" ||
       lang === "java" ||
       lang === "c" ||
       lang === "cpp"
     ) {
-      // Single-line comments
-      codeContent = codeContent.replace(
-        /(\/\/.*$)/gm,
-        '<span class="comment">$1</span>'
-      );
-      // Multi-line comments
-      codeContent = codeContent.replace(
-        /(\/\*[\s\S]*?\*\/)/gm,
-        '<span class="comment">$1</span>'
-      );
+      // Regex to match strings, comments, or other code
+      regex = /(\".*?\"|'.*?'|`.*?`|\/\*[\s\S]*?\*\/|\/\/.*?$)|[^"'`\/]+/gm;
     } else if (lang === "python") {
-      // Single-line comments
-      codeContent = codeContent.replace(
-        /(#.*$)/gm,
-        '<span class="comment">$1</span>'
-      );
+      // Regex to match strings, comments, or other code
+      regex = /(\"\"\"[\s\S]*?\"\"\"|'''.*?'''|".*?"|'.*?'|#.*?$)|[^"'#]+/gm;
+    } else {
+      // For other languages, treat the entire code as one token
+      tokens.push({ type: "code", value: codeContent });
     }
 
-    // Insert the highlighted code before the slot and display it
-    slot.insertAdjacentHTML("beforebegin", codeContent);
-    this.shadowRoot.querySelector("pre").style.display = "block";
+    if (regex) {
+      let match;
+      while ((match = regex.exec(codeContent)) !== null) {
+        if (match[1]) {
+          // It's a string or comment
+          tokens.push({ type: "stringOrComment", value: match[1] });
+        } else {
+          // It's code
+          tokens.push({ type: "code", value: match[0] });
+        }
+      }
+    }
+
+    // Process tokens
+    tokens.forEach((token) => {
+      if (token.type === "code") {
+        // Highlight keywords
+        const keywordLists = {
+          javascript:
+            "\\b(?:if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b",
+          python:
+            "\\b(?:def|return|if|elif|else|for|while|break|continue|class|try|except|finally|with|as|import|from|lambda|pass|raise|yield|global|nonlocal|assert|True|False|None)\\b",
+          // Add more languages as needed
+        };
+
+        const keywords = keywordLists[lang];
+
+        if (keywords) {
+          token.value = token.value.replace(
+            new RegExp(keywords, "g"),
+            '<span class="keyword">$&</span>'
+          );
+        }
+      } else if (token.type === "stringOrComment") {
+        // Escape HTML characters
+        const escapedValue = token.value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        if (
+          token.value.startsWith('"') ||
+          token.value.startsWith("'") ||
+          token.value.startsWith("`")
+        ) {
+          // It's a string
+          token.value = '<span class="string">' + escapedValue + "</span>";
+        } else if (
+          token.value.startsWith("/*") ||
+          token.value.startsWith("//") ||
+          token.value.startsWith("#")
+        ) {
+          // It's a comment
+          token.value = '<span class="comment">' + escapedValue + "</span>";
+        }
+      }
+    });
+
+    // Reassemble the code
+    const highlightedCode = tokens.map((token) => token.value).join("");
+
+    // Insert the highlighted code safely into the DOM
+    const preElement = document.createElement("pre");
+    preElement.innerHTML = highlightedCode;
+    slot.insertAdjacentElement("beforebegin", preElement);
+
+    // Hide the original slot content
+    slot.style.display = "none";
   }
 
   addRunButtonEventListener() {

@@ -62,6 +62,9 @@ pre {
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
 }
+.string {
+  color: rgb(193, 147, 109); /* Example color for strings */
+}
 .symbol {
   color: var(--text-color);
 }
@@ -73,9 +76,9 @@ pre {
 .keyword {
   color: var(--code-kw-color);
 }
-.operator {
+/* .operator {
   color: red;
-}
+} */
 button {
   margin-left: 5px;
   cursor: pointer;
