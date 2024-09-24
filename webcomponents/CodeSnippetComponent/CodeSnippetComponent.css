@@ -63,7 +63,7 @@ pre {
   line-height: var(--code-line-height);
 }
 .string {
-  color: rgb(193, 147, 109); /* Example color for strings */
+  color: var(--code-str-color);
 }
 .symbol {
   color: var(--text-color);

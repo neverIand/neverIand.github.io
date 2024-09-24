@@ -27,6 +27,7 @@
   --text-error-color: red;
   --code-color: #000;
   --code-kw-color: #0000ff;
+  --code-str-color: #a31515;
   --code-comment-color: #008000;
   --code-bg-color: #fff;
 }
@@ -41,6 +42,7 @@
   --text-color: #fff;
   --code-color: rgb(175, 219, 251);
   --code-kw-color: rgb(110, 156, 209);
+  --code-str-color: rgb(193, 147, 109);
   --code-comment-color: rgb(118, 151, 92);
   --code-bg-color: rgb(31, 31, 31);
 }

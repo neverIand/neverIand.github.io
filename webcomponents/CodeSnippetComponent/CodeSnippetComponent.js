@@ -189,20 +189,20 @@ class CodeSnippet extends HTMLElement {
     const tokens = [];
     let regex;
 
-    if (
-      lang === "javascript" ||
-      lang === "java" ||
-      lang === "c" ||
-      lang === "cpp"
-    ) {
-      // Regex to match strings, comments, or other code
-      regex = /(\".*?\"|'.*?'|`.*?`|\/\*[\s\S]*?\*\/|\/\/.*?$)|[^"'`\/]+/gm;
-    } else if (lang === "python") {
-      // Regex to match strings, comments, or other code
-      regex = /(\"\"\"[\s\S]*?\"\"\"|'''.*?'''|".*?"|'.*?'|#.*?$)|[^"'#]+/gm;
-    } else {
-      // For other languages, treat the entire code as one token
-      tokens.push({ type: "code", value: codeContent });
+    // set regex to match strings, comments, or other code
+    // !The regex patterns are simplified and may not cover all edge cases, such as nested comments or complex string literals with escaped quotes.
+    switch (lang) {
+      case "python":
+        regex = /(\"\"\"[\s\S]*?\"\"\"|'''.*?'''|".*?"|'.*?'|#.*?$)|[^"'#]+/gm;
+        break;
+      case "javascript": // also applies to java, c, cpp
+        regex = /(\".*?\"|'.*?'|`.*?`|\/\*[\s\S]*?\*\/|\/\/.*?$)|[^"'`\/]+/gm;
+        break;
+
+      default:
+        // For other languages, treat the entire code as one token
+        tokens.push({ type: "code", value: codeContent });
+        break;
     }
 
     if (regex) {
