@@ -26,9 +26,11 @@ class CodeSnippet extends HTMLElement {
   }
 
   render() {
-    //   const lang = this.getAttribute("code-lang")
+    // TODO: display language tag in title
+    const lang = this.getAttribute("code-lang") || "javascript";
     const skipHighlight = this.getAttribute("nohighlight") === "";
-    const shouldDemo = this.getAttribute("runnable") === "";
+    const shouldDemo =
+      this.getAttribute("runnable") === "" && lang === "javascript";
     const title = this.getAttribute("data-title") || "Code Snippet";
     const template = document.createElement("template");
 
@@ -53,7 +55,6 @@ class CodeSnippet extends HTMLElement {
           Result
           <button id="run-btn">Run</button>
         </div>
-        <!-- TODO? replace div with <samp> -->
         <div id="result" class="snippet-content text">
         </div>
       </div>`
@@ -138,7 +139,6 @@ class CodeSnippet extends HTMLElement {
     }
 
     // Find the code node within the slot
-    // in many cases it will be an array with a single <pre> node
     const codeNode = slot
       .assignedNodes({ flatten: true })
       .find(
@@ -163,85 +163,103 @@ class CodeSnippet extends HTMLElement {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
 
-    // Tokenize the code into strings, comments, and code
-    const tokens = [];
-    let regex;
+    let highlightedCode = "";
 
-    // set regex to match strings, comments, or other code
-    // !The regex patterns are simplified and may not cover all edge cases, such as nested comments or complex string literals with escaped quotes.
-    switch (lang) {
-      case "python":
-        regex = /(\"\"\"[\s\S]*?\"\"\"|'''.*?'''|".*?"|'.*?'|#.*?$)|[^"'#]+/gm;
-        break;
-      case "javascript": // also applies to java, c, cpp
-        regex = /(\".*?\"|'.*?'|`.*?`|\/\*[\s\S]*?\*\/|\/\/.*?$)|[^"'`\/]+/gm;
-        break;
+    if (lang === "css") {
+      // Process CSS code
+      highlightedCode = codeContent
+        // !FIXME Highlight comments
+        // .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
+        // Highlight strings
+        .replace(/(".*?"|'.*?')/g, '<span class="string">$1</span>')
+        // Highlight properties and values
+        .replace(
+          /(\b[\w-]+)(\s*:)([^;]*)(;)/g,
+          '<span class="css-prop">$1</span>$2<span class="css-val">$3</span>$4'
+        )
+        // !FIXME Highlight selectors
+        // .replace(/([^{\s][^{]*)(\s*\{)/g, '<span class="selector">$1</span>$2')
+        // Highlight @rules
+        .replace(/(@[\w-]+)/g, '<span class="keyword">$1</span>');
+    } else {
+      // Tokenize the code into strings, comments, and code
+      const tokens = [];
+      let regex;
 
-      default:
-        // For other languages, treat the entire code as one token
-        tokens.push({ type: "code", value: codeContent });
-        break;
-    }
+      switch (lang) {
+        case "python":
+          regex =
+            /(\"\"\"[\s\S]*?\"\"\"|'''.*?'''|".*?"|'.*?'|#.*?$)|[^"'#]+/gm;
+          break;
+        case "javascript": // applies to cpp, c java as well
+          regex = /(\".*?\"|'.*?'|`.*?`|\/\*[\s\S]*?\*\/|\/\/.*?$)|[^"'`\/]+/gm;
+          break;
+        default:
+          // For other languages, treat the entire code as one token
+          tokens.push({ type: "code", value: codeContent });
+          break;
+      }
 
-    if (regex) {
-      let match;
-      while ((match = regex.exec(codeContent)) !== null) {
-        if (match[1]) {
-          // It's a string or comment
-          tokens.push({ type: "stringOrComment", value: match[1] });
-        } else {
-          // It's code
-          tokens.push({ type: "code", value: match[0] });
+      if (regex) {
+        let match;
+        while ((match = regex.exec(codeContent)) !== null) {
+          if (match[1]) {
+            // It's a string or comment
+            tokens.push({ type: "strOrComment", value: match[1] });
+          } else {
+            // It's code
+            tokens.push({ type: "code", value: match[0] });
+          }
         }
       }
+
+      // Process tokens
+      tokens.forEach((token) => {
+        if (token.type === "code") {
+          // Highlight keywords
+          const keywordLists = {
+            javascript:
+              "\\b(?:if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b",
+            python:
+              "\\b(?:def|return|if|elif|else|for|while|break|continue|class|try|except|finally|with|as|import|from|lambda|pass|raise|yield|global|nonlocal|assert|True|False|None)\\b",
+            // Add more languages as needed
+          };
+
+          const keywords = keywordLists[lang];
+
+          if (keywords) {
+            token.value = token.value.replace(
+              new RegExp(keywords, "g"),
+              '<span class="keyword">$&</span>'
+            );
+          }
+        } else if (token.type === "strOrComment") {
+          // Escape HTML characters
+          const escapedValue = token.value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+          if (
+            token.value.startsWith('"') ||
+            token.value.startsWith("'") ||
+            token.value.startsWith("`")
+          ) {
+            // It's a string
+            token.value = '<span class="string">' + escapedValue + "</span>";
+          } else if (
+            token.value.startsWith("/*") ||
+            token.value.startsWith("//") ||
+            token.value.startsWith("#")
+          ) {
+            // It's a comment
+            token.value = '<span class="comment">' + escapedValue + "</span>";
+          }
+        }
+      });
+
+      // Reassemble the code
+      highlightedCode = tokens.map((token) => token.value).join("");
     }
-
-    // Process tokens
-    tokens.forEach((token) => {
-      if (token.type === "code") {
-        // Highlight keywords
-        const keywordLists = {
-          javascript:
-            "\\b(?:if|else|switch|case|for|while|do|break|continue|function|return|class|constructor|extends|super|new|delete|typeof|instanceof|try|catch|finally|throw|let|const|async|await|import|export|this|null|true|false|undefined|var)\\b",
-          python:
-            "\\b(?:def|return|if|elif|else|for|while|break|continue|class|try|except|finally|with|as|import|from|lambda|pass|raise|yield|global|nonlocal|assert|True|False|None)\\b",
-          // Add more languages as needed
-        };
-
-        const keywords = keywordLists[lang];
-
-        if (keywords) {
-          token.value = token.value.replace(
-            new RegExp(keywords, "g"),
-            '<span class="keyword">$&</span>'
-          );
-        }
-      } else if (token.type === "stringOrComment") {
-        // Escape HTML characters
-        const escapedValue = token.value
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-        if (
-          token.value.startsWith('"') ||
-          token.value.startsWith("'") ||
-          token.value.startsWith("`")
-        ) {
-          // It's a string
-          token.value = '<span class="string">' + escapedValue + "</span>";
-        } else if (
-          token.value.startsWith("/*") ||
-          token.value.startsWith("//") ||
-          token.value.startsWith("#")
-        ) {
-          // It's a comment
-          token.value = '<span class="comment">' + escapedValue + "</span>";
-        }
-      }
-    });
-
-    // Reassemble the code
-    const highlightedCode = tokens.map((token) => token.value).join("");
 
     // Insert the highlighted code safely into the DOM
     const preElement = document.createElement("pre");

@@ -79,6 +79,19 @@ pre {
 /* .operator {
   color: red;
 } */
+
+/* HTML and CSS support */
+
+.attribute {
+  color: #9cdcfe; /* Color for HTML attributes */
+}
+.css-prop {
+  color: var(--code-css-prop-color); /* Color for CSS properties */
+}
+.css-val {
+  color: var(--code-css-val-color); /* Color for CSS values */
+}
+
 button {
   margin-left: 5px;
   cursor: pointer;
