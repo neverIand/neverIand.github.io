@@ -97,7 +97,11 @@
 
         <section>
           <code>&lt;berry-code&gt;</code>
-          <berry-code data-title="Code Snippet Demo" runnable>
+          <berry-code
+            code-lang="javascript"
+            data-title="Code Snippet Demo"
+            runnable
+          >
             <pre slot="code">
 let arr = Array(100000).fill(1);
 arr.push(2);
@@ -141,6 +145,16 @@ console.log("array.every:", r4);
 console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
           </pre
             >
+          </berry-code>
+
+          <p>CSS:</p>
+          <berry-code code-lang="css">
+            <pre slot="code">
+@font-face {
+  font-family: Libre Baskerville;
+  src: url("/fonts/LibreBaskerville-Regular.ttf");
+}
+            </pre>
           </berry-code>
         </section>
 
