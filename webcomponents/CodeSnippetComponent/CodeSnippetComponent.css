@@ -11,13 +11,21 @@
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 5px;
   gap: 5px;
   color: var(--text-color);
   border-bottom: 1px solid var(--border-color);
   user-select: none;
+}
+.snippet-header::before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: attr(data-title);
+  padding: 5px;
 }
 .btn-wrapper {
   display: flex;

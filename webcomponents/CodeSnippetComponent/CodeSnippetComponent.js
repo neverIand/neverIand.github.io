@@ -1,4 +1,5 @@
 import { handleThemeChange } from "/scripts/theme.js";
+import '/webcomponents/ChipComponent/ChipComponent.js'
 class CodeSnippet extends HTMLElement {
   constructor() {
     super();
@@ -31,13 +32,12 @@ class CodeSnippet extends HTMLElement {
     const skipHighlight = this.getAttribute("nohighlight") === "";
     const shouldDemo =
       this.getAttribute("runnable") === "" && lang === "javascript";
-    const title = this.getAttribute("data-title") || "Code Snippet";
+    const title = this.getAttribute("data-title") || "Code Snippet"; // TODO?: accessibility
     const template = document.createElement("template");
 
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
-        <div class="snippet-header">
-          ${title}
+        <div class="snippet-header" data-title="${title}">
           <div class="btn-wrapper">
             <button id="copy-btn">Copy</button>
           </div>
@@ -51,7 +51,7 @@ class CodeSnippet extends HTMLElement {
       shouldDemo
         ? `
       <div class="snippet-container">
-        <div class="snippet-header">
+        <div class="snippet-header" style="justify-content: space-between;">
           Result
           <button id="run-btn">Run</button>
         </div>
