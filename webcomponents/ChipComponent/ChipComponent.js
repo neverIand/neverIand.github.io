@@ -15,22 +15,25 @@ class ChipComponent extends HTMLElement {
   // TODO? clickable option
   render() {
     const label = this.getAttribute("data-label") || "";
+    const variant = this.getAttribute("variant");
     const template = document.createElement("template");
     template.innerHTML = /*html*/ `
-    <span title="${label}">${label}</span>
+    <div title="${label}">${label}</div>
 `;
     // TODO: hover state
+    // TODO: default CSS variable
     this.styles = document.createElement("style");
     this.styles.innerHTML = `
     :host{
-      display: inline-block;
+      display: flex;
     }
-    span{
-      margin: 0 4px;
-      padding: 0 8px;
-      color: white;
-      background-color: rgb(100, 100, 100);
-      border-radius: 4px;
+    div{
+      padding: 2px 12px;
+      font-size: 0.8em;
+      font-family: ${variant === "code" ? "var(--code-font)" : "inherit"};
+      color: var(--text-color);
+      background-color: var(--chip-color);
+      border-radius: 9999px;
       cursor: default;
     }
     `;

@@ -25,6 +25,7 @@
   --text-color: #000;
   --text-muted-color: rgb(100, 100, 100);
   --text-error-color: red;
+  --chip-color:#dbdbdb;
   --code-color: #000;
   --code-kw-color: #0000ff;
   --code-str-color: #a31515;
@@ -42,6 +43,7 @@
   --link-color: #8ab4f8;
   --link-visited-color: rgb(206, 113, 245);
   --text-color: #fff;
+  --chip-color:rgb(100, 100, 100);
   --code-color: rgb(175, 219, 251);
   --code-kw-color: rgb(110, 156, 209);
   --code-str-color: rgb(193, 147, 109);

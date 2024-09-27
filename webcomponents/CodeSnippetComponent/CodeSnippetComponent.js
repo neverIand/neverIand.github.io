@@ -1,5 +1,5 @@
 import { handleThemeChange } from "/scripts/theme.js";
-import '/webcomponents/ChipComponent/ChipComponent.js'
+import "/webcomponents/ChipComponent/ChipComponent.js";
 class CodeSnippet extends HTMLElement {
   constructor() {
     super();
@@ -38,6 +38,7 @@ class CodeSnippet extends HTMLElement {
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
         <div class="snippet-header" data-title="${title}">
+          <berry-chip data-label="${lang}" variant="code"></berry-chip>
           <div class="btn-wrapper">
             <button id="copy-btn">Copy</button>
           </div>
