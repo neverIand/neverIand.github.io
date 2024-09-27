@@ -27,7 +27,6 @@ class CodeSnippet extends HTMLElement {
   }
 
   render() {
-    // TODO: display language tag in title
     const lang = this.getAttribute("code-lang") || "javascript";
     const skipHighlight = this.getAttribute("nohighlight") === "";
     const shouldDemo =
@@ -159,14 +158,52 @@ class CodeSnippet extends HTMLElement {
     const lang = this.getAttribute("code-lang") || "javascript";
 
     // Escape HTML characters in the code content
+    // codeContent = codeContent
+    //   .replace(/&/g, "&amp;")
+    //   .replace(/</g, "&lt;")
+    //   .replace(/>/g, "&gt;");
+
+    // Unescape HTML entities in the code content
     codeContent = codeContent
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&");
 
     let highlightedCode = "";
 
-    if (lang === "css") {
+    if (lang === "html") {
+      // Highlight comments
+      codeContent = codeContent.replace(
+        /(<!--[\s\S]*?-->)/g,
+        '<span class="comment">$1</span>'
+      );
+
+      // Highlight tags and attributes
+      codeContent = codeContent.replace(
+        /(<\/?)([\w-]+)([^<>]*?)(\/?>)/g,
+        function (match, p1, p2, p3, p4) {
+          // Highlight tag name
+          let result = p1 + '<span class="keyword">' + p2 + "</span>";
+
+          // Highlight attributes within p3
+          result += p3.replace(
+            /([\w-]+)(=)("[^"]*"|'[^']*')/g,
+            '<span class="attribute">$1</span>$2<span class="string">$3</span>'
+          );
+          return result + p4;
+        }
+      );
+
+      highlightedCode = codeContent;
+
+      // Escape code content but not the syntax highlighting tags
+      highlightedCode = highlightedCode
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        // Unescape angle brackets in the syntax highlighting tags
+        .replace(/&lt;(\/?span\b[^&]*?)&gt;/g, "<$1>");
+    } else if (lang === "css") {
       // Process CSS code
       highlightedCode = codeContent
         // !FIXME Highlight comments
