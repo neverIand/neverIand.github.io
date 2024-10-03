@@ -32,13 +32,13 @@ jobs:
 
       - name: Minify JavaScript
         run: |
-          npx terser --compress --mangle --output scripts.min.js scripts/*.js
-          npx terser --compress --mangle --output webcomponents.min.js webcomponents/*.js
+          find scripts -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+          find webcomponents -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
 
       - name: Minify CSS
         run: |
-          find styles -name "*.css" -exec npx csso {} --output {}.min.css \;
-          find webcomponents -name "*.css" -exec npx csso {} --output {}.min.css \;
+          find styles -name "*.css" -exec npx csso {} --output {} \;
+          find webcomponents -name "*.css" -exec npx csso {} --output {} \;
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
