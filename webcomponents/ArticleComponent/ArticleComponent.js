@@ -1,1 +1,51 @@
-import{handleThemeChange}from"/scripts/theme.js";class ArticleList extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.loadStyles(),document.addEventListener("berry-theme",(t=>handleThemeChange(t,this)))}connectedCallback(){this.render()}loadStyles(){const t=document.createElement("link");t.setAttribute("rel","stylesheet"),t.setAttribute("href","/webcomponents/ArticleComponent/ArticleComponent.css"),this.shadowRoot.appendChild(t)}render(){const t=this.getAttribute("data-title"),e=this.getAttribute("data-subheading")||"",n=this.getAttribute("data-url")||"/404.html",i=this.getAttribute("data-date")||"unknown date",a=this.getAttribute("data-lastupdate"),s=document.createElement("template");s.innerHTML=`\n        <div id="article">\n            <a href="${n}" title="${t}"><h4>${t}</h4></a>\n            <h6>${e}</h6>\n            <div id="footer">\n              <p>${i}</p>\n              ${a?`<p>Last updated: ${a}</p>`:""}\n            </div>\n        </div>\n    `,this.shadowRoot.appendChild(s.content.cloneNode(!0))}}customElements.get("berry-article")||customElements.define("berry-article",ArticleList);export default ArticleList;
+import { handleThemeChange } from "/scripts/theme.js";
+class ArticleList extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  loadStyles() {
+    const styles = document.createElement("link");
+    styles.setAttribute("rel", "stylesheet");
+    styles.setAttribute(
+      "href",
+      "/webcomponents/ArticleComponent/ArticleComponent.css"
+    );
+    this.shadowRoot.appendChild(styles);
+  }
+
+  render() {
+    const title = this.getAttribute("data-title");
+    const subheading = this.getAttribute("data-subheading") || "";
+    const url = this.getAttribute("data-url") || "/404.html";
+    const date = this.getAttribute("data-date") || "unknown date";
+    const lastUpdate = this.getAttribute("data-lastupdate");
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+        <div id="article">
+            <a href="${url}" title="${title}"><h4>${title}</h4></a>
+            <h6>${subheading}</h6>
+            <div id="footer">
+              <p>${date}</p>
+              ${lastUpdate ? `<p>Last updated: ${lastUpdate}</p>` : ""}
+            </div>
+        </div>
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+}
+
+if (!customElements.get("berry-article")) {
+  customElements.define("berry-article", ArticleList);
+}
+
+export default ArticleList;

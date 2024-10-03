@@ -1,1 +1,126 @@
-import{handleThemeChange}from"/scripts/theme.js";class ToastComponent extends HTMLElement{toastQueue=[];isToastVisible=!1;constructor(){super(),this.attachShadow({mode:"open"}),document.addEventListener("berry-theme",(t=>handleThemeChange(t,this)))}connectedCallback(){this.render()}render(){const t=document.createElement("template");t.innerHTML='\n        <style>\n          :host {\n            position: fixed;\n            top: 0;\n            left: 0;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            width: 100%;\n            transform: translateY(-200%);\n            z-index: 500;\n          }\n          .toast-container {\n            position: relative;\n            display: flex;\n            flex-direction: column;\n            gap: 10px;\n            width: 100%;\n            padding: 10px;\n            box-sizing: border-box;\n            transform: translateY(calc(200% + 70px));\n            pointer-events: none;\n          }\n          .toast {\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            width: 100%;\n            max-width: 720px;\n            margin: auto;\n            padding: 10px 20px;\n            color: var(--bg-color);\n            background-color: var(--text-color);\n            transition: all 0.3s;\n            opacity: 1;\n            user-select: none;\n            pointer-events: none;\n          }\n          .toast.show {\n            transform: translateY(0);\n          }\n          .toast.hide {\n            transform: translateY(-200%);\n            opacity: 0;\n          }\n          .toast.error {\n            background-color: red;\n          }\n          .toast.warning {\n            background-color: orange;\n          }\n        </style>\n        <div class="toast-container"></div>\n        ',this.shadowRoot.appendChild(t.content.cloneNode(!0)),this.addCopyEventListener()}addCopyEventListener(){document.addEventListener("berry-toast",function(t){this.addToQueue(t.detail.message,t.detail.type)}.bind(this))}addToQueue(t,e){this.toastQueue.push({message:t,type:e}),this.isToastVisible||this.processQueue()}processQueue(){if(this.toastQueue.length>0){const{message:t,type:e}=this.toastQueue.shift();this.showToast(t,e)}}showToast(t,e){const n=this.getAttribute("timeout")||2e3,o=this.shadowRoot.querySelector(".toast-container"),s=document.createElement("div");s.classList.add("toast","show",e),s.textContent=t,o.appendChild(s),setTimeout((()=>{s.classList.remove("show"),s.classList.add("hide"),setTimeout((()=>{o.removeChild(s)}),300)}),n)}}customElements.get("berry-toast")||customElements.define("berry-toast",ToastComponent);export default ToastComponent;
+import { handleThemeChange } from "/scripts/theme.js";
+class ToastComponent extends HTMLElement {
+  toastQueue = [];
+  isToastVisible = false;
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+        <style>
+          :host {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            transform: translateY(-200%);
+            z-index: 500;
+          }
+          .toast-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            transform: translateY(calc(200% + 70px));
+            pointer-events: none;
+          }
+          .toast {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 720px;
+            margin: auto;
+            padding: 10px 20px;
+            color: var(--bg-color);
+            background-color: var(--text-color);
+            transition: all 0.3s;
+            opacity: 1;
+            user-select: none;
+            pointer-events: none;
+          }
+          .toast.show {
+            transform: translateY(0);
+          }
+          .toast.hide {
+            transform: translateY(-200%);
+            opacity: 0;
+          }
+          .toast.error {
+            background-color: red;
+          }
+          .toast.warning {
+            background-color: orange;
+          }
+        </style>
+        <div class="toast-container"></div>
+        `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    this.addCopyEventListener();
+  }
+
+  addCopyEventListener() {
+    document.addEventListener(
+      "berry-toast",
+      function (e) {
+        this.addToQueue(e.detail.message, e.detail.type);
+      }.bind(this)
+    );
+  }
+
+  addToQueue(message, type) {
+    this.toastQueue.push({ message, type });
+    if (!this.isToastVisible) {
+      this.processQueue();
+    }
+  }
+
+  processQueue() {
+    if (this.toastQueue.length > 0) {
+      const { message, type } = this.toastQueue.shift();
+      this.showToast(message, type);
+    }
+  }
+
+  showToast(message, type) {
+    const timeout = this.getAttribute("timeout") || 2000;
+    const container = this.shadowRoot.querySelector(".toast-container");
+
+    const toast = document.createElement("div");
+    toast.classList.add("toast", "show", type);
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    // TODO: improve enter animation
+    setTimeout(() => {
+      toast.classList.remove("show");
+      toast.classList.add("hide");
+      setTimeout(() => {
+        container.removeChild(toast);
+      }, 300); // Match this duration with CSS transition duration
+    }, timeout);
+  }
+}
+
+if (!customElements.get("berry-toast")) {
+  customElements.define("berry-toast", ToastComponent);
+}
+
+export default ToastComponent;

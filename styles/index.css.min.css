@@ -1,0 +1,1 @@
+body,section#banner{justify-content:center}body{flex-wrap:wrap;align-items:center}main{width:100%;overflow-x:hidden}section{max-width:800px}section#banner{display:flex;flex-direction:row}p,section#intro{color:var(--text-color)}section.title-list{min-width:300px}section.title-list h2{width:100%;text-align:center;border-bottom:1px solid}

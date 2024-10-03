@@ -1,1 +1,50 @@
-import{handleThemeChange}from"/scripts/theme.js";class ChipComponent extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),document.addEventListener("berry-theme",(e=>handleThemeChange(e,this)))}connectedCallback(){this.render()}render(){const e=this.getAttribute("data-label")||"",t=this.getAttribute("variant"),n=document.createElement("template");n.innerHTML=`\n    <div title="${e}">${e}</div>\n`,this.styles=document.createElement("style"),this.styles.innerHTML=`\n    :host{\n      display: flex;\n    }\n    div{\n      padding: 2px 12px;\n      font-size: 0.8em;\n      font-family: ${"code"===t?"var(--code-font)":"inherit"};\n      color: var(--text-color);\n      background-color: var(--chip-color);\n      border-radius: 9999px;\n      cursor: default;\n    }\n    `,this.shadowRoot.appendChild(this.styles.cloneNode(!0)),this.shadowRoot.appendChild(n.content.cloneNode(!0))}}customElements.get("berry-chip")||customElements.define("berry-chip",ChipComponent);export default ChipComponent;
+import { handleThemeChange } from "/scripts/theme.js";
+class ChipComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  // TODO? clickable option
+  render() {
+    const label = this.getAttribute("data-label") || "";
+    const variant = this.getAttribute("variant");
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+    <div title="${label}">${label}</div>
+`;
+    // TODO: hover state
+    // TODO: default CSS variable
+    this.styles = document.createElement("style");
+    this.styles.innerHTML = `
+    :host{
+      display: flex;
+    }
+    div{
+      padding: 2px 12px;
+      font-size: 0.8em;
+      font-family: ${variant === "code" ? "var(--code-font)" : "inherit"};
+      color: var(--text-color);
+      background-color: var(--chip-color);
+      border-radius: 9999px;
+      cursor: default;
+    }
+    `;
+
+    this.shadowRoot.appendChild(this.styles.cloneNode(true));
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+}
+
+if (!customElements.get("berry-chip")) {
+  customElements.define("berry-chip", ChipComponent);
+}
+
+export default ChipComponent;

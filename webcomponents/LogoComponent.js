@@ -1,1 +1,134 @@
-import{handleThemeChange}from"/scripts/theme.js";class LogoComponent extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),document.addEventListener("berry-theme",(t=>handleThemeChange(t,this)))}static get observedAttributes(){return["size","animate","muted"]}attributeChangedCallback(t,e,n){e!==n&&this.updateStyles()}connectedCallback(){this.render()}render(){const t=document.createElement("template");t.innerHTML='\n    <div class="square outline" role="presentation" aria-hidden="true">\n        <div class="square left-square">\n        </div>\n        <div class="square right-square"></div>\n        <div class="square core"></div>\n    </div>\n',this.shadowRoot.appendChild(t.content.cloneNode(!0)),this.updateStyles()}updateStyles(){const t=this.getAttribute("size")||"240",e=this.getAttribute("animate")||"true",n=this.getAttribute("muted")||"false",o=parseInt(t),r=.04*o,a=o*(2/75),i=o*(2/3),l=o/2,s=o/3;let d=this.shadowRoot.querySelector("style");d||(d=document.createElement("style"),this.shadowRoot.appendChild(d));const h=`\n    :host {\n        --length: ${o}px;\n        --logo-border-width: ${r}px;\n        --logo-border-radius: ${a}px;\n        --logo-left-square-width: ${i}px;\n        --logo-right-square-width: ${l}px;\n        --logo-core-width: ${s}px;\n        --logo-color: rgb(121,0,142);\n        opacity: ${"true"===n?"0.2":"1"};\n    }\n    .square {\n        background-color: var(--bg-color);\n        border: var(--logo-border-width) solid var(--logo-color);\n        border-radius: var(--logo-border-radius);\n    }\n    .outline {\n        position: relative;\n        width: var(--length);\n        height: var(--length);\n        z-index: 200;\n        overflow: hidden;\n    }\n    .left-square {\n        position: absolute;\n        top: calc(var(--length) * 0.3);\n        left: calc(0px - var(--length) / 3);\n        width: var(--logo-left-square-width);\n        height: var(--logo-left-square-width);\n        z-index: 100;\n        ${"true"===e?"":"transform: rotateZ(60deg);"}\n        animation: ${"true"===e?"transformLeft 4s infinite linear":"inherit"};\n    }\n    .right-square {\n        position: absolute;\n        top: calc(var(--length) * calc(1 / 15));\n        left: calc(var(--length) * calc(11 / 15));\n        transform: rotateZ(60deg);\n        width: var(--logo-right-square-width);\n        height: var(--logo-right-square-width);\n        z-index: 50;\n        animation: ${"true"===e?"transformLeft 4s infinite linear":"none"};\n    }\n    .core {\n        position: relative;\n        top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);\n        width: var(--logo-core-width);\n        height: var(--logo-core-width);\n        margin: auto;\n        border: var(--logo-border-width) solid var(--text-color);\n    }\n    /* TODO: add optional rotation animation */\n    @keyframes transformLeft {\n        from {\n            transform: translateX(-${1.467*o}px) rotateZ(60deg);\n        }\n        to {\n            transform: translateX(${1.733*o}px) rotateZ(-300deg);\n        }\n    }\n`;d.textContent=h}}customElements.get("berry-logo")||customElements.define("berry-logo",LogoComponent);export default LogoComponent;
+import { handleThemeChange } from "/scripts/theme.js";
+class LogoComponent extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  static get observedAttributes() {
+    return ["size", "animate", "muted"];
+  }
+
+  // All styling changes are in updateStyles() at the moment
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) {
+      return;
+    }
+    // if (name === "size") {
+    //   this.updateStyles();
+    // }
+    this.updateStyles();
+  }
+
+  connectedCallback() {
+    this.render();
+  }
+
+  render() {
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+    <div class="square outline" role="presentation" aria-hidden="true">
+        <div class="square left-square">
+        </div>
+        <div class="square right-square"></div>
+        <div class="square core"></div>
+    </div>
+`;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    this.updateStyles();
+  }
+
+  updateStyles(/* TODO: move parms here*/) {
+    const size = this.getAttribute("size") || "240"; // Default size
+    const isAnimated = this.getAttribute("animate") || "true";
+    const isMuted = this.getAttribute("muted") || "false";
+    const length = parseInt(size);
+    const borderWidth = length * 0.04;
+    const borderRadius = length * (2 / 75);
+    const leftSquareWidth = length * (2 / 3);
+    const rightSquareWidth = length / 2;
+    const coreWidth = length / 3;
+
+    let styleElement = this.shadowRoot.querySelector("style");
+    if (!styleElement) {
+      styleElement = document.createElement("style");
+      this.shadowRoot.appendChild(styleElement);
+    }
+
+    const styles = `
+    :host {
+        --length: ${length}px;
+        --logo-border-width: ${borderWidth}px;
+        --logo-border-radius: ${borderRadius}px;
+        --logo-left-square-width: ${leftSquareWidth}px;
+        --logo-right-square-width: ${rightSquareWidth}px;
+        --logo-core-width: ${coreWidth}px;
+        --logo-color: rgb(121,0,142);
+        opacity: ${isMuted === "true" ? "0.2" : "1"};
+    }
+    .square {
+        background-color: var(--bg-color);
+        border: var(--logo-border-width) solid var(--logo-color);
+        border-radius: var(--logo-border-radius);
+    }
+    .outline {
+        position: relative;
+        width: var(--length);
+        height: var(--length);
+        z-index: 200;
+        overflow: hidden;
+    }
+    .left-square {
+        position: absolute;
+        top: calc(var(--length) * 0.3);
+        left: calc(0px - var(--length) / 3);
+        width: var(--logo-left-square-width);
+        height: var(--logo-left-square-width);
+        z-index: 100;
+        ${isAnimated === "true" ? "" : "transform: rotateZ(60deg);"}
+        animation: ${
+          isAnimated === "true" ? "transformLeft 4s infinite linear" : "inherit"
+        };
+    }
+    .right-square {
+        position: absolute;
+        top: calc(var(--length) * calc(1 / 15));
+        left: calc(var(--length) * calc(11 / 15));
+        transform: rotateZ(60deg);
+        width: var(--logo-right-square-width);
+        height: var(--logo-right-square-width);
+        z-index: 50;
+        animation: ${
+          isAnimated === "true" ? "transformLeft 4s infinite linear" : "none"
+        };
+    }
+    .core {
+        position: relative;
+        top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);
+        width: var(--logo-core-width);
+        height: var(--logo-core-width);
+        margin: auto;
+        border: var(--logo-border-width) solid var(--text-color);
+    }
+    /* TODO: add optional rotation animation */
+    @keyframes transformLeft {
+        from {
+            transform: translateX(-${1.467 * length}px) rotateZ(60deg);
+        }
+        to {
+            transform: translateX(${1.733 * length}px) rotateZ(-300deg);
+        }
+    }
+`;
+    styleElement.textContent = styles;
+  }
+}
+
+if (!customElements.get("berry-logo")) {
+  customElements.define("berry-logo", LogoComponent);
+}
+
+export default LogoComponent;

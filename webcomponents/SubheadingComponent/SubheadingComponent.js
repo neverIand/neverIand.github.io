@@ -1,1 +1,164 @@
-import{fetchData}from"/scripts/fetchData.js";import{handleThemeChange}from"/scripts/theme.js";class ArticleSubheading extends HTMLElement{constructor(){super(),this.attachShadow({mode:"open"}),this.loadStyles(),document.addEventListener("berry-theme",(e=>handleThemeChange(e,this)))}connectedCallback(){this.render(),initSubheading(this)}loadStyles(){let e=this.shadowRoot.querySelector("style");e||(e=document.createElement("style"),this.shadowRoot.appendChild(e));e.textContent='\n    :host {\n      width: 100%;\n      --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,\n    "Times New Roman", Times, Georgia, serif;\n    }\n    .heading {\n      margin: 0;\n      text-align: center;\n      font-family: var(--title-font);\n    }\n    #link-container {\n      position: relative;\n      display: flex;\n      justify-content: space-between;\n      align-items: center;\n      gap: 1em;\n      width: 100%;\n      margin: 1em 0;\n    }\n    .prev {\n      padding-left: 2em;\n    }\n    .next {\n      padding-right: 2em;\n    }\n    .prev:before, .next:after {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n    }\n    .prev:before {\n      content: \'←\';\n      left: 0;\n    }\n    .next:after {\n      content: \'→\';\n      right: 0;\n    }\n    h2 {\n      color: var(--text-color);\n      font-size: 2em;\n    }\n    h4 {\n      font-size: 1.5em;\n      color: grey;\n    }\n    a {\n      flex-basis: 40%;\n      color: var(--link-color);\n      text-decoration: none;\n    }\n    a:hover {\n      text-decoration: underline var(--text-color);\n    }\n    a:visited {\n      color: var(--link-visited-color);\n    }\n    '}renderHeading(e,n){const t=this.shadowRoot.getElementById(e);t?t.textContent=n:console.error("Element not found:",e)}renderLink(e,n){const t=this.shadowRoot.getElementById("link-container");if(e){const n=document.createElement("a");n.className="prev",n.href=e.filename,n.textContent=e.title,n.title=`Previous: ${e.title}`,t.appendChild(n)}if(n){const e=document.createElement("a");e.className="next",e.href=n.filename,e.textContent=n.title,e.title=`Next: ${n.title}`,t.appendChild(e)}}render(){const e=document.createElement("template");e.innerHTML='\n      <h2 id="heading" class="heading"></h2>\n      <h4 id="subheading" class="heading"></h4>\n      <div id="link-container">\n  \n      </div>\n    ',this.shadowRoot.appendChild(e.content.cloneNode(!0))}}async function initSubheading(e){const n=window.location.pathname.split("-");let t=n[0].endsWith("misc")?"/articles/misc/data/misc.json":"/articles/new/data/new.json";const i=await fetchData(t);if(i){const t=parseInt(n[1]),a=i.findIndex((e=>e.id===t));let o=-1===a?{title:null,subheading:null}:i[a];o.title&&e.renderHeading("heading",o.title),o.subheading&&e.renderHeading("subheading",o.subheading),e.renderLink(i[a-1],i[a+1])}}customElements.get("berry-heading")||customElements.define("berry-heading",ArticleSubheading);export default ArticleSubheading;
+import { fetchData } from "/scripts/fetchData.js";
+import { handleThemeChange } from "/scripts/theme.js";
+
+class ArticleSubheading extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({
+      mode: "open",
+    });
+    this.loadStyles();
+    document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
+  }
+
+  connectedCallback() {
+    this.render();
+    initSubheading(this);
+  }
+
+  loadStyles() {
+    let styleElement = this.shadowRoot.querySelector("style");
+    if (!styleElement) {
+      styleElement = document.createElement("style");
+      this.shadowRoot.appendChild(styleElement);
+    }
+    const styles = `
+    :host {
+      width: 100%;
+      --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
+    "Times New Roman", Times, Georgia, serif;
+    }
+    .heading {
+      margin: 0;
+      text-align: center;
+      font-family: var(--title-font);
+    }
+    #link-container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1em;
+      width: 100%;
+      margin: 1em 0;
+    }
+    .prev {
+      padding-left: 2em;
+    }
+    .next {
+      padding-right: 2em;
+    }
+    .prev:before, .next:after {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .prev:before {
+      content: '←';
+      left: 0;
+    }
+    .next:after {
+      content: '→';
+      right: 0;
+    }
+    h2 {
+      color: var(--text-color);
+      font-size: 2em;
+    }
+    h4 {
+      font-size: 1.5em;
+      color: grey;
+    }
+    a {
+      flex-basis: 40%;
+      color: var(--link-color);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline var(--text-color);
+    }
+    a:visited {
+      color: var(--link-visited-color);
+    }
+    `;
+    styleElement.textContent = styles;
+  }
+
+  renderHeading(elementId, data) {
+    const headingEl = this.shadowRoot.getElementById(elementId);
+    if (!headingEl) {
+      console.error("Element not found:", elementId);
+      return;
+    }
+    headingEl.textContent = data;
+  }
+
+  renderLink(prevArticle, nextArticle) {
+    const conatiner = this.shadowRoot.getElementById("link-container");
+    if (prevArticle) {
+      const linkEl = document.createElement("a");
+      linkEl.className = "prev";
+      linkEl.href = prevArticle.filename;
+      linkEl.textContent = prevArticle.title;
+      linkEl.title = `Previous: ${prevArticle.title}`;
+      conatiner.appendChild(linkEl);
+    }
+    if (nextArticle) {
+      const linkEl = document.createElement("a");
+      linkEl.className = "next";
+      linkEl.href = nextArticle.filename;
+      linkEl.textContent = nextArticle.title;
+      linkEl.title = `Next: ${nextArticle.title}`;
+      conatiner.appendChild(linkEl);
+    }
+  }
+
+  render() {
+    const template = document.createElement("template");
+    template.innerHTML = /*html*/ `
+      <h2 id="heading" class="heading"></h2>
+      <h4 id="subheading" class="heading"></h4>
+      <div id="link-container">
+  
+      </div>
+    `;
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
+}
+
+async function initSubheading(component) {
+  const path = window.location.pathname.split("-");
+  let url = path[0].endsWith("misc")
+    ? `/articles/misc/data/misc.json`
+    : `/articles/new/data/new.json`;
+  const response = await fetchData(url);
+  if (response) {
+    const id = parseInt(path[1]);
+    const articleIndex = response.findIndex((article) => article.id === id);
+    let articleInfo =
+      articleIndex === -1
+        ? {
+            title: null,
+            subheading: null,
+          }
+        : response[articleIndex];
+
+    if (articleInfo.title) {
+      component.renderHeading("heading", articleInfo.title);
+    }
+    if (articleInfo.subheading) {
+      component.renderHeading("subheading", articleInfo.subheading);
+    }
+
+    component.renderLink(
+      response[articleIndex - 1],
+      response[articleIndex + 1]
+    );
+  }
+}
+
+if (!customElements.get("berry-heading")) {
+  customElements.define("berry-heading", ArticleSubheading);
+}
+
+export default ArticleSubheading;
