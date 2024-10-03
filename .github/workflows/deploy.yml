@@ -37,12 +37,8 @@ jobs:
 
       - name: Minify CSS
         run: |
-          for file in styles/*.css; do
-            npx csso "$file" --output "${file%.css}.min.css"
-          done
-          for file in webcomponents/*.css; do
-            npx csso "$file" --output "${file%.css}.min.css"
-          done
+          find styles -name "*.css" -exec npx csso {} --output {}.min.css \;
+          find webcomponents -name "*.css" -exec npx csso {} --output {}.min.css \;
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
