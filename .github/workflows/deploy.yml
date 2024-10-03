@@ -10,38 +10,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-    - name: Cache node modules
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-    - name: Install dependencies
-      run: npm ci
-      # Ensure that your package.json includes terser and csso-cli as devDependencies
+      - name: Install dependencies
+        run: npm ci
+        # Ensure that your package.json includes terser and csso-cli as devDependencies
 
-    - name: Minify JavaScript
-      run: |
-        npx terser --compress --mangle --output scripts.min.js scripts/*.js
-        npx terser --compress --mangle --output webcomponents.min.js webcomponents/*.js
+      - name: Minify JavaScript
+        run: |
+          npx terser --compress --mangle --output scripts.min.js scripts/*.js
+          npx terser --compress --mangle --output webcomponents.min.js webcomponents/*.js
 
-    - name: Minify CSS
-      run: |
-        npx csso styles.css --output styles.min.css
-        npx csso webcomponents.css --output webcomponents.min.css
+      - name: Minify CSS
+        run: |
+          npx csso styles/*.css --output styles.min.css
+          npx csso webcomponents/*.css --output webcomponents.min.css
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.BLOG_TOKEN }}
-        publish_dir: ./
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.BLOG_TOKEN }}
+          publish_dir: ./
