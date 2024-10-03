@@ -18,18 +18,27 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
     - name: Install dependencies
-      run: npm install --global terser csso-cli
+      run: npm ci
+      # Ensure that your package.json includes terser and csso-cli as devDependencies
 
     - name: Minify JavaScript
       run: |
-        find scripts -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
-        find webcomponents -name '*.js' -exec terser --compress --mangle --output {} -- {} \;
+        npx terser --compress --mangle --output scripts.min.js scripts/*.js
+        npx terser --compress --mangle --output webcomponents.min.js webcomponents/*.js
 
     - name: Minify CSS
       run: |
-        find styles -name '*.css' -exec csso {} --output {} \;
-        find webcomponents -name '*.css' -exec csso {} --output {} \;
+        npx csso styles.css --output styles.min.css
+        npx csso webcomponents.css --output webcomponents.min.css
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
