@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        # Ensure that your package.json includes terser and csso-cli as devDependencies
+        # Ensure package.json includes terser and csso-cli as devDependencies
 
       - name: Minify JavaScript
         run: |
