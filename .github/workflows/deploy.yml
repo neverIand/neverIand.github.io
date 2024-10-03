@@ -32,12 +32,8 @@ jobs:
 
       - name: Minify JavaScript
         run: |
-          for file in scripts/*.js; do
-            npx terser --compress --mangle --output "$file" "$file"
-          done
-          for file in webcomponents/*.js; do
-            npx terser --compress --mangle --output "$file" "$file"
-          done
+          find scripts -name "*.js" -exec npx terser --compress --mangle --output {} {} \;
+          find webcomponents -name "*.js" -exec npx terser --compress --mangle --output {} {} \;
 
       - name: Minify CSS
         run: |
