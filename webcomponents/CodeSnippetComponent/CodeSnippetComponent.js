@@ -36,9 +36,10 @@ class CodeSnippet extends HTMLElement {
 
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
-        <div class="snippet-header" data-title="${title}">
-          <berry-chip data-label="${lang}" variant="code"></berry-chip>
+        <div class="snippet-header">
+          ${title}
           <div class="btn-wrapper">
+            <berry-chip data-label="${lang}" variant="code"></berry-chip>
             <button id="copy-btn">Copy</button>
           </div>
         </div>
