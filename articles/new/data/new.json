@@ -64,5 +64,12 @@
     "subheading": "With backdrop-filter's polyfill",
     "filename": "/articles/new/new-08-cursor-image-filter-effect.html",
     "date": "2024-07-29"
+  },
+  {
+    "id": 9,
+    "title": "Add (unnecessary) caching to my github actions",
+    "subheading": "Also some status update",
+    "filename": "/articles/new/new-09-add-unnecessary-caching-to-my-github-actions.html",
+    "date": "2024-11-18"
   }
 ]
