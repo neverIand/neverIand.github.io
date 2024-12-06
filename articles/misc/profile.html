@@ -6,8 +6,35 @@
     <title>neverIand</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/styles/common.css" />
     <link rel="stylesheet" href="/styles/profile.css" />
+    <!-- Preloading -->
+    <link rel="preload" href="/styles/common.css" as="style" />
+    <link rel="stylesheet" href="/styles/common.css" />
+
+    <link rel="preload" href="/scripts/essentials.js" as="script" crossorigin />
+    <script type="module" src="/scripts/essentials.js"></script>
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Italic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <!--  -->
   </head>
   <body>
     <noscript>This website requires Javascript to function properly.</noscript>
@@ -120,7 +147,11 @@
             rel="noopener noreferrer"
             >Role2</a
           >
-          <p>A small social networking site made by my friend. It may not be obvious, but it has a lot of interesting features. I would say it's underrated.</p>
+          <p>
+            A small social networking site made by my friend. It may not be
+            obvious, but it has a lot of interesting features. I would say it's
+            underrated.
+          </p>
         </div>
 
         <div class="external-link">
@@ -188,6 +219,5 @@
 
     <berry-toolbar></berry-toolbar>
     <berry-footer></berry-footer>
-    <script type="module" src="/scripts/essentials.js"></script>
   </body>
 </html>
