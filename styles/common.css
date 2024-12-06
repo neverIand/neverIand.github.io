@@ -1,14 +1,17 @@
 @font-face {
   font-family: Libre Baskerville;
   src: url("/fonts/LibreBaskerville-Regular.ttf");
+  font-display: swap;
 }
 @font-face {
   font-family: Libre Baskerville Bold;
   src: url("/fonts/LibreBaskerville-Bold.ttf");
+  font-display: swap;
 }
 @font-face {
   font-family: Libre Baskerville Italic;
   src: url("/fonts/LibreBaskerville-Italic.ttf");
+  font-display: swap;
 }
 :root {
   --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
