@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neverIand</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+    <!-- Preloading -->
+    <link rel="preload" href="/styles/common.css" as="style" />
+    <link rel="stylesheet" href="/styles/common.css" />
+
+    <link rel="preload" href="/scripts/essentials.js" as="script" crossorigin />
+    <script type="module" src="/scripts/essentials.js"></script>
+
+    <link rel="preload" href="/scripts/articles.js" as="script" crossorigin />
+    <script type="module" src="/scripts/articles.js"></script>
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Italic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <!--  -->
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/album=3096857294/size=small/bgcol=333333/linkcol=e99708/track=2505140234/transparent=true/"
+          seamless
+          ><a href="https://metronomy.bandcamp.com/album/metronomy-forever"
+            >Metronomy Forever by Metronomy</a
+          ></iframe
+        >
+
+        <section>
+          <p>
+            Previously when I wfh, I'll use a simple auto clicker (<a
+              href="https://github.com/InJeCTrL/ClickRun"
+              target="_blank"
+              >ClickRun</a
+            >) to keep my MS Teams online status as 'available' so that when I
+            went off to recharge my brain energy my boss will still consider me
+            as available on MS Teams if he looks at the Teams UI (I mean I AM
+            available, it's just I'm not in front of the computer and Teams will
+            then think I'm occupied).
+          </p>
+
+          <p>
+            Now that I'm in a company with much higher compliance standards,
+            there are some problems with this approach because on my work
+            laptop, I cannot:
+          </p>
+          <ul>
+            <li>Install software (basically any .exe)</li>
+            <li>
+              Store certain types of files - technically I can store any files
+              but files like .js, .vbs, .bat cannot by synced to OneDrive
+            </li>
+            <li>Elevate my permission i.e. get admin role</li>
+          </ul>
+
+          <p>
+            Therefore, I was thinking using some kind of powershell or even VBA
+            scripts to trigger mouse activities like cursor movements to keep MS
+            Teams active. Here's what Claude wrote me:
+          </p>
+
+          <berry-code code-lang="powershell" nohighlight>
+            <pre slot="code">
+Add-Type -AssemblyName System.Windows.Forms
+while ($true) {
+    $cursor = [System.Windows.Forms.Cursor]::Position
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point(($cursor.X + 1), $cursor.Y)
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($cursor.X, $cursor.Y)
+    Start-Sleep -Seconds 240
+}
+            </pre>
+          </berry-code>
+
+          <p>
+            However, I got an error that reveals yet another limitation:
+            <code
+              >Add-Type: cannot add type. Definition of new types is not
+              supported in this language mode.</code
+            >
+            Turns out that powershell actually has different language modes,
+            which you can tell by running
+          </p>
+
+          <berry-code code-lang="powershell" nohighlight>
+            <pre slot="code">
+$ExecutionContext.SessionState.LanguageMode
+            </pre>
+          </berry-code>
+
+          <p>
+            Since the powershell on my work laptop is running in
+            <code>ConstrainedLanguage</code>, I'm not allowed to add the Windows
+            Forms assembly with Add-Type. With that said, the workaround is
+            surprisingly simple: instead of manipulating the cursor, we can just
+            make the script to simulate <kbd>SCROLLLOCK</kbd> presses:
+          </p>
+
+          <berry-code code-lang="powershell" nohighlight>
+            <pre slot="code">
+while ($true) {
+    $WShell = New-Object -com "Wscript.Shell"
+    $WShell.SendKeys("{SCROLLLOCK}")
+    Start-Sleep -Seconds 1
+    $WShell.SendKeys("{SCROLLLOCK}")
+    Start-Sleep -Seconds 240
+}
+            </pre>
+          </berry-code>
+
+          <p>And now you have it, a truly work from home experience.</p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+
+      <script
+        src="https://utteranc.es/client.js"
+        repo="neverIand/neverIand.github.io"
+        issue-term="url"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+  </body>
+</html>
