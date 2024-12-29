@@ -52,6 +52,7 @@ class LogoComponent extends HTMLElement {
     const rightSquareWidth = length / 2;
     const coreWidth = length / 3;
 
+    // TODO: use html attr in CSS and preload CSS
     let styleElement = this.shadowRoot.querySelector("style");
     if (!styleElement) {
       styleElement = document.createElement("style");

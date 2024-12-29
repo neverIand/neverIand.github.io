@@ -46,6 +46,7 @@ class ArticleSubheading extends HTMLElement {
       padding-left: 2em;
     }
     .next {
+      text-align: right;
       padding-right: 2em;
     }
     .prev:before, .next:after {

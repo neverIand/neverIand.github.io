@@ -235,6 +235,8 @@ input[type="checkbox"] {
 /* The default styling pasted from bandcamp/spotify should be removed */
 .bandcamp-player {
   margin: 10px auto;
+  width: 100%;
+  max-width: 640px;
   height: 42px;
   border: 0;
 }
