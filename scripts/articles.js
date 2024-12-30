@@ -27,6 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updatePlayerTheme(bandcampPlayer, e.detail.theme);
     });
   }
-});
 
-// TODO? similar mechanism for utterances?
+  // TODO? similar mechanism for utterances, but by attaching the <script> element after page load and reload this element for every theme change event, probably requires implementing (optional) debouncing for toggle
+});
