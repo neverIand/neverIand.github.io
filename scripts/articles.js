@@ -2,6 +2,7 @@ import "/webcomponents/DateComponent/DateComponent.js";
 import "/webcomponents/SubheadingComponent/SubheadingComponent.js";
 import "/webcomponents/CodeSnippetComponent/CodeSnippetComponent.js";
 import "/webcomponents/ToastComponent/ToastComponent.js";
+import { preloadStyles } from "./preloadStyles.js";
 import { getTheme } from "./theme.js";
 // TODO? Change the browser's tab title
 
@@ -15,6 +16,9 @@ function updatePlayerTheme(player, theme) {
   const color = theme === "dark" ? "333333" : "ffffff";
   player.src = replaceColor(player.src, color);
 }
+
+preloadStyles("/webcomponents/DateComponent/DateComponent.css");
+preloadStyles("/webcomponents/CodeSnippetComponent/CodeSnippetComponent.css");
 
 document.addEventListener("DOMContentLoaded", () => {
   const bandcampPlayer = document.querySelector(".bandcamp-player");
