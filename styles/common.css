@@ -28,13 +28,13 @@
   --text-color: #000;
   --text-muted-color: rgb(100, 100, 100);
   --text-error-color: red;
-  --chip-color:#dbdbdb;
+  --chip-color: #dbdbdb;
   --code-color: #000;
   --code-kw-color: #0000ff;
   --code-str-color: #a31515;
   --code-comment-color: #008000;
-  --code-css-prop-color:#0070C1;
-  --code-css-val-color:#D16969;
+  --code-css-prop-color: #0070c1;
+  --code-css-val-color: #d16969;
   --code-bg-color: #fff;
 }
 [data-theme="dark"] {
@@ -46,13 +46,13 @@
   --link-color: #8ab4f8;
   --link-visited-color: rgb(206, 113, 245);
   --text-color: #fff;
-  --chip-color:rgb(100, 100, 100);
+  --chip-color: rgb(100, 100, 100);
   --code-color: rgb(175, 219, 251);
   --code-kw-color: rgb(110, 156, 209);
   --code-str-color: rgb(193, 147, 109);
   --code-comment-color: rgb(118, 151, 92);
-  --code-css-prop-color:#4EC9B0;
-  --code-css-val-color:#CE9178;
+  --code-css-prop-color: #4ec9b0;
+  --code-css-val-color: #ce9178;
   --code-bg-color: rgb(31, 31, 31);
 }
 /* component styles */
@@ -181,7 +181,7 @@ code {
   background-color: #f4f4f4;
   border-radius: 2px;
 }
-samp{
+samp {
   display: block;
   padding: 0 10px;
   white-space: pre;
@@ -195,8 +195,7 @@ kbd {
   background-color: #eee;
   border-radius: 3px;
   border: 1px solid #b4b4b4;
-  box-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.2),
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
     0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
   color: #333;
   display: inline-block;
@@ -213,6 +212,9 @@ hr {
 label,
 input[type="checkbox"] {
   cursor: pointer;
+}
+berry-logo.muted {
+  opacity: 0.2;
 }
 
 /* Simple, tailwind-free util classes */

@@ -20,6 +20,11 @@ class LogoComponent extends HTMLElement {
     // if (name === "size") {
     //   this.updateStyles();
     // }
+    if ((name === "muted") & (this.getAttribute("muted") !== "true")) {
+      this.classList.remove("muted");
+    } else {
+      this.classList.add("muted");
+    }
     this.updateStyles();
   }
 
@@ -44,7 +49,7 @@ class LogoComponent extends HTMLElement {
   updateStyles(/* TODO: move parms here*/) {
     const size = this.getAttribute("size") || "240"; // Default size
     const isAnimated = this.getAttribute("animate") || "true";
-    const isMuted = this.getAttribute("muted") || "false";
+    // const isMuted = this.getAttribute("muted") || "false";
     const length = parseInt(size);
     const borderWidth = length * 0.04;
     const borderRadius = length * (2 / 75);
@@ -68,7 +73,8 @@ class LogoComponent extends HTMLElement {
         --logo-right-square-width: ${rightSquareWidth}px;
         --logo-core-width: ${coreWidth}px;
         --logo-color: rgb(121,0,142);
-        opacity: ${isMuted === "true" ? "0.2" : "1"};
+        opacity: 1;
+        transition: opacity 0.5s;
     }
     .square {
         background-color: var(--bg-color);
