@@ -1,57 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>neverIand</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/styles/common.css" />
-    <link rel="stylesheet" href="/styles/articles.css" />
-  </head>
-  <body>
-    <noscript>This website requires Javascript to function properly.</noscript>
-    <berry-header></berry-header>
-    <main>
-      <article>
-        <berry-heading></berry-heading>
-
-        <iframe
-          class="spotify-player"
-          src="https://open.spotify.com/embed/track/4KD9cNZdAH9L8xFytzMba3?utm_source=generator"
-          frameborder="0"
-          allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        ></iframe>
-
-        <berry-disclaimer>
-          <p slot="disclaimer-text">
-            Chrome's behaviour mentioned in this article is a bug (though I wish
-            it's not) and has been patched in version 125.0.6422.141 (just when
-            I'm checking its version it updated automatically)
-          </p>
-        </berry-disclaimer>
-
-        <section>
-          <p>
-            My friend asked me to help him with styling an image element on a
-            page:
-          </p>
-          <h5>Requirements:</h5>
-          <ul>
-            <li>
-              All content (header, content, footer) fits in a single page, no
-              overflow scrolling
-            </li>
-            <li>
-              A single carousel in the main section, with image(s) of any
-              possible size and aspect ratio taking over the remaining space
-            </li>
-          </ul>
-          <p>The simplfied DOM structure looks like this:</p>
-          <berry-code data-title="HTML" code-lang="html" nohighlight>
-            <pre slot="code">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>neverIand</title><link rel="icon" href="/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="/favicon.ico"><link rel="stylesheet" href="/styles/common.css"><link rel="stylesheet" href="/styles/articles.css"></head><body><noscript>This website requires Javascript to function properly.</noscript><berry-header></berry-header><main><article><berry-heading></berry-heading><iframe class="spotify-player" src="https://open.spotify.com/embed/track/4KD9cNZdAH9L8xFytzMba3?utm_source=generator" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe><berry-disclaimer><p slot="disclaimer-text">Chrome's behaviour mentioned in this article is a bug (though I wish it's not) and has been patched in version 125.0.6422.141 (just when I'm checking its version it updated automatically)</p></berry-disclaimer><section><p>My friend asked me to help him with styling an image element on a page:</p><h5>Requirements:</h5><ul><li>All content (header, content, footer) fits in a single page, no overflow scrolling</li><li>A single carousel in the main section, with image(s) of any possible size and aspect ratio taking over the remaining space</li></ul><p>The simplfied DOM structure looks like this:</p><berry-code data-title="HTML" code-lang="html" nohighlight><pre slot="code">
 &lt;body&gt;
   &lt;div id="layout"&gt;
     &lt;header&gt;&lt;h1&gt;Header&lt;/h1&gt;&lt;/header&gt;
@@ -66,23 +13,7 @@
     &lt;footer&gt;Footer&lt;/footer&gt;
   &lt;/div>
 &lt;/body>
-            </pre>
-          </berry-code>
-        </section>
-
-        <section>
-          <p>
-            My original thought was to use <code>flex: 1</code> to make the main
-            section fits the remaining space of the page. It worked for
-            <code>div</code> but not <code>img</code>. Setting
-            <code>height</code> to 100% will cause overflow if the image is
-            taller than viewport height, and adding
-            <code>object-fit: contain</code> didn't help either. Here's the
-            original styling:
-          </p>
-
-          <berry-code code-lang="css">
-            <pre slot="code">
+            </pre></berry-code></section><section><p>My original thought was to use <code>flex: 1</code> to make the main section fits the remaining space of the page. It worked for <code>div</code> but not <code>img</code>. Setting <code>height</code> to 100% will cause overflow if the image is taller than viewport height, and adding <code>object-fit: contain</code> didn't help either. Here's the original styling:</p><berry-code code-lang="css"><pre slot="code">
 * {
   box-sizing: border-box;
 }
@@ -138,61 +69,7 @@ footer {
   object-fit: contain;
   border: 1px solid red;
 }
-            </pre>
-          </berry-code>
-
-          <p>
-            Although I can almost confirm that the <code>img</code> element is
-            the issue, I just couldn't figure out how to properly handle it when
-            it exceeds viewport height. To try out some possible fallbacks, I
-            added a fixed height <code>height: 300px</code> to the image
-            container <code>.widget-carousel-item</code>. Suddenly, it works:
-            the image will scale to fit the screen no matter what's its size or
-            aspect ratio (you can check out the interactive demo
-            <a target="_blank" href="/articles/misc/imageLayoutDemo.html"
-              >here</a
-            >):
-          </p>
-
-          <p class="text-error">
-            Note: It only works for Chrome. At the time of writing, I'm using
-            version 125.
-          </p>
-
-          <berry-img
-            data-title="screenshot"
-            data-src="/articles/images/new/06/20240601134906.jpg"
-          ></berry-img>
-
-          <p>
-            I don't have a definitive answer for why this happened (yet), but I
-            suspect that having no height with absolute unit assigned is the
-            cause. Before adding this line, the height of everything on this
-            page is either <code>100%</code> or <code>100vh</code>, and from my
-            experience, dynamic height often requires some extra effort to deal
-            with (e.g. <code>transition: height 1s</code> won't work on an
-            element that has <code>height: auto</code>).
-          </p>
-        </section>
-
-        <section>
-          <h5>Update</h5>
-          <p>
-            After I've deployed the page and checked it on Safari, it seems that
-            Safari will correctly set the height of image's container to 1px,
-            which means this is a browser-specific behaviour.
-          </p>
-          <p>
-            Therefore, I experimented a bit more on a possible
-            <a target="_blank" href="/articles/misc/imageLayoutDemo2.html"
-              >alternative implementation</a
-            >. The main difference is that I added
-            <code>overflow: hidden</code> to main and the updated the image
-            styling:
-          </p>
-
-          <berry-code code-lang="css">
-            <pre slot="code">
+            </pre></berry-code><p>Although I can almost confirm that the <code>img</code> element is the issue, I just couldn't figure out how to properly handle it when it exceeds viewport height. To try out some possible fallbacks, I added a fixed height <code>height: 300px</code> to the image container <code>.widget-carousel-item</code>. Suddenly, it works: the image will scale to fit the screen no matter what's its size or aspect ratio (you can check out the interactive demo <a target="_blank" href="/articles/misc/imageLayoutDemo.html">here</a>):</p><p class="text-error">Note: It only works for Chrome. At the time of writing, I'm using version 125.</p><berry-img data-title="screenshot" data-src="/articles/images/new/06/20240601134906.jpg"></berry-img><p>I don't have a definitive answer for why this happened (yet), but I suspect that having no height with absolute unit assigned is the cause. Before adding this line, the height of everything on this page is either <code>100%</code> or <code>100vh</code>, and from my experience, dynamic height often requires some extra effort to deal with (e.g. <code>transition: height 1s</code> won't work on an element that has <code>height: auto</code>).</p></section><section><h5>Update</h5><p>After I've deployed the page and checked it on Safari, it seems that Safari will correctly set the height of image's container to 1px, which means this is a browser-specific behaviour.</p><p>Therefore, I experimented a bit more on a possible <a target="_blank" href="/articles/misc/imageLayoutDemo2.html">alternative implementation</a>. The main difference is that I added <code>overflow: hidden</code> to main and the updated the image styling:</p><berry-code code-lang="css"><pre slot="code">
 .widget-carousel-item img {
   /* width: 100%;
   height: 100%; */
@@ -203,47 +80,4 @@ footer {
   object-fit: contain;
   border: 1px solid red;
 }
-            </pre>
-          </berry-code>
-
-          <p>
-            The problem is, unlike version 1, when the image is smaller than the
-            container, it will not scale to fit it. Meanwhile, if I add
-            <code>flex: 1</code> to the container
-            <code>.widget-carousel-item</code>, then it overflow will still
-            happen when the image is too tall.
-          </p>
-
-          <p>I'll update this section once I have better solution.</p>
-        </section>
-
-        <section>
-          <h5>Update 2</h5>
-          <p>
-            Right after I checked Chrome's version it did an automatic upgrade
-            and method 1 no longer works. So, it's probably a bug. Still, I'll
-            update this article once I have better solution. (This is the only
-            time I wish a bug could become a feature)
-          </p>
-        </section>
-
-        <berry-date></berry-date>
-      </article>
-
-      <script
-        src="https://utteranc.es/client.js"
-        repo="neverIand/neverIand.github.io"
-        issue-term="url"
-        theme="preferred-color-scheme"
-        crossorigin="anonymous"
-        async
-      ></script>
-    </main>
-
-    <berry-toolbar></berry-toolbar>
-    <berry-toast></berry-toast>
-    <berry-footer></berry-footer>
-    <script type="module" src="/scripts/essentials.js"></script>
-    <script type="module" src="/scripts/articles.js"></script>
-  </body>
-</html>
+            </pre></berry-code><p>The problem is, unlike version 1, when the image is smaller than the container, it will not scale to fit it. Meanwhile, if I add <code>flex: 1</code> to the container <code>.widget-carousel-item</code>, then it overflow will still happen when the image is too tall.</p><p>I'll update this section once I have better solution.</p></section><section><h5>Update 2</h5><p>Right after I checked Chrome's version it did an automatic upgrade and method 1 no longer works. So, it's probably a bug. Still, I'll update this article once I have better solution. (This is the only time I wish a bug could become a feature)</p></section><berry-date></berry-date></article><script src="https://utteranc.es/client.js" repo="neverIand/neverIand.github.io" issue-term="url" theme="preferred-color-scheme" crossorigin="anonymous" async></script></main><berry-toolbar></berry-toolbar><berry-toast></berry-toast><berry-footer></berry-footer><script type="module" src="/scripts/essentials.js"></script><script type="module" src="/scripts/articles.js"></script></body></html>
