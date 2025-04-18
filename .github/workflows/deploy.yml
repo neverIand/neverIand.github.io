@@ -40,6 +40,17 @@ jobs:
           find styles -name "*.css" -exec npx csso {} --output {} \;
           find webcomponents -name "*.css" -exec npx csso {} --output {} \;
 
+      - name: Minify HTML
+        run: |
+          find . -name "*.html" -exec sh -c '
+            npx html-minifier-terser \
+              --collapse-whitespace \
+              --remove-comments \
+              --minify-js true \
+              --minify-css true \
+              "$0" -o "$0"
+          ' {} \;
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:

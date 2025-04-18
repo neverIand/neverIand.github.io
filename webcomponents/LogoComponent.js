@@ -118,7 +118,7 @@ class LogoComponent extends HTMLElement {
     // Toggle animation on/off
     const animate = this.getAttribute("animate");
     if (animate !== "false") {
-      console.log(this.classList);
+      // console.log(this.classList);
       this.classList.add("animated");
     } else {
       this.classList.remove("animated");
