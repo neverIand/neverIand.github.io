@@ -8,6 +8,7 @@
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/articles.css" />
     <!-- Preloading -->
+
     <link rel="preload" href="/styles/common.css" as="style" />
     <link rel="stylesheet" href="/styles/common.css" />
 
@@ -250,5 +251,18 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
       type="module"
       src="/webcomponents/ArticleComponent/ArticleComponent.js"
     ></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      let el = document.createElement("div");
+      document.body.appendChild(el);
+      eruda.init({
+        container: el,
+        defaults: {
+          displaySize: 50,
+          theme: "Monokai Pro",
+        },
+      });
+      eruda.show();
+    </script>
   </body>
 </html>
