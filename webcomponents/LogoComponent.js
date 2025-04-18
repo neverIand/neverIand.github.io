@@ -30,7 +30,7 @@ logoStyles.replaceSync(`
   width: var(--logo-left-square-width);
   height: var(--logo-left-square-width);
   z-index: 100;
-  animation: transformLeft 4s infinite linear;
+  transform: rotateZ(60deg);
 }
 .right-square {
   top: calc(var(--length) * (1 / 15));
@@ -39,7 +39,6 @@ logoStyles.replaceSync(`
   height: var(--logo-right-square-width);
   z-index: 50;
   transform: rotateZ(60deg);
-  animation: transformLeft 4s infinite linear;
 }
 .core {
   position: relative;
@@ -49,9 +48,9 @@ logoStyles.replaceSync(`
   margin: auto;
   border: var(--logo-border-width) solid var(--text-color, black);
 }
-.start-animation .left-square,
-.start-animation .right-square {
-  animation-play-state: running;
+:host(.animated) .left-square,
+:host(.animated) .right-square {
+  animation: transformLeft 4s infinite linear;
 }
 @keyframes transformLeft {
   from {
@@ -116,9 +115,13 @@ class LogoComponent extends HTMLElement {
     this.style.setProperty("--logo-right-square-width", `${length / 2}px`);
     this.style.setProperty("--logo-core-width", `${length / 3}px`);
 
-    // Optionally disable animation
-    if (this.getAttribute("animate") === "false") {
-      this.classList.remove("start-animation");
+    // Toggle animation on/off
+    const animate = this.getAttribute("animate");
+    if (animate !== "false") {
+      console.log(this.classList);
+      this.classList.add("animated");
+    } else {
+      this.classList.remove("animated");
     }
   }
 }
