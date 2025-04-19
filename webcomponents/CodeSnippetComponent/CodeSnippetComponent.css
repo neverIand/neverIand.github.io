@@ -52,8 +52,8 @@ pre {
   padding: 0 5px !important;
   color: var(--code-color);
   font-family: var(--code-font);
-  font-size: var(--code-font-size);
-  line-height: var(--code-line-height);
+  font-size: var(--code-font-size, 1em);
+  line-height: var(--code-line-height, 125%);
 }
 #result {
   padding: 5px;
@@ -61,8 +61,8 @@ pre {
 .text {
   color: var(--text-color);
   font-family: var(--code-font);
-  font-size: var(--code-font-size);
-  line-height: var(--code-line-height);
+  font-size: var(--code-font-size, 1em);
+  line-height: var(--code-line-height, 125%);
 }
 .string {
   color: var(--code-str-color);
