@@ -60,8 +60,19 @@ const CSS = `
 }
 `;
 
-const logoStyles = new CSSStyleSheet();
-logoStyles.replaceSync(CSS);
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
+
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
 
 class LogoComponent extends HTMLElement {
   static get observedAttributes() {
@@ -72,13 +83,12 @@ class LogoComponent extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    // this.shadowRoot.adoptedStyleSheets = [logoStyles];
-    if ("adoptedStyleSheets" in sr) {
-      sr.adoptedStyleSheets = [logoStyles];
+    if (canAdopt && sharedSheet) {
+      sr.adoptedStyleSheets = [sharedSheet];
     } else {
-      const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || CSS;
-      sr.appendChild(style);
+      const styleEl = document.createElement("style");
+      styleEl.textContent = CSS;
+      sr.appendChild(styleEl);
     }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }

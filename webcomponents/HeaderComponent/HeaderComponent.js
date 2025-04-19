@@ -120,7 +120,7 @@ class CustomHeader extends HTMLElement {
     } else {
       // Fallback for iOS 15 and older: inject a <style> tag
       const styleEl = document.createElement("style");
-      styleEl.textContent = HEADER_CSS;
+      styleEl.textContent = CSS;
       sr.appendChild(styleEl);
     }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
