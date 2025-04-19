@@ -91,7 +91,7 @@ class LogoComponent extends HTMLElement {
       sr.appendChild(styleEl);
     }
 
-    this.setAttribute("data-theme", getTheme()); // for iOS 15
+    // this.setAttribute("data-theme", getTheme()); // for iOS 15
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 

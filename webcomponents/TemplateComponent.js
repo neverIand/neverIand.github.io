@@ -6,8 +6,19 @@ const CSS = `
 }
 `;
 
-const templateStyles = new CSSStyleSheet();
-templateStyles.replaceSync(CSS);
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
+
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
 
 class TemplateComponent extends HTMLElement {
   constructor() {
@@ -15,13 +26,14 @@ class TemplateComponent extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if ("adoptedStyleSheets" in sr) {
-      sr.adoptedStyleSheets = [templateStyles];
+    if (canAdopt && sharedSheet) {
+      sr.adoptedStyleSheets = [sharedSheet];
     } else {
-      const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || CSS;
-      sr.appendChild(style);
+      const styleEl = document.createElement("style");
+      styleEl.textContent = CSS;
+      sr.appendChild(styleEl);
     }
+    // this.setAttribute("data-theme", getTheme()); 
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 

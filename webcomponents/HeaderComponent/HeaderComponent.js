@@ -77,7 +77,7 @@ const CSS = `
       position: absolute;
       top: var(--header-height);
       right: 0;
-      background: var(--header-bg-color, white);
+      background: var(--bg-color, white);
       flex-direction: column;
       padding: 1em;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
