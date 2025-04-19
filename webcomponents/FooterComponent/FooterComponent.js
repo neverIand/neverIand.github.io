@@ -31,9 +31,19 @@ a:visited {
   color: var(--link-visited-color);
 }
 `;
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
 
-const footerStyles = new CSSStyleSheet();
-footerStyles.replaceSync(CSS);
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
 
 class CustomFooter extends HTMLElement {
   constructor() {
@@ -41,13 +51,14 @@ class CustomFooter extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if ("adoptedStyleSheets" in sr) {
-      sr.adoptedStyleSheets = [footerStyles];
+    if (canAdopt && sharedSheet) {
+      sr.adoptedStyleSheets = [sharedSheet];
     } else {
-      const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || CSS;
-      sr.appendChild(style);
+      const styleEl = document.createElement("style");
+      styleEl.textContent = CSS;
+      sr.appendChild(styleEl);
     }
+    this.setAttribute("data-theme", getTheme()); // for iOS 15
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 

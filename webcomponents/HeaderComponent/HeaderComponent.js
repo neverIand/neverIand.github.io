@@ -123,7 +123,7 @@ class CustomHeader extends HTMLElement {
       styleEl.textContent = CSS;
       sr.appendChild(styleEl);
     }
-    this.setAttribute("data-theme", getTheme());
+    this.setAttribute("data-theme", getTheme()); // for iOS 15
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
