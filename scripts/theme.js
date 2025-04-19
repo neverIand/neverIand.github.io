@@ -11,6 +11,7 @@ export function getTheme() {
   return "light";
 }
 
+// for CSS variables
 export function setTheme(theme) {
   try {
     localStorage.setItem("berry-theme", theme);

@@ -1,4 +1,4 @@
-import { handleThemeChange } from "/scripts/theme.js";
+import { getTheme, handleThemeChange } from "/scripts/theme.js";
 
 const CSS = `
 :host {
