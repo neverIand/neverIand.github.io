@@ -1,8 +1,6 @@
 import { handleThemeChange } from "/scripts/theme.js";
 
-// 1. Create a shared, constructable stylesheet
-const logoStyles = new CSSStyleSheet();
-logoStyles.replaceSync(`
+const LOGO_CSS = `
 :host {
   display: block;
   aspect-ratio: 1 / 1;
@@ -60,7 +58,10 @@ logoStyles.replaceSync(`
     transform: translateX(calc(1.733 * var(--length))) rotateZ(-300deg);
   }
 }
-`);
+`;
+
+const logoStyles = new CSSStyleSheet();
+logoStyles.replaceSync(LOGO_CSS);
 
 class LogoComponent extends HTMLElement {
   static get observedAttributes() {
@@ -68,10 +69,17 @@ class LogoComponent extends HTMLElement {
   }
   constructor() {
     super();
-    this.attachShadow({
+    const sr = this.attachShadow({
       mode: "open",
     });
-    this.shadowRoot.adoptedStyleSheets = [logoStyles];
+    // this.shadowRoot.adoptedStyleSheets = [logoStyles];
+    if ("adoptedStyleSheets" in sr) {
+      sr.adoptedStyleSheets = [logoStyles];
+    } else {
+      const style = document.createElement("style");
+      style.textContent = headerStyles.cssText || LOGO_CSS;
+      sr.appendChild(style);
+    }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
