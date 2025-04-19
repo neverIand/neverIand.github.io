@@ -1,26 +1,58 @@
 import { handleThemeChange } from "/scripts/theme.js";
+
+const CSS = `
+:host {
+  display: block;
+}
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+}
+a {
+  padding: 4px 8px;
+  color: var(--link-color);
+  font-family: consolas, "Menlo", "Monaco", "Courier New", monospace;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: color 0.3s, background-color 0.3s;
+}
+a:hover,
+a:focus {
+  color: #ff6600;
+  text-decoration: none;
+  background-color: #f2f2f2;
+}
+a:visited {
+  color: var(--link-visited-color);
+}
+`;
+
+const footerStyles = new CSSStyleSheet();
+footerStyles.replaceSync(CSS);
+
 class CustomFooter extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({
+    const sr = this.attachShadow({
       mode: "open",
     });
-    this.loadStyles();
+    if ("adoptedStyleSheets" in sr) {
+      sr.adoptedStyleSheets = [footerStyles];
+    } else {
+      const style = document.createElement("style");
+      style.textContent = headerStyles.cssText || CSS;
+      sr.appendChild(style);
+    }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
     this.render();
-  }
-
-  loadStyles() {
-    const styles = document.createElement("link");
-    styles.setAttribute("rel", "stylesheet");
-    styles.setAttribute(
-      "href",
-      "/webcomponents/FooterComponent/FooterComponent.css"
-    );
-    this.shadowRoot.appendChild(styles);
   }
 
   render() {

@@ -9,7 +9,6 @@ import "/webcomponents/ToolbarComponent/ToolbarComponent.js";
 
 (() => {
   // preload web component styles for components that have separate css
-  preloadStyles("/webcomponents/FooterComponent/FooterComponent.css");
   preloadStyles("/webcomponents/DisclaimerComponent/DisclaimerComponent.css");
 
   document.addEventListener("DOMContentLoaded", function () {
