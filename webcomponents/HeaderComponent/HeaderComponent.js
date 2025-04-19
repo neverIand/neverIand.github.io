@@ -6,7 +6,7 @@ import {
 import "../LogoComponent.js";
 import "../ToggleComponent/ToggleComponent.js";
 
-const HEADER_CSS = `
+const CSS = `
   :host {
     display: block;
     --header-height: 60px;
@@ -95,7 +95,7 @@ const HEADER_CSS = `
 `;
 
 const headerStyles = new CSSStyleSheet();
-headerStyles.replaceSync(HEADER_CSS);
+headerStyles.replaceSync(CSS);
 
 class CustomHeader extends HTMLElement {
   constructor() {
@@ -108,7 +108,7 @@ class CustomHeader extends HTMLElement {
     } else {
       // Fallback for iOS 15 and older: inject a <style> tag
       const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || HEADER_CSS;
+      style.textContent = headerStyles.cssText || CSS;
       sr.appendChild(style);
     }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
@@ -120,7 +120,8 @@ class CustomHeader extends HTMLElement {
 
   render() {
     const disableToggle = this.hasAttribute("disable-theme-toggle");
-    this.shadowRoot.innerHTML = `
+    const tpl = document.createElement("template");
+    tpl.innerHTML = `
       <header>
         <div id="logo">
           <a href="/" title="home"><berry-logo size="50"></berry-logo></a>
@@ -141,6 +142,7 @@ class CustomHeader extends HTMLElement {
         </nav>
       </header>
     `;
+    this.shadowRoot.appendChild(tpl.content.cloneNode(true));
     if (!disableToggle) this.addThemeListener();
   }
 

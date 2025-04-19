@@ -1,6 +1,6 @@
 import { handleThemeChange } from "/scripts/theme.js";
 
-const LOGO_CSS = `
+const CSS = `
 :host {
   display: block;
   aspect-ratio: 1 / 1;
@@ -61,7 +61,7 @@ const LOGO_CSS = `
 `;
 
 const logoStyles = new CSSStyleSheet();
-logoStyles.replaceSync(LOGO_CSS);
+logoStyles.replaceSync(CSS);
 
 class LogoComponent extends HTMLElement {
   static get observedAttributes() {
@@ -77,7 +77,7 @@ class LogoComponent extends HTMLElement {
       sr.adoptedStyleSheets = [logoStyles];
     } else {
       const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || LOGO_CSS;
+      style.textContent = headerStyles.cssText || CSS;
       sr.appendChild(style);
     }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
