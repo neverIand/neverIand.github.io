@@ -94,22 +94,34 @@ const CSS = `
   }
 `;
 
-const headerStyles = new CSSStyleSheet();
-headerStyles.replaceSync(CSS);
+// Constructable Stylesheet supported?
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
+
+// adoptedStyleSheets supported?
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
 
 class CustomHeader extends HTMLElement {
   constructor() {
     super();
     const sr = this.attachShadow({ mode: "open" });
-    // Apply shared CSS
-    if ("adoptedStyleSheets" in sr) {
-      // Modern browsers + iOS 16+, Chrome, Firefox, etc.
-      sr.adoptedStyleSheets = [headerStyles];
+    if (canAdopt && sharedSheet) {
+      // Modern browsers (Chrome, Firefox, Safari 16.4+, iOS 16.4+)
+      sr.adoptedStyleSheets = [sharedSheet];
     } else {
-      // Fallback for iOS 15 and older: inject a <style> tag
-      const style = document.createElement("style");
-      style.textContent = headerStyles.cssText || CSS;
-      sr.appendChild(style);
+      // Fallback for iOS 15 and older: inject a <style> tag
+      const styleEl = document.createElement("style");
+      styleEl.textContent = HEADER_CSS;
+      sr.appendChild(styleEl);
     }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
