@@ -1,4 +1,4 @@
-import { handleThemeChange } from "/scripts/theme.js";
+import { getTheme, handleThemeChange } from "/scripts/theme.js";
 
 const CSS = `
 :host {
@@ -90,6 +90,7 @@ class LogoComponent extends HTMLElement {
       styleEl.textContent = CSS;
       sr.appendChild(styleEl);
     }
+    this.setAttribute("data-theme", getTheme());
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 

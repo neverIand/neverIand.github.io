@@ -40,5 +40,6 @@ export function dispatchThemeChangeEvent() {
 }
 
 export function handleThemeChange(event, el) {
+  // console.log("el:", el);
   el.setAttribute("data-theme", event.detail.theme);
 }

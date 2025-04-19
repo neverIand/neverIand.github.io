@@ -123,6 +123,7 @@ class CustomHeader extends HTMLElement {
       styleEl.textContent = CSS;
       sr.appendChild(styleEl);
     }
+    this.setAttribute("data-theme", getTheme());
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
