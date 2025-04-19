@@ -6,8 +6,7 @@ import {
 import "../LogoComponent.js";
 import "../ToggleComponent/ToggleComponent.js";
 
-const headerStyles = new CSSStyleSheet();
-headerStyles.replaceSync(`
+const HEADER_CSS = `
   :host {
     display: block;
     --header-height: 60px;
@@ -93,14 +92,25 @@ headerStyles.replaceSync(`
       align-items: flex-start;
     }
   }
-`);
+`;
+
+const headerStyles = new CSSStyleSheet();
+headerStyles.replaceSync(HEADER_CSS);
 
 class CustomHeader extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
+    const sr = this.attachShadow({ mode: "open" });
     // Apply shared CSS
-    this.shadowRoot.adoptedStyleSheets = [headerStyles];
+    if ("adoptedStyleSheets" in sr) {
+      // Modern browsers + iOS 16+, Chrome, Firefox, etc.
+      sr.adoptedStyleSheets = [headerStyles];
+    } else {
+      // Fallback for iOS 15 and older: inject a <style> tag
+      const style = document.createElement("style");
+      style.textContent = headerStyles.cssText || HEADER_CSS;
+      sr.appendChild(style);
+    }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
