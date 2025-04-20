@@ -1,6 +1,0 @@
-time {
-  display: flex;
-  flex-direction: column;
-  color: var(--text-color);
-  font-style: italic;
-}

@@ -1,28 +1,50 @@
 import { fetchData } from "/scripts/fetchData.js";
 import { handleThemeChange } from "/scripts/theme.js";
 
+const CSS = `
+:host {
+  display: block;
+}
+time {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-style: italic;
+}
+`;
+
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
+
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
+
 class CustomDate extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({
+    const sr = this.attachShadow({
       mode: "open",
     });
-    this.loadStyles();
+    if (canAdopt && sharedSheet) {
+      sr.adoptedStyleSheets = [sharedSheet];
+    } else {
+      const styleEl = document.createElement("style");
+      styleEl.textContent = CSS;
+      sr.appendChild(styleEl);
+    }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
   connectedCallback() {
     this.render();
-  }
-
-  loadStyles() {
-    const styles = document.createElement("link");
-    styles.setAttribute("rel", "stylesheet");
-    styles.setAttribute(
-      "href",
-      "/webcomponents/DateComponent/DateComponent.css"
-    );
-    this.shadowRoot.appendChild(styles);
   }
 
   renderArticleDate(data) {
