@@ -1,12 +1,135 @@
 import { handleThemeChange } from "/scripts/theme.js";
 import "/webcomponents/ChipComponent/ChipComponent.js";
+
+const CSS = `
+:host {
+  display: block;
+  --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
+  --code-font-size: 1em;
+  --code-line-height: 125%;
+}
+.snippet-container {
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+.snippet-header {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+.btn-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.snippet-content {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  min-height: 1em;
+  background-color: var(--code-bg-color);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: auto;
+}
+.line-numbers {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  left: 0;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--content-bg-color);
+  border-right: 1px solid;
+  user-select: none;
+}
+::slotted(pre),
+pre {
+  margin: 0;
+  padding: 0 5px !important;
+  color: var(--code-color);
+  font-family: var(--code-font);
+  font-size: var(--code-font-size, 1em);
+  line-height: var(--code-line-height, 125%);
+}
+#result {
+  padding: 5px;
+}
+.text {
+  color: var(--text-color);
+  font-family: var(--code-font);
+  font-size: var(--code-font-size, 1em);
+  line-height: var(--code-line-height, 125%);
+}
+.string {
+  color: var(--code-str-color);
+}
+.symbol {
+  color: var(--text-color);
+}
+.comment,
+.comment .keyword {
+  color: var(--code-comment-color);
+  font-style: italic;
+}
+.keyword {
+  color: var(--code-kw-color);
+}
+/* HTML and CSS support */
+.attribute {
+  color: #9cdcfe;
+}
+.css-prop {
+  color: var(--code-css-prop-color);
+}
+.css-val {
+  color: var(--code-css-val-color);
+}
+button {
+  margin-left: 5px;
+  cursor: pointer;
+}
+label,
+input[type="checkbox"] {
+  font-size: 0.8em;
+  cursor: pointer;
+}
+`;
+
+const canConstruct =
+  typeof CSSStyleSheet !== "undefined" &&
+  typeof CSSStyleSheet.prototype.replaceSync === "function";
+
+const canAdopt =
+  typeof ShadowRoot !== "undefined" &&
+  "adoptedStyleSheets" in ShadowRoot.prototype;
+
+let sharedSheet;
+if (canConstruct) {
+  sharedSheet = new CSSStyleSheet();
+  sharedSheet.replaceSync(CSS);
+}
 class CodeSnippet extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({
+    const sr = this.attachShadow({
       mode: "open",
     });
-    this.loadStyles();
+    if (canAdopt && sharedSheet) {
+      sr.adoptedStyleSheets = [sharedSheet];
+    } else {
+      const styleEl = document.createElement("style");
+      styleEl.textContent = CSS;
+      sr.appendChild(styleEl);
+    }
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 
@@ -16,16 +139,6 @@ class CodeSnippet extends HTMLElement {
     this.updateLineNumbers();
   }
 
-  loadStyles() {
-    const styles = document.createElement("link");
-    styles.setAttribute("rel", "stylesheet");
-    styles.setAttribute(
-      "href",
-      "/webcomponents/CodeSnippetComponent/CodeSnippetComponent.css"
-    );
-    this.shadowRoot.appendChild(styles);
-  }
-
   render() {
     const lang = this.getAttribute("code-lang") || "javascript";
     const skipHighlight = this.getAttribute("nohighlight") === "";
@@ -33,7 +146,6 @@ class CodeSnippet extends HTMLElement {
       this.getAttribute("runnable") === "" && lang === "javascript";
     const title = this.getAttribute("data-title") || "Code Snippet"; // TODO?: accessibility
     const template = document.createElement("template");
-
     template.innerHTML = /*html*/ `
     <div class="snippet-container">
         <div class="snippet-header">
