@@ -17,6 +17,7 @@ section#banner {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  height: 300px;
 }
 section#intro {
   color: var(--text-color);
