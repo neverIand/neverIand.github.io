@@ -71,5 +71,12 @@
     "subheading": "Also some status update",
     "filename": "/articles/new/new-09-add-unnecessary-caching-to-my-github-actions.html",
     "date": "2024-11-18"
+  },
+  {
+    "id": 10,
+    "title": "Update log4j in software dependency without the access to source code",
+    "subheading": "With Doxis FIPS and Sage Crystal Report as examples",
+    "filename": "/articles/new/new-10-update-log4j-in-software-dependency-without-the-access-to-source-code.html",
+    "date": "2025-05-"
   }
 ]

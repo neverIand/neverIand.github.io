@@ -22,8 +22,9 @@ class ImageComponent extends HTMLElement {
   }
 
   render() {
+    const src = this.getAttribute("data-src");
     const title = this.getAttribute("data-title") || "";
-    const placeholder = this.getAttribute("data-alt") || title;
+    const placeholder = this.getAttribute("data-alt") || src;
     const width = this.getAttribute("data-width") || "auto";
 
     const template = document.createElement("template");
@@ -77,8 +78,6 @@ class ImageComponent extends HTMLElement {
       </div>
       `;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    const src = this.getAttribute("data-src");
     this.addFullScreenEventListener(src);
     this.observeImage(src);
   }

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="white"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="black"
+    />
+    <title>neverIand</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+    <!-- Preloading -->
+    <link rel="preload" href="/styles/common.css" as="style" />
+    <link rel="stylesheet" href="/styles/common.css" />
+
+    <link rel="preload" href="/scripts/essentials.js" as="script" crossorigin />
+    <script type="module" src="/scripts/essentials.js"></script>
+
+    <link rel="preload" href="/scripts/articles.js" as="script" crossorigin />
+    <script type="module" src="/scripts/articles.js"></script>
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Italic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <!--  -->
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/album=3660752566/size=small/bgcol=ffffff/linkcol=0687f5/track=157611440/transparent=true/"
+          seamless
+          ><a
+            href="https://naturebliss.bandcamp.com/album/endless-cycle-of-rebirth-lant017"
+            >endless cycle of rebirth (LANT017) by kita kouhei - 北 航平</a
+          ></iframe
+        >
+
+        <section>
+          <h5>TLDR</h5>
+          <p>
+            Use the bridge provided in log4j 2 to replace the outdated and
+            vulnerable log4j 1 (<a
+              href="https://www.tenable.com/plugins/nessus/182252"
+              target="_blank"
+              title="Apache Log4j SEoL (&lt;= 1.x)"
+              >SEoL warning</a
+            >).
+          </p>
+          <ol>
+            <li>
+              Confirm and download the version to update to (e.g.
+              <a
+                href="https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core/2.17.1"
+                target="_blank"
+                title="Maven Repository: org.apache.logging.log4j » log4j-core » 2.17.1"
+                >2.17.1</a
+              >), it shouldn't have any <b>direct</b> CVE
+            </li>
+            <li>
+              Download
+              <a
+                href="https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api"
+                target="_blank"
+                title="Maven Repository: org.apache.logging.log4j » log4j-api"
+                >log4j-api-2.x</a
+              >
+              and
+              <a
+                href="https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-1.2-api"
+                target="_blank"
+                title="Maven Repository: org.apache.logging.log4j » log4j-1.2-api"
+                >log4j-1.2-api-2</a
+              >
+              of the corresponding new log4j version
+            </li>
+            <li>
+              Replace the original log4j-1.2 jar file with the 3 files above
+            </li>
+            <li>
+              Check if additional files (circled below) are needed, if so,
+              download the correct version and add them to the directory as well
+              (<a
+                href="https://logging.apache.org/log4j/2.3.x/faq.html"
+                target="_blank"
+                >link to original image</a
+              >): <br /><berry-img
+                data-src="/articles/images/new/10/additional-dependencies.png"
+                data-title="Additional files may be required. More on that later."
+              ></berry-img>
+            </li>
+            <li>
+              If log4j is a dependency of a package (e.g. inside axis2 of Sage
+              CrystalReport), it's required to rename the filename extension of
+              the package to .zip and unzip it first before replacing the files.
+              In addition, the reference to the old log4j jar file needs to be
+              replaced with the location of log4j bridge (log4j-1.2-api-2.1.jar)
+              in <code>\META-INF\MANIFEST.MF</code>
+            </li>
+          </ol>
+          <p>
+            The original goal was to actually get rid of the end-of-life warning
+            but by updating log4j you essentially remove the (known)
+            vulnerabilities as well.
+          </p>
+        </section>
+
+        <section>
+          <h5>A simple example: Doxis FIPS</h5>
+          <p>
+            Ideally, we should update the server with patches from vendors that
+            includes up-to-date security fixes. However, if that is not
+            possible, there are several alternatives:
+          </p>
+          <ul>
+            <li>
+              Remove the classes affected by the vulnerability if those classes
+              are not used by the software (<b
+                >needs to be confirmed by vendors</b
+              >). This can be done manually or via
+              <a
+                href="https://github.com/logpresso/CVE-2021-44228-Scanner"
+                target="_blank"
+                title="CVE-2021-44228-Scanner"
+                >other tools</a
+              >. Still, this does <b>not</b> update the log4j itself so it won't
+              make the SEoL warning go away.
+            </li>
+            <li>
+              Use the bridge provided by log4j 2 as stated above (or see this
+              <a
+                href="https://stackoverflow.com/questions/26005149/mixing-log4j-1-x-and-log4j-2?rq=4"
+                target="_blank"
+                title="Mixing log4j 1.x and log4j 2"
+                >stackoverflow answer</a
+              >). However, this method has its
+              <a
+                href="https://logging.apache.org/log4j/2.x/migrate-from-log4j1.html#option-1-use-the-log4j-1-x-bridge-log4j-1-2-api"
+                target="_blank"
+                title="Log4j 1 to Log4j 2 bridge"
+                >limitations</a
+              >.
+            </li>
+            <li>
+              Use a Java decompiler to modify the source code and save those
+              changes so that the original software will be using log4j 2.
+              However, this method is <b>not</b> recommended, not only because
+              of the amount of manual effort and the potential errors it may
+              come with, but also the requirements running the decompiler. At
+              the time of writing, the only free Java decompiler that's capable
+              of recompiling is
+              <a
+                href="https://github.com/Col-E/Recaf"
+                target="_blank"
+                title="Recaf"
+                >Recaf</a
+              >
+              and it requires JDK 22 to run, which means it's also compulsory to
+              modify the server which runs a much older version of OpenJDK.
+            </li>
+          </ul>
+
+          <p>
+            Note that log4j 2 is <b>not</b> backward compatible with log4j 1, so
+            it's impossible to update the package by replacing the original
+            files directly, especially since we don't have access to source
+            code.
+          </p>
+
+          <p>
+            For the log4j dependency in Doxis FIPS, the process mentioned above
+            (i.e. replace the original file with 3 bridge files) should be able
+            to resolve the issue. In fact, this is also the
+            <a
+              href="https://servicedesk.sergroup.com/help/en-us/46-security-advisories/150-apache-log4j-v2-cve-2021-44228-cve-2021-45046-cve-2021-45105"
+              target="_blank"
+              title="Apache log4j v2 CVE-2021-44228 / CVE-2021-45046 / CVE-2021-45105"
+              >method recommended by SER</a
+            >.
+          </p>
+        </section>
+
+        <section>
+          <h5>Dealing with Sage CrystalReport</h5>
+          <p>
+            CrystalReport's situation is more complicated because there's also
+            an outdated log4j located in the axis2 package according to the
+            scanner, so there are actually 2 ways to update:
+          </p>
+          <ul>
+            <li>
+              Update the axis 2 package itself to a version that uses log4j 2,
+              or
+            </li>
+            <li>Only update the log4j dependency inside the axis2</li>
+          </ul>
+          <p>
+            However, updating axis2 appears to be a more risky option because
+            axis2 only started to use log4j 2 from version
+            <a
+              href="https://axis.apache.org/axis2/java/core/release-notes/1.8.0.html"
+              target="_blank"
+              title="Apache Axis2 1.8.0 Release Note"
+              >1.8.0</a
+            >
+            and there are breaking changes introduced in version
+            <a
+              href="https://axis.apache.org/axis2/java/core/release-notes/1.7.0.html"
+              target="_blank"
+              title="Apache Axis2 1.7.0 Release Note"
+              >1.7.0</a
+            >. Since CrystalReport uses version 1.6.2, updating to 1.8 will be a
+            big leap and might cause unexpected result.
+          </p>
+
+          <p>
+            Another reason for using the bridge is that this is actually how the
+            authors of axis2 migrated to log4j 2 themselves: by searching for
+            log4j references in axis2 v1.8's dependencies (<a
+              href="https://repo1.maven.org/maven2/org/apache/axis2/axis2/1.8.1/axis2-1.8.1.pom"
+              target="_blank"
+              >pom.xml</a
+            >), it can be observed that bridge related files are present, and 2
+            additional packages are included:
+            <a
+              href="https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl"
+              target="_blank"
+              title="Apache Log4j SLF4J Binding"
+              >log4j-slf4j-impl</a
+            >
+            and
+            <a
+              href="https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-jcl"
+              target="_blank"
+              title="Apache Log4j Commons Logging Bridge"
+              >log4j-jcl</a
+            >. Therefore, using the log4j bridge looks like a more reasonable
+            approach.
+          </p>
+
+          <p>
+            In additional to the nested dependency from axis2, Sage also used a
+            3rd party build system
+            <a
+              href="https://ant.apache.org/"
+              target="_blank"
+              title="Apache Ant - Welcome"
+              >Apache Ant</a
+            >
+            to build their project and manage packages, which can be observed in
+            the <code>MANIFEST.MF</code> file in its packages. Therefore, after
+            replacing the old log4j file with 5 files (3 required ones and the
+            two mentioned above), the reference to the old log4j in
+            <code>Bundle-ClassPath</code> inside <code>MANIFEST.MF</code> also
+            needs to be changed to <code>log4j-1.2-api-2.17.1.jar</code>.
+          </p>
+
+          <p>
+            Finally, there's another old log4j in the same directory as axis2
+            but it may not get picked up by scanners. If it's required to patch
+            that as well, replace it with those 3 files and change the reference
+            in <code>MANIFEST.MF</code> like above should also work.
+          </p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+
+      <script
+        src="https://utteranc.es/client.js"
+        repo="neverIand/neverIand.github.io"
+        issue-term="url"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+  </body>
+</html>
