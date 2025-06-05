@@ -3,7 +3,6 @@ import { getTheme, handleThemeChange } from "/scripts/theme.js";
 const CSS = `
 :host {
   display: block;
-  aspect-ratio: 1 / 1;
   --logo-color: rgb(121, 0, 142);
   opacity: 1;
   transition: opacity 0.5s;
