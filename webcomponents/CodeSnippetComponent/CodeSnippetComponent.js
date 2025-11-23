@@ -210,9 +210,7 @@ class CodeSnippet extends HTMLElement {
       );
     const codeContent = node ? node.textContent : "";
     // Use split with regex to handle different newline types safely
-    // const lines = codeContent.split("\n");
-    const lines = codeContent.split(/\r\n|\r|\n/);
-    // Calculate total lines (handling various newline formats)
+    // and calculate total lines (handling various newline formats)
     const lineCount = codeContent.split(/\r\n|\r|\n/).length;
 
     // Create a single string with numbers separated by newlines
@@ -222,19 +220,7 @@ class CodeSnippet extends HTMLElement {
       (_, i) => i + 1
     ).join("\n");
 
-    const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
-    lineNumberContainer.textContent = numberString;
-    // const fragment = document.createDocumentFragment();
-    // for (let index = 0; index < lines.length; index++) {
-    //   // const brEl = document.createElement("br");
-    //   const spanEl = document.createElement("span");
-    //   spanEl.textContent = `${index + 1}`;
-    //   fragment.appendChild(spanEl);
-    //   // fragment.appendChild(brEl);
-    // }
-    // // Clear existing content if any
-    // lineNumberContainer.innerHTML = "";
-    // lineNumberContainer.appendChild(fragment); // Append all at once
+    this.shadowRoot.querySelector(".line-numbers").textContent = numberString;
   }
 
   addCopyButtonEventListener() {
