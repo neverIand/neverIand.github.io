@@ -11,6 +11,8 @@ const CSS = `
 .snippet-container {
   position: relative;
   border: 1px solid var(--border-color);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 .snippet-header {
   position: relative;
@@ -51,10 +53,12 @@ const CSS = `
   border-right: 1px solid;
   user-select: none;
   /* match the <pre> rendering context exactly */
+  white-space: pre;
+  display: block;
   font-family: var(--code-font);
   font-size: var(--code-font-size, 1em);
   line-height: var(--code-line-height, 125%);
-  white-space: pre;
+  margin: 0;
 }
 .line-numbers span {
   display: block;
@@ -208,19 +212,29 @@ class CodeSnippet extends HTMLElement {
     // Use split with regex to handle different newline types safely
     // const lines = codeContent.split("\n");
     const lines = codeContent.split(/\r\n|\r|\n/);
-    const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
+    // Calculate total lines (handling various newline formats)
+    const lineCount = codeContent.split(/\r\n|\r|\n/).length;
 
-    const fragment = document.createDocumentFragment();
-    for (let index = 0; index < lines.length; index++) {
-      // const brEl = document.createElement("br");
-      const spanEl = document.createElement("span");
-      spanEl.textContent = `${index + 1}`;
-      fragment.appendChild(spanEl);
-      // fragment.appendChild(brEl);
-    }
-    // Clear existing content if any
-    lineNumberContainer.innerHTML = "";
-    lineNumberContainer.appendChild(fragment); // Append all at once
+    // Create a single string with numbers separated by newlines
+    // This matches the <pre> layout of the code exactly
+    const numberString = Array.from(
+      { length: lineCount },
+      (_, i) => i + 1
+    ).join("\n");
+
+    const lineNumberContainer = this.shadowRoot.querySelector(".line-numbers");
+    lineNumberContainer.textContent = numberString;
+    // const fragment = document.createDocumentFragment();
+    // for (let index = 0; index < lines.length; index++) {
+    //   // const brEl = document.createElement("br");
+    //   const spanEl = document.createElement("span");
+    //   spanEl.textContent = `${index + 1}`;
+    //   fragment.appendChild(spanEl);
+    //   // fragment.appendChild(brEl);
+    // }
+    // // Clear existing content if any
+    // lineNumberContainer.innerHTML = "";
+    // lineNumberContainer.appendChild(fragment); // Append all at once
   }
 
   addCopyButtonEventListener() {
