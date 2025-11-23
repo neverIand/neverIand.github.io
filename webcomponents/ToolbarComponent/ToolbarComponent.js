@@ -59,7 +59,7 @@ class ToolbarComponent extends HTMLElement {
   addButtonEventListener() {
     const anchor = this.shadowRoot.getElementById("top");
     anchor.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scroll({ top: 0, behavior: "auto" });
     });
   }
 }

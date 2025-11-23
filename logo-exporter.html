@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="white"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="black"
+    />
+    <title>neverIand</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <!-- Preloading -->
+    <link rel="preload" href="/styles/common.css" as="style" />
+    <link rel="stylesheet" href="/styles/common.css" />
+
+    <link rel="preload" href="/scripts/essentials.js" as="script" crossorigin />
+    <script type="module" src="/scripts/essentials.js"></script>
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Italic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <!--  -->
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+    <main>
+      <section>
+        <h1>Site Logo Image Exporter</h1>
+        <berry-logo animate="false"></berry-logo>
+        <button id="export-btn">Export</button>
+      </section>
+    </main>
+
+    <berry-footer></berry-footer>
+
+    <script>
+      // !FIXME use svg export as ref to check the structure
+      document
+        .getElementById("export-btn")
+        .addEventListener("click", async () => {
+          const logo = document.querySelector("berry-logo");
+          exportLogo(logo, {
+            pixelSize: 512,
+            // mime: "image/webp",
+            mime: "image/svg+xml",
+            // mime: "image/png",
+            quality: 0.95,
+          });
+        });
+
+      // utils/logo-export-inlined.js
+      async function exportLogo(
+        elem,
+        {
+          size = 512,
+          mime = "image/png", // 'image/jpeg', 'image/webp', or 'image/svg+xml'
+          quality = 0.92,
+        } = {}
+      ) {
+        /*--- 1 · flatten & inline styles ---------------------------------------*/
+        const deepClone = (node) => {
+          const clone = node.cloneNode(false); // shallow
+          const css = getComputedStyle(node);
+          clone.style.cssText = [...css]
+            .map((p) => `${p}:${css.getPropertyValue(p)}`)
+            .join(";");
+          for (const child of node.childNodes)
+            clone.appendChild(deepClone(child));
+          return clone;
+        };
+        const rendered = deepClone(elem.shadowRoot); // real pixels
+        const wrapper = document.createElement("div");
+        wrapper.appendChild(rendered);
+
+        /*--- 2 · build SVG with foreignObject ----------------------------------*/
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg"
+                     width="${size}" height="${size}">
+    <foreignObject width="100%" height="100%"
+                   xmlns="http://www.w3.org/1999/xhtml">
+      ${wrapper.innerHTML}
+    </foreignObject>
+  </svg>`;
+
+        if (mime === "image/svg+xml") {
+          return download(svg, mime, `berry-logo-${size}.svg`);
+        }
+
+        /*--- 3 · rasterise via data URI, keeping canvas origin-clean -----------*/
+        const uri =
+          "data:image/svg+xml;charset=utf-8," +
+          encodeURIComponent(svg).replace(/#/g, "%23");
+        const img = await new Promise((res, rej) => {
+          const i = new Image();
+          i.onload = () => res(i);
+          i.onerror = rej;
+          i.src = uri;
+        });
+
+        const canvas = Object.assign(document.createElement("canvas"), {
+          width: size,
+          height: size,
+        });
+        canvas.getContext("2d").drawImage(img, 0, 0, size, size);
+
+        const blob = await new Promise((r) => canvas.toBlob(r, mime, quality));
+        downloadBlob(blob, `berry-logo-${size}.${mime.split("/")[1]}`);
+      }
+
+      /* helpers */
+      function download(text, type, name) {
+        downloadBlob(new Blob([text], { type }), name);
+      }
+      function downloadBlob(blob, name) {
+        const url = URL.createObjectURL(blob);
+        Object.assign(document.createElement("a"), {
+          href: url,
+          download: name,
+        }).click();
+        setTimeout(() => URL.revokeObjectURL(url), 500);
+      }
+    </script>
+  </body>
+</html>
