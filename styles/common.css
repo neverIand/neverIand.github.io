@@ -13,6 +13,9 @@
   src: url("/fonts/LibreBaskerville-Italic.ttf");
   font-display: swap;
 }
+@view-transition {
+  navigation: auto;
+}
 :root {
   --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino,
     "Times New Roman", Times, Georgia, serif;
