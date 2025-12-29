@@ -192,7 +192,7 @@ class CodeSnippet extends HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true));
     if (!skipHighlight) {
       const slot = this.querySelector("pre");
-      slot.style.display = "none";
+      slot && (slot.style.display = "none");
       this.highlightCode();
       // this.addShowOGEventListener();
     }
