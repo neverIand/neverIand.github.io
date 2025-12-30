@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="white"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="black"
+    />
+    <title>neverIand</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles/articles.css" />
+    <!-- Preloading -->
+    <link rel="preload" href="/styles/common.css" as="style" />
+    <link rel="stylesheet" href="/styles/common.css" />
+
+    <link rel="preload" href="/scripts/essentials.js" as="script" crossorigin />
+    <script type="module" src="/scripts/essentials.js"></script>
+
+    <link rel="preload" href="/scripts/articles.js" as="script" crossorigin />
+    <script type="module" src="/scripts/articles.js"></script>
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Regular.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Bold.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/LibreBaskerville-Italic.ttf"
+      as="font"
+      type="font/ttf"
+      crossorigin
+    />
+    <!--  -->
+  </head>
+  <body>
+    <noscript>This website requires Javascript to function properly.</noscript>
+    <berry-header></berry-header>
+    <main>
+      <article>
+        <berry-heading></berry-heading>
+
+        <iframe
+          class="bandcamp-player"
+          src="https://bandcamp.com/EmbeddedPlayer/track=2974174748/size=small/bgcol=ffffff/linkcol=0687f5/transparent=true/"
+          seamless
+          ><a
+            href="https://ageofconsent.bandcamp.com/track/come-together-del-mont-version"
+            >Come Together (Del Monté Version) by Age of Consent</a
+          ></iframe
+        >
+
+        <section>
+          <p>
+            I got asked if I can "add a button" to a OneNote document so that
+            when clicked, it automatically saves a pdf copy of that page to a
+            Sharepoint folder. To my knowledge, VBA is not available in OneNote,
+            and add-ins are blocked by company's IT policy. Even if I can use
+            VBA, the document they want me to look at is often opened in MS
+            Teams (i.e. Office Web Access) - in which case VBA will not be
+            available for any Office 365 Apps anyway. So, the answer is no, you
+            cannot add a button to a OneNote page.
+          </p>
+          <p>But you can add a <b>hyperlink</b>.</p>
+          <p>
+            You probably already noticed that when you click on some links on
+            the Internet, they can automatically open an application installed
+            on users' machine. One of the most well-know example is the
+            <code>mailto</code> link, where it opens the default email client on
+            click:
+          </p>
+          <berry-code nohighlight data-title="Link example" code-lang="html">
+            <pre slot="code">
+&lt;a href="mailto:nowhere@example.com"&gt;Send email to this address&lt;/a&gt;</pre
+            >
+          </berry-code>
+
+          <p>
+            It's also possible to set up the receiver, subject, cc and even body text with this single link, which will be very useful later. More details regarding this <code>mailto</code>link can be
+            found
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links#email_links"
+              target="_blank"
+              title="Email links"
+              >here</a
+            >. In fact, you can get all registered URL protocols by running this
+            powershell script (if you are using Windows of course):
+          </p>
+          <berry-code nohighlight code-lang="powershell">
+            <pre slot="code">
+Get-ChildItem "HKCR:\" | Where-Object {
+    ($_ | Get-ItemProperty -ErrorAction Ignore)."URL Protocol"
+} | Select-Object Name</pre
+            >
+          </berry-code>
+          <p>
+            I was surprised how many protocols there are on my machine when I
+            first run it. When I have the time I definitely need to look into
+            them and see how many are actually well-documented. After some quick
+            testing, some built-in protocol can launch corresponding apps but
+            then nothings happens, which is kinda expected - many if not most of
+            these links require additional parameters to trigger something
+            inside the app, I presume.
+          </p>
+
+          <p>
+            Ok so now we can open the email compose window after clicking the
+            link, but where could this lead us to?
+          </p>
+          <p>
+            This is a rare occasion where
+            <a
+              href="https://learn.microsoft.com/en-us/power-automate/flow-types"
+              target="_blank"
+              title="Power Automate Overview"
+              >Power Automate</a
+            > is actually useful. With this email sent (only 2 clicks so far! 1 on the link and 1 on send button), a cloud flow can be <a href="https://learn.microsoft.com/en-us/connectors/office365/#when-a-new-email-arrives-(v3)" target="_blank" title="When a new email arrives (V3)">triggered</a> by checking if the email's title contains certain keywords (can be set up as URL parameters in the <code>mailto</code> link) and if it is sent by the right senders. Then, the OneNote connector
+            <code>Get page content</code> could get the content of that page and then somehow
+            convert it to pdf, and then save it to the a SharePoint folder with
+            respective connectors.
+          </p>
+          <p>
+            However, in typical Microsoft fashion, there's another catch: at the
+            time of writing, there's no OneNote connector that supports
+            converting to pdf - the best it can do it is to just get the
+            <b>raw</b> HTML of a document.Therefore, I had to create a temporary
+            html file with the Onedrive connector <code>Create file</code> and then
+            convert it to a pdf with another Onedrive connector
+            <code>Convert file</code> and then delete it with <code>Delete file</code>. Note
+            that this could cause issues if a file can only be accessible to a
+            certain people so you may need to be careful.
+          </p>
+          <p>Of course this method assumes the flow owner and users are reasonable e.g. users won't spam the flow owner (or service account) with tons of automated emails. And from now on we can build upon this workflow and add some more features to (try to) make it more robust - I ended up adding some try-catches with scopes and logging with SharePoint list.</p>
+        </section>
+
+        <berry-date></berry-date>
+      </article>
+
+      <script
+        src="https://utteranc.es/client.js"
+        repo="neverIand/neverIand.github.io"
+        issue-term="url"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async
+      ></script>
+    </main>
+
+    <berry-toolbar></berry-toolbar>
+    <berry-toast></berry-toast>
+    <berry-footer></berry-footer>
+  </body>
+</html>
