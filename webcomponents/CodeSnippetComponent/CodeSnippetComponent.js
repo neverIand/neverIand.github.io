@@ -50,7 +50,7 @@ const CSS = `
   padding: 0 5px;
   color: var(--text-color);
   background-color: var(--content-bg-color);
-  border-right: 1px solid;
+  border-right: 1px solid var(--border-color);
   user-select: none;
   /* match the <pre> rendering context exactly */
   white-space: pre;

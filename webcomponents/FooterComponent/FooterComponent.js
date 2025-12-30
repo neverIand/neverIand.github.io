@@ -72,7 +72,7 @@ class CustomFooter extends HTMLElement {
     <footer id="footer">
         <ul>
           <li><a href="https://github.com/neverIand">Github</a></li>
-          <li><a href="mailto:rickytang2019@gmail.com">Email</a></li>
+          <li><a href="mailto:contact@tangyizhe.dev">Email</a></li>
           <li><a href="https://www.youtube.com/@ratch3t673">Youtube</a></li>
         </ul>
     </footer>

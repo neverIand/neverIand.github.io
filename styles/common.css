@@ -22,7 +22,7 @@
   --body-font: "Libre Baskerville", Georgia, "Times New Roman", Times, serif;
   --code-font: consolas, "Menlo", "Monaco", "Courier New", monospace;
   --bg-color: #f1f1f1;
-  --border-color: #000;
+  --border-color: rgba(0, 0, 0, 0.5);
   --header-bg-color: rgba(255, 255, 255, 0.8);
   --content-bg-color: #fff;
   --article-bg-color: #fff;
@@ -42,7 +42,7 @@
 }
 [data-theme="dark"] {
   --bg-color: #000;
-  --border-color: #fff;
+  --border-color: rgba(255, 255, 255, 0.5);
   --header-bg-color: rgba(0, 0, 0, 0.7);
   --content-bg-color: #404040;
   --article-bg-color: #404040;

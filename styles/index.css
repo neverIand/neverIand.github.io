@@ -28,5 +28,5 @@ section.title-list {
 section.title-list h2 {
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid var(--border-color);
 }
