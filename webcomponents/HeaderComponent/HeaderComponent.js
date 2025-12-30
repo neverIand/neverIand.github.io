@@ -146,7 +146,6 @@ class CustomHeader extends HTMLElement {
         </label>
         <nav id="links" class="nav-menu">
           <ul>
-            <li><a href="/articles/misc/profile.html">about</a></li>
             <li><a href="/articles/archived/index.html">archived</a></li>
             <li><berry-toggle data-label="🌙" ${
               getTheme() === "dark" ? "data-checked" : ""
