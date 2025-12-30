@@ -138,7 +138,7 @@ class CustomHeader extends HTMLElement {
       <header>
         <div id="logo">
           <a href="/" title="home"><berry-logo size="50"></berry-logo></a>
-          <a href="/" title="home"><h1>neverIand</h1></a>
+          <a href="/" title="home"><h1></h1></a>
         </div>
         <input type="checkbox" id="menu-toggle">
         <label for="menu-toggle" class="menu-icon" aria-label="Toggle navigation">
