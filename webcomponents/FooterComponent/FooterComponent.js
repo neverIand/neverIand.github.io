@@ -71,9 +71,9 @@ class CustomFooter extends HTMLElement {
     template.innerHTML = /*html*/ `
     <footer id="footer">
         <ul>
-          <li><a href="https://github.com/neverIand">Github</a></li>
-          <li><a href="mailto:contact@tangyizhe.dev">Email</a></li>
-          <li><a href="https://www.youtube.com/@ratch3t673">Youtube</a></li>
+          <li><a target="_blank" href="https://github.com/neverIand">Github</a></li>
+          <li><a target="_blank" href="mailto:contact@tangyizhe.dev">Email</a></li>
+          <li><a target="_blank" href="https://www.youtube.com/@ratch3t673">Youtube</a></li>
         </ul>
     </footer>
 `;
