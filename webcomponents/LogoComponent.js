@@ -1,77 +1,5 @@
 import { getTheme, handleThemeChange } from "/scripts/theme.js";
-
-const CSS = `
-:host {
-  display: block;
-  --logo-color: rgb(121, 0, 142);
-  opacity: 1;
-  transition: opacity 0.5s;
-}
-.square {
-  background-color: var(--bg-color, white);
-  border: var(--logo-border-width, 9.6px) solid var(--logo-color);
-  border-radius: var(--logo-border-radius, 6.4px);
-}
-.outline {
-  position: relative;
-  width: var(--length, 240px);
-  height: var(--length, 240px);
-  overflow: hidden;
-}
-.left-square, .right-square, .core {
-  position: absolute;
-}
-.left-square {
-  top: calc(var(--length) * 0.3);
-  left: calc(0px - var(--length) / 3);
-  width: var(--logo-left-square-width);
-  height: var(--logo-left-square-width);
-  z-index: 100;
-  transform: rotateZ(60deg);
-}
-.right-square {
-  top: calc(var(--length) * (1 / 15));
-  left: calc(var(--length) * (11 / 15));
-  width: var(--logo-right-square-width);
-  height: var(--logo-right-square-width);
-  z-index: 50;
-  transform: rotateZ(60deg);
-}
-.core {
-  position: relative;
-  width: var(--logo-core-width);
-  height: var(--logo-core-width);
-  top: calc(var(--logo-core-width) - var(--logo-border-width) / 2);
-  margin: auto;
-  border: var(--logo-border-width) solid var(--text-color, black);
-}
-:host(.animated) .left-square,
-:host(.animated) .right-square {
-  animation: transformLeft 4s infinite linear;
-}
-@keyframes transformLeft {
-  from {
-    transform: translateX(calc(-1.467 * var(--length))) rotateZ(60deg);
-  }
-  to {
-    transform: translateX(calc(1.733 * var(--length))) rotateZ(-300deg);
-  }
-}
-`;
-
-const canConstruct =
-  typeof CSSStyleSheet !== "undefined" &&
-  typeof CSSStyleSheet.prototype.replaceSync === "function";
-
-const canAdopt =
-  typeof ShadowRoot !== "undefined" &&
-  "adoptedStyleSheets" in ShadowRoot.prototype;
-
-let sharedSheet;
-if (canConstruct) {
-  sharedSheet = new CSSStyleSheet();
-  sharedSheet.replaceSync(CSS);
-}
+import { attachShadowStylesheet } from "/scripts/style-utils.js";
 
 class LogoComponent extends HTMLElement {
   static get observedAttributes() {
@@ -82,13 +10,10 @@ class LogoComponent extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if (canAdopt && sharedSheet) {
-      sr.adoptedStyleSheets = [sharedSheet];
-    } else {
-      const styleEl = document.createElement("style");
-      styleEl.textContent = CSS;
-      sr.appendChild(styleEl);
-    }
+    attachShadowStylesheet(
+      sr,
+      new URL("./LogoComponent.css", import.meta.url).href
+    );
 
     // this.setAttribute("data-theme", getTheme()); // for iOS 15
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
