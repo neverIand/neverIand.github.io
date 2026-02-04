@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>neverIand</title>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/styles/articles.css" />
@@ -47,6 +47,12 @@
     <main>
       <article>
         <h1>Playground</h1>
+
+        <section>
+          <p>Template component</p>
+          <code>&lt;berry-template&gt;</code>
+          <berry-template></berry-template>
+        </section>
 
         <hr />
 
@@ -252,6 +258,7 @@ console.log(`Elapsed time: ${et4 - st4} milliseconds`); */
       type="module"
       src="/webcomponents/ArticleComponent/ArticleComponent.js"
     ></script>
+    <script type="module" src="/webcomponents/TemplateComponent.js"></script>
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
     <script>
       let el = document.createElement("div");

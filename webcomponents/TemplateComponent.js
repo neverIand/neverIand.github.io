@@ -23,6 +23,7 @@ class TemplateComponent extends HTMLElement {
     const tpl = document.createElement("template");
     tpl.innerHTML = `
       <div>
+        hello world
       </div>
     `;
     this.shadowRoot.appendChild(tpl.content.cloneNode(true));
