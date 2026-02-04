@@ -1,4 +1,5 @@
 import { getTheme, setTheme } from "./theme.js";
+import "./critical-styles.js";
 import "/webcomponents/LogoComponent.js";
 import "/webcomponents/HeaderComponent/HeaderComponent.js";
 import "/webcomponents/FooterComponent/FooterComponent.js";

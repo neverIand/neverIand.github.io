@@ -1,65 +1,4 @@
-const CSS = `
-:host {
-  display: block;
-  --title-font: "Lucida Bright", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", Times, Georgia, serif;
-}
-.sidebar {
-  max-width: 400px;
-  padding: 20px;
-  background-color: #f4f4f4;
-  line-height: 160%;
-  border-radius: 10px;
-}
-h2 {
-  border-bottom: 1px solid;
-}
-#archive-list {
-  margin-top: 20px;
-}
-.archive-category > ul {
-  list-style: none;
-  margin: 0;
-}
-h2,
-h3 {
-  margin: 0;
-  font-family: var(--title-font);
-}
-a {
-  padding: 4px 8px;
-  color: black;
-  font-family: consolas, "Menlo", "Monaco", "Courier New", monospace;
-  text-decoration: none;
-  border-radius: 4px;
-}
-a:hover,
-a:focus {
-  color: #ff6600;
-  text-decoration: underline;
-}
-a:visited {
-  color: #7744aa;
-}
-@media (max-width: 992px) {
-  .article-list {
-    grid-template-columns: 1fr;
-  }
-}
-`;
-
-const canConstruct =
-  typeof CSSStyleSheet !== "undefined" &&
-  typeof CSSStyleSheet.prototype.replaceSync === "function";
-
-const canAdopt =
-  typeof ShadowRoot !== "undefined" &&
-  "adoptedStyleSheets" in ShadowRoot.prototype;
-
-let sharedSheet;
-if (canConstruct) {
-  sharedSheet = new CSSStyleSheet();
-  sharedSheet.replaceSync(CSS);
-}
+import { attachShadowStylesheet } from "/scripts/style-utils.js";
 
 class CustomArchivedList extends HTMLElement {
   constructor() {
@@ -67,13 +6,10 @@ class CustomArchivedList extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if (canAdopt && sharedSheet) {
-      sr.adoptedStyleSheets = [sharedSheet];
-    } else {
-      const styleEl = document.createElement("style");
-      styleEl.textContent = CSS;
-      sr.appendChild(styleEl);
-    }
+    attachShadowStylesheet(
+      sr,
+      new URL("./ArchivedListComponent.css", import.meta.url).href
+    );
     // TODO
     // document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
@@ -81,16 +17,6 @@ class CustomArchivedList extends HTMLElement {
   connectedCallback() {
     this.render();
     initArchiveList(this); // Pass 'this' to use it inside initArchiveList
-  }
-
-  loadStyles() {
-    const styles = document.createElement("link");
-    styles.setAttribute("rel", "stylesheet");
-    styles.setAttribute(
-      "href",
-      "/webcomponents/ArchivedListComponent/ArchivedListComponent.css"
-    );
-    this.shadowRoot.appendChild(styles);
   }
 
   renderArchiveList(elementId, data) {

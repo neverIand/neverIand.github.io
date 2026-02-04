@@ -1,24 +1,5 @@
 import { handleThemeChange } from "/scripts/theme.js";
-
-const CSS = `
-:host {
-  display: block;
-}
-`;
-
-const canConstruct =
-  typeof CSSStyleSheet !== "undefined" &&
-  typeof CSSStyleSheet.prototype.replaceSync === "function";
-
-const canAdopt =
-  typeof ShadowRoot !== "undefined" &&
-  "adoptedStyleSheets" in ShadowRoot.prototype;
-
-let sharedSheet;
-if (canConstruct) {
-  sharedSheet = new CSSStyleSheet();
-  sharedSheet.replaceSync(CSS);
-}
+import { attachShadowStylesheet } from "/scripts/style-utils.js";
 
 class TemplateComponent extends HTMLElement {
   constructor() {
@@ -26,13 +7,10 @@ class TemplateComponent extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if (canAdopt && sharedSheet) {
-      sr.adoptedStyleSheets = [sharedSheet];
-    } else {
-      const styleEl = document.createElement("style");
-      styleEl.textContent = CSS;
-      sr.appendChild(styleEl);
-    }
+    attachShadowStylesheet(
+      sr,
+      new URL("./TemplateComponent.css", import.meta.url).href
+    );
     // this.setAttribute("data-theme", getTheme()); 
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
