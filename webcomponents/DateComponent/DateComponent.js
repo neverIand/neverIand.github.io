@@ -1,31 +1,6 @@
 import { fetchData } from "/scripts/fetchData.js";
 import { handleThemeChange } from "/scripts/theme.js";
-
-const CSS = `
-:host {
-  display: block;
-}
-time {
-  display: flex;
-  flex-direction: column;
-  color: var(--text-color);
-  font-style: italic;
-}
-`;
-
-const canConstruct =
-  typeof CSSStyleSheet !== "undefined" &&
-  typeof CSSStyleSheet.prototype.replaceSync === "function";
-
-const canAdopt =
-  typeof ShadowRoot !== "undefined" &&
-  "adoptedStyleSheets" in ShadowRoot.prototype;
-
-let sharedSheet;
-if (canConstruct) {
-  sharedSheet = new CSSStyleSheet();
-  sharedSheet.replaceSync(CSS);
-}
+import { attachShadowStylesheet } from "/scripts/style-utils.js";
 
 class CustomDate extends HTMLElement {
   constructor() {
@@ -33,13 +8,10 @@ class CustomDate extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if (canAdopt && sharedSheet) {
-      sr.adoptedStyleSheets = [sharedSheet];
-    } else {
-      const styleEl = document.createElement("style");
-      styleEl.textContent = CSS;
-      sr.appendChild(styleEl);
-    }
+    attachShadowStylesheet(
+      sr,
+      new URL("./DateComponent.css", import.meta.url).href
+    );
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
 

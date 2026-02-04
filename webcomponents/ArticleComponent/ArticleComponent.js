@@ -1,69 +1,5 @@
 import { handleThemeChange } from "/scripts/theme.js";
-
-const CSS = `
-:host {
-  display: block;
-}
-#article {
-  padding: 10px 20px;
-}
-#article a {
-  color: #000;
-  text-decoration: none;
-}
-#article a:hover {
-  text-decoration: underline var(--text-color);
-}
-#footer {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 1em;
-}
-h4,
-h6 {
-  margin: 0;
-  font-family: var(--title-font);
-}
-h4 {
-  color: var(--text-color);
-  font-size: 1.5em;
-}
-h6 {
-  color: grey;
-  font-size: 1.2em;
-}
-p {
-  margin: 0;
-  margin-top: 0.5em;
-  color: var(--text-color);
-  font-size: 1em;
-}
-@media (max-width: 768px) {
-  h4 {
-    font-size: 1.25em;
-  }
-  h6 {
-    font-size: 0.875em;
-  }
-}
-`;
-
-const canConstruct =
-  typeof CSSStyleSheet !== "undefined" &&
-  typeof CSSStyleSheet.prototype.replaceSync === "function";
-
-const canAdopt =
-  typeof ShadowRoot !== "undefined" &&
-  "adoptedStyleSheets" in ShadowRoot.prototype;
-
-let sharedSheet;
-if (canConstruct) {
-  sharedSheet = new CSSStyleSheet();
-  sharedSheet.replaceSync(CSS);
-}
+import { attachShadowStylesheet } from "/scripts/style-utils.js";
 
 class ArticleList extends HTMLElement {
   constructor() {
@@ -71,13 +7,10 @@ class ArticleList extends HTMLElement {
     const sr = this.attachShadow({
       mode: "open",
     });
-    if (canAdopt && sharedSheet) {
-      sr.adoptedStyleSheets = [sharedSheet];
-    } else {
-      const styleEl = document.createElement("style");
-      styleEl.textContent = CSS;
-      sr.appendChild(styleEl);
-    }
+    attachShadowStylesheet(
+      sr,
+      new URL("./ArticleComponent.css", import.meta.url).href
+    );
     // this.setAttribute("data-theme", getTheme());
     document.addEventListener("berry-theme", (e) => handleThemeChange(e, this));
   }
